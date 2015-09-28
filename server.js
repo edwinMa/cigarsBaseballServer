@@ -3,18 +3,19 @@ var express = require('express');
 var app = express();
 
 // constants
-var DEBUG = true;
-var ListenPort = 3000;
-var JSONSpacing = 4;
-var Schedule = createSchedule();
-var Schedule2 = createSchedule2();
-var Locations = new Locations();
-var Roster = createRoster();
+CigarsServer = {};
+CigarsServer.DEBUG = true;
+CigarsServer.ListenPort = 3000;
+CigarsServer.JSONSpacing = 4;
+CigarsServer.Schedule = createSchedule();
+CigarsServer.Schedule2 = createSchedule2();
+CigarsServer.Locations = new Locations();
+CigarsServer.Roster = createRoster();
 
 
 function debug(message)
 {
-    if (DEBUG)
+    if (CigarsServer.DEBUG)
     {
         console.log(message);
     }
@@ -54,7 +55,7 @@ app.get('/cigarsbaseball/fields/', function(request, response)
 {
     debug("requesting fields...");
 
-    var result = JSON.stringify(Locations.getFields(), null, JSONSpacing);
+    var result = JSON.stringify(CigarsServer.Locations.getFields(), null, CigarsServer.JSONSpacing);
 
     response.send(result);
 });
@@ -63,7 +64,7 @@ app.get('/cigarsbaseball/schedule/', function(request, response)
 {
     debug("requesting schedule...");
 
-    var result = JSON.stringify(Schedule.getSchedule(), null, JSONSpacing);
+    var result = JSON.stringify(CigarsServer.Schedule.getSchedule(), null, CigarsServer.JSONSpacing);
     response.send(result);
 });
 
@@ -71,7 +72,7 @@ app.get('/cigarsbaseball/schedule2/', function(request, response)
 {
     debug("requesting schedule...");
 
-    var result = JSON.stringify(Schedule2.getSchedule(), null, JSONSpacing);
+    var result = JSON.stringify(CigarsServer.Schedule2.getSchedule(), null, CigarsServer.JSONSpacing);
 
     response.send(result);
 });
@@ -80,7 +81,7 @@ app.get('/cigarsbaseball/nextgame/', function(request, response)
 {
     debug("requesting next game...");
 
-    var result = JSON.stringify(Schedule.getNextGame(), null, JSONSpacing);
+    var result = JSON.stringify(CigarsServer.Schedule.getNextGame(), null, CigarsServer.JSONSpacing);
 
     response.send(result);
 });
@@ -89,7 +90,7 @@ app.get('/cigarsbaseball/prevgame/', function(request, response)
 {
     debug("requesting previous game...");
 
-    var result = JSON.stringify(Schedule.getPrevGame(), null, JSONSpacing);
+    var result = JSON.stringify(CigarsServer.Schedule.getPrevGame(), null, CigarsServer.JSONSpacing);
 
     response.send(result);
 });
@@ -97,7 +98,7 @@ app.get('/cigarsbaseball/prevgame/', function(request, response)
 app.get('/cigarsbaseball/roster/', function(request, response)
 {
     debug("requesting roster...");
-    var result = JSON.stringify(Roster.getRoster(), null, JSONSpacing);
+    var result = JSON.stringify(CigarsServer.Roster.getRoster(), null, CigarsServer.JSONSpacing);
     response.send(result);
 });
 /*
@@ -296,7 +297,7 @@ function createRoster ()
                 new Player ("John Gentry", "Gentry", "21", "1B/P", "Charleston, SC", "R", "R", "", "images/players/21.jpg"),
                 // new Player ("Ryan Holland", "Holland", "23", "SS/2B", "Atlanta, GA", "R", "L", "", "images/players/23.jpg"),
                 // new Player ("Caleb Crotts", "Crotts", "XX", "C (Injured)", "McDounough, GA", "R", "R", "Radioactive - Imagine Dragons", ""),
-                new Player ("Sean Lennox", "Lennox", "16", "P", "Norcross, GA", "R", "R", "Givin the Dog a Bone -  AC/DC", "images/players/16.jpg"),
+                new Player ("Sean Lennox", "Lennox", "16", "P", "Norcross, GA", "R", "R", "Givin the Dog a Bone - AC/DC", "images/players/16.jpg"),
                 new Player ("Nathan Moreau", "Moreau", "15", "P/OF", "", "L", "L", "", ""),
                 new Player ("Brad May", "May", "6", "IF/OF/C", "", "R", "R", "", ""),
                 // new Player ("Stephen Dodson", "Dodson", "26", "P/IF/OF", "", "R", "R", "", ""),
@@ -317,7 +318,7 @@ function createRoster ()
 }
 
 
-app.listen(3000);
+app.listen(CigarsServer.ListenPort);
 /*
  ** END
  */
