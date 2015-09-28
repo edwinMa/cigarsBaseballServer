@@ -318,7 +318,7 @@ function createRoster ()
 }
 
 
-app.listen(CigarsServer.ListenPort);
+app.listen(process.env.PORT || CigarsServer.ListenPort);
 /*
  ** END
  */
