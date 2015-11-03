@@ -75,7 +75,7 @@ app.get('/cigarsbaseball/db', function (request, response)
             else
             {
                 debug ("database query successful");
-                response.send("database query successful..." + result.rows); 
+                response.send("database query successful..." + {results: result.rows}); 
                 // response.render('pages/db', {results: result.rows} );
             }
         });
