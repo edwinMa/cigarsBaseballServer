@@ -75,28 +75,12 @@ app.get('/db', function (request, response)
             else
             {
                 debug ("no err, returning render...");
-                response.render('pages/db', {results: result.rows} );
+                response.send("database good!"; 
+                // response.render('pages/db', {results: result.rows} );
             }
         });
     });
 })
-
-
-app.get('/db2', function (request, response) 
-{
-    debug ("trying to connect to postgres db at " + process.env.DATABASE_URL);
-    pg.connect(process.env.DATABASE_URL, function(err, client) {
-        if (err) throw err;
-        debug('Connected to postgres! Getting schemas...');
-
-        client
-            .query('SELECT table_schema,table_name FROM information_schema.tables;')
-            .on('row', function(row) {
-                debug(JSON.stringify(row));
-            });
-        });
-})
-
 
 
 
