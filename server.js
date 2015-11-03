@@ -62,6 +62,7 @@ app.get('/db', function (request, response)
     {
         client.query('SELECT * FROM test_table', function(err, result) 
         {
+            debug ("pg connection good, running query...");
             done();
             if (err)
             { 
@@ -71,6 +72,7 @@ app.get('/db', function (request, response)
             }
             else
             {
+                debug ("no err, returning render...");
                 response.render('pages/db', {results: result.rows} );
             }
         });
