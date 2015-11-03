@@ -49,13 +49,13 @@ app.use(function (req, res, next) {
  ** Begin JSON Restful API Calls
  */
 
-app.get('/', function(request, response)
+app.get('/cigarsbaseball', function(request, response)
 {
     response.send("Hello, it's a Cigars Baseball World");
 });
 
 // connect to postgres DB
-app.get('/db', function (request, response) 
+app.get('/cigarsbaseball/db', function (request, response) 
 {
     debug ("trying to connect to postgres db at " + process.env.DATABASE_URL);
     pg.connect(process.env.DATABASE_URL, function(err, client, done) 
