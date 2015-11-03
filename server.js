@@ -5,19 +5,6 @@ var app = express();
 // setup postgress DB
 var pg = require('pg');
 
-// connect to postgres DB
-app.get('/db', function (request, response) {
-  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    client.query('SELECT * FROM test_table', function(err, result) {
-      done();
-      if (err)
-       { console.error(err); response.send("Error " + err); }
-      else
-       { response.render('pages/db', {results: result.rows} ); }
-    });
-  });
-})
-
 // constants
 CigarsServer = {};
 CigarsServer.DEBUG = true;
@@ -66,6 +53,21 @@ app.get('/', function(request, response)
 {
     response.send("Hello, it's a Cigars Baseball World");
 });
+
+// connect to postgres DB
+app.get('/db', function (request, response) {
+    debug ("trying to connect to postgres db...");
+  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+    client.query('SELECT * FROM test_table', function(err, result) {
+      done();
+      if (err)
+       { console.error(err); response.send("Error " + err); }
+      else
+       { response.render('pages/db', {results: result.rows} ); }
+    });
+  });
+})
+
 
 
 app.get('/cigarsbaseball/fields/', function(request, response)
