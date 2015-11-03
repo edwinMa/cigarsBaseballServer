@@ -75,7 +75,7 @@ app.get('/db', function (request, response)
             else
             {
                 debug ("no err, returning render...");
-                response.send("database good!"; 
+                response.send("database good!"); 
                 // response.render('pages/db', {results: result.rows} );
             }
         });
