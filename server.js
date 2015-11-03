@@ -55,17 +55,26 @@ app.get('/', function(request, response)
 });
 
 // connect to postgres DB
-app.get('/db', function (request, response) {
-    debug ("trying to connect to postgres db...");
-  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    client.query('SELECT * FROM test_table', function(err, result) {
-      done();
-      if (err)
-       { console.error(err); response.send("Error " + err); }
-      else
-       { response.render('pages/db', {results: result.rows} ); }
+app.get('/db', function (request, response) 
+{
+    debug ("trying to connect to postgres db at " + process.env.DATABASE_URL);
+    pg.connect(process.env.DATABASE_URL, function(err, client, done) 
+    {
+        client.query('SELECT * FROM test_table', function(err, result) 
+        {
+            done();
+            if (err)
+            { 
+                console.log (err);
+                console.error(err);
+                response.send("Error " + err); 
+            }
+            else
+            {
+                response.render('pages/db', {results: result.rows} );
+            }
+        });
     });
-  });
 })
 
 
