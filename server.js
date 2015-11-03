@@ -1,6 +1,22 @@
+// setup express server
 var express = require('express');
-
 var app = express();
+
+// setup postgress DB
+var pg = require('pg');
+
+// connect to postgres DB
+app.get('/db', function (request, response) {
+  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+    client.query('SELECT * FROM test_table', function(err, result) {
+      done();
+      if (err)
+       { console.error(err); response.send("Error " + err); }
+      else
+       { response.render('pages/db', {results: result.rows} ); }
+    });
+  });
+})
 
 // constants
 CigarsServer = {};
@@ -169,6 +185,7 @@ function createEvent(date, time, field, opponent, result, note)
 }
 
 
+// this method uses createEvent to create schedule events
 function createSchedule()
 {
     var events = [
@@ -212,10 +229,69 @@ function createSchedule()
             debug (events);
             return (events);
         }
+
+        getNextGame: function ()
+        {
+            var games = this.events;
+
+            var nextGame = null;
+            var done = false;
+            var numGames = games.length;
+
+            for (j=0; !done && j<numGames; j++)
+            {
+                // find game that has no result and is not a holiday
+                if (games[j].result=="" && games[j].opponent != "No Game")
+                {
+                    // found it; return this one
+                    nextGame = games[j];
+                    done = true;
+                }
+            }
+            return (nextGame);
+        }
+
+        getPrevGame: function()
+        {
+
+            var games = this.events;
+            debug ("games is " + games);
+            debug ("this.events is " + this.events);
+
+
+            var prevGame = null;
+            var done = false;
+            var doneInner = false;
+            var numGames = games.length;
+
+            // first find next game, and then loop backwards to prior game that is not a holiday 
+            for (j=0; !done && j<numGames; j++)
+            {
+                debug (games[j].opponent);
+                // find game that has no result and is not a holiday
+                if (games[j].result=="" && games[j].opponent != "No Game")
+                {
+                    // found it; return this one
+                    for (k=j-1; !doneInner && k>=0; k--)
+                    {
+                        // find game that has a result and is not a holiday
+                        if (games[k].result !="" && games[k].opponent != "No Game")
+                        {
+                            prevGame = games[k];
+                            debug ("prev game opp:" + prevGame.opponent);
+                            doneInner = true;
+                            done = true;
+                        }
+                    }
+                }
+            }
+
+            return (prevGame);
+        }
     }; // end return object
 }
 
-
+// this method uses the "new Event" to create schedule events
 function createSchedule2()
 {
     var events = [
