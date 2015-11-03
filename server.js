@@ -64,11 +64,13 @@ app.get('/db', function (request, response)
         {
             debug ("pg connection good, running query...");
             done();
+            debug ("after done...");
             if (err)
             { 
+                debug ("query error " + err);
                 console.log (err);
                 console.error(err);
-                response.send("Error " + err); 
+                response.send("Query Error " + err); 
             }
             else
             {
