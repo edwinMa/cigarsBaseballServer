@@ -10,7 +10,7 @@ CigarsServer = {};
 CigarsServer.DEBUG = true;
 CigarsServer.ListenPort = 3000;
 CigarsServer.JSONSpacing = 4;
-CigarsServer.Schedule = createSchedule();
+CigarsServer.Schedule = createSchedule2016();
 CigarsServer.Schedule2 = createSchedule2();
 CigarsServer.Locations = new Locations();
 CigarsServer.Roster = createRoster();
@@ -110,6 +110,7 @@ app.get('/cigarsbaseball/schedule2/', function(request, response)
     response.send(result);
 });
 
+
 app.get('/cigarsbaseball/nextgame/', function(request, response)
 {
     debug("requesting next game...");
@@ -202,6 +203,34 @@ function createEvent(date, time, field, opponent, result, note)
 
 
 // this method uses createEvent to create schedule events
+function createSchedule2016()
+{
+    var events = [
+        // createEvent("Sep 12, 2015", "1 PM", "North Cobb", "Cherokees", "L 6-0", "Playoff Game 2"),
+        createEvent("Feb 28", "TBD", "TBD", "TBD", "", "Practice"),
+        createEvent("March 6", "TBD", "TBD", "TBD", "", "Practice"),
+        createEvent("March 13", "TBD", "TBD", "TBD", "", "Scrimmage/Practice"),
+        createEvent("March 20", "TBD", "TBD", "TBD", "", "Opening Day"),
+        createEvent("March 27", "TBD", "TBD", "TBD", "", "Easter")
+    ];
+
+    //debug (events[2].getNote());
+
+    return {
+        getSchedule: function()
+        {
+            debug  ("returning schedule...");
+            debug (events);
+            return (events);
+        }
+
+        
+
+        
+    }; // end return object
+}
+
+
 function createSchedule()
 {
     var events = [
@@ -328,9 +357,9 @@ function createRoster ()
                 new Player ("Rob Wodarczk", "Wodarczk", "2", "IF/OF/P", "Kernersville, NC", "R", "L", "", ""),
                 new Player ("Joel Pierce", "Pierce", "13", "C", "tbd", "R", "R", "", "images/players/13.jpg"),
                 new Player ("Jamie Lugo", "Lugo", "0", "2B/OF", "Newark, NJ", "R", "R", "", ""),
-                new Player ("Thomas Padilla", "Padilla", "8", "1B/3B", "Norcross, GA", "R", "R", "Thunderstruck- AC/DC", "images/players/8.jpg"),
+                // new Player ("Thomas Padilla", "Padilla", "8", "1B/3B", "Norcross, GA", "R", "R", "Thunderstruck- AC/DC", "images/players/8.jpg"),
                 // new Player ("Kevin Cattie", "Cattie", "3", "OF", "tbd", "L", "L", "", ""),
-                new Player ("Jordan Kosterich", "Kosterich", "50", "P", "Westchester, NY", "L", "L", "", "images/players/50.jpg"),
+                // new Player ("Jordan Kosterich", "Kosterich", "50", "P", "Westchester, NY", "L", "L", "", "images/players/50.jpg"),
                 new Player ("Ryan Krezel", "Kretzel", "22", "OF/P", "Chicago, IL", "R", "R", "", "images/players/22.jpg"),
                 new Player ("John Gentry", "Gentry", "21", "1B/P", "Charleston, SC", "R", "R", "", "images/players/21.jpg"),
                 // new Player ("Ryan Holland", "Holland", "23", "SS/2B", "Atlanta, GA", "R", "L", "", "images/players/23.jpg"),
@@ -338,10 +367,11 @@ function createRoster ()
                 new Player ("Sean Lennox", "Lennox", "16", "P", "Norcross, GA", "R", "R", "Givin the Dog a Bone - AC/DC", "images/players/16.jpg"),
                 new Player ("Nathan Moreau", "Moreau", "15", "P/OF", "", "L", "L", "", ""),
                 new Player ("Brad May", "May", "6", "IF/OF/C", "", "R", "R", "", ""),
+                new Player ("Blake Bailey", "Bailey", "5", "OF", "", "R", "R", "", ""),
                 // new Player ("Stephen Dodson", "Dodson", "26", "P/IF/OF", "", "R", "R", "", ""),
                 // new Player ("Jeff Downer", "Downer", "27", "IF/C", "", "R", "R", "", ""),
                 // new Player ("Cash Collins", "Collins", "4", "P/OF", "", "L", "L", "", "images/players/4.jpg"),
-                new Player ("Peter Verdin", "Verdin", "39", "OF/P", "", "R", "R", "", ""),
+                // new Player ("Peter Verdin", "Verdin", "39", "OF/P", "", "R", "R", "", ""),
                 // new Player ("Blake Dieterich", "Dieterich", "51", "OF/P", "", "L", "L", "", "")
             ];
 
