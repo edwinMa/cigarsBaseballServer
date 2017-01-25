@@ -85,5 +85,19 @@ var query = client.query ('CREATE TABLE schedule (eventid SERIAL PRIMARY KEY, ev
 		}
 	});
 
+var query = client.query ('CREATE TABLE seasons (id SERIAL PRIMARY KEY, name VARCHAR(16))',
+	function (err, result)
+	{
+		if (err)
+		{
+			debug ("CREATE TABLE seasons error-> " + err);	
+		}
+		else
+		{
+			debug ("seasons table created");
+		}
+	});
+
+
 
 query.on('end', function() { client.end(); });
