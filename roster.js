@@ -303,7 +303,7 @@ class Roster
             new Player ("Edwin Marcial", "Marcial", "19", "2B/3B", "Miami, FL", "R", "S", "Genius of Love - Tom Tom Club", "images/players/19.jpg"),
             
             // 2014
-            new Player ("Rob Wodarczyk", "Wodarczk", "2", "OF", "Kernersville, NC", "R", "S", "", ""),
+            // new Player ("Rob Wodarczyk", "Wodarczk", "2", "OF", "Kernersville, NC", "R", "S", "", ""),
 
             //2015
             new Player ("Sean Lennox", "Lennox", "16", "P", "Norcross, GA", "R", "R", "Givin the Dog a Bone - AC/DC", "images/players/16.jpg"),
@@ -320,7 +320,7 @@ class Roster
             new Player ("Eric Jordan", "Jordan", "11", "IF/OF", "", "R", "S", "", ""),
             new Player ("Jah-Neel Warner", "Warner", "8", "OF", "", "R", "R", "", ""),
             new Player ("Mathew Connelly", "Connelly", "27", "IF/P", "", "R", "R", "", ""),
-            new Player ("Ryan Powell", "Powell", "40", "C/OF", "", "R", "R", "", ""),
+            // new Player ("Ryan Powell", "Powell", "40", "C/OF", "", "R", "R", "", ""),
             new Player ("Jason Rogers", "Rogers", "29", "1B/OF", "", "R", "R", "", ""),
 
             // new for 2021
@@ -330,15 +330,20 @@ class Roster
             // new for 2022
             new Player ("Kevin Echeveria", "Echeveria", "18", "C", "", "R", "R", "", ""),
             new Player ("Luis Garcia", "Garcia", "13", "P", "", "R", "R", "", ""),
-            new Player ("Brad Jahnke", "Jahnke", "45", "P", "", "R", "R", "", ""),
+            // new Player ("Brad Jahnke", "Jahnke", "45", "P", "", "R", "R", "", ""),
 
             // new for 2023
             /* Jorge injured ankle again after game 1 not playing with us
             new Player ("Jorge Oropeza", "Oropeza", "31", "IF", "", "R", "R", "", ""),
             */
             new Player ("Juan Camba", "Camba", "21", "C/3B", "", "R", "R", "", ""),
-            new Player ("Joshhua Sanmarrero", "Sanmarrero", "XX", "IF", "", "R", "R", "", ""),
-            new Player ("Brian Carruyo", "Carruyo", "XX", "P", "", "R", "R", "", "")
+            // new Player ("Joshhua Sanmarrero", "Sanmarrero", "XX", "IF", "", "R", "R", "", ""),
+            // new Player ("Brian Carruyo", "Carruyo", "XX", "P", "", "R", "R", "", ""),
+
+            new Player ("Isaac Phillips", "Phillips", "XX", "OF", "", "R", "R", "", ""),
+            new Player ("Trey Rampy", "Carruyo", "XX", "P", "", "R", "R", "", "")
+
+
 
 
 
