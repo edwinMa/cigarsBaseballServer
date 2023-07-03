@@ -336,15 +336,16 @@ class Roster
             /* Jorge injured ankle again after game 1 not playing with us
             new Player ("Jorge Oropeza", "Oropeza", "31", "IF", "", "R", "R", "", ""),
             */
-            new Player ("Juan Camba", "Camba", "21", "C/3B", "", "R", "R", "", ""),
+            // new Player ("Juan Camba", "Camba", "21", "C/3B", "", "R", "R", "", ""),
             // new Player ("Joshhua Sanmarrero", "Sanmarrero", "XX", "IF", "", "R", "R", "", ""),
             // new Player ("Brian Carruyo", "Carruyo", "XX", "P", "", "R", "R", "", ""),
 
             new Player ("Isaac Phillips", "Phillips", "XX", "OF", "", "R", "R", "", ""),
-            new Player ("Trey Rampy", "Carruyo", "XX", "P", "", "R", "R", "", "")
+            new Player ("Trey Rampy", "Carruyo", "XX", "P", "", "R", "R", "", ""),
 
-
-
+            new Player ("Kyle Brady", "Brady", "XX", "P", "", "R", "R", "", ""),
+            new Player ("Chris Porter", "Porter", "XX", "P", "", "R", "R", "", ""),
+            new Player ("Glenn Cordero", "Cordero", "XX", "P", "", "R", "R", "", "")
 
 
 
