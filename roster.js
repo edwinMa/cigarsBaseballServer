@@ -340,12 +340,12 @@ class Roster
             // new Player ("Joshhua Sanmarrero", "Sanmarrero", "XX", "IF", "", "R", "R", "", ""),
             // new Player ("Brian Carruyo", "Carruyo", "XX", "P", "", "R", "R", "", ""),
 
-            new Player ("Isaac Phillips", "Phillips", "XX", "OF", "", "R", "R", "", ""),
-            new Player ("Trey Rampy", "Rampy", "XX", "P", "", "R", "R", "", ""),
+            new Player ("Isaac Phillips", "Phillips", "24", "OF", "", "R", "R", "", ""),
+            new Player ("Trey Rampy", "Rampy", "44", "P", "", "R", "R", "", ""),
 
-            new Player ("Kyle Brady", "Brady", "XX", "P", "", "R", "R", "", ""),
-            new Player ("Chris Porter", "Porter", "XX", "P", "", "R", "R", "", ""),
-            new Player ("Glenn Cordero", "Cordero", "XX", "IF", "", "R", "R", "", "")
+            new Player ("Kyle Brady", "Brady", "35", "P", "", "R", "R", "", ""),
+            new Player ("Chris Porter", "Porter", "23", "P", "", "R", "R", "", ""),
+            new Player ("Glenn Cordero", "Cordero", "21", "IF", "", "R", "R", "", "")
 
 
 
