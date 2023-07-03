@@ -307,19 +307,19 @@ class Roster
 
             //2015
             new Player ("Sean Lennox", "Lennox", "16", "P", "Norcross, GA", "R", "R", "Givin the Dog a Bone - AC/DC", "images/players/16.jpg"),
-            new Player ("James Little", "Little", "3", "C/OF/P", "Farmers Branch, TX", "R", "R", "", "Shades of Gray - Robert Earl Keen"),
+            new Player ("James Little", "Little", "3", "C/OF", "Farmers Branch, TX", "R", "R", "", "Shades of Gray - Robert Earl Keen"),
 
             // new as of 2017
             new Player ("LeCorey Johnson", "Johnson", "4", "SS/3B", "Georgia", "R", "R", "", ""),
 
             // new as of 2018
-            new Player ("Spencer Middleton", "Middleton", "1", "CF/P", "Georgia", "R", "R", "", ""),
+            new Player ("Spencer Middleton", "Middleton", "1", "OF/P", "Georgia", "R", "R", "", ""),
             new Player ("Mathew Powell", "Powell", "28", "P/1B", "", "L", "L", "", ""),
 
             // new for 2020
             new Player ("Eric Jordan", "Jordan", "11", "IF/OF", "", "R", "S", "", ""),
             new Player ("Jah-Neel Warner", "Warner", "8", "OF", "", "R", "R", "", ""),
-            new Player ("Mathew Connelly", "Connelly", "27", "IF/P", "", "R", "R", "", ""),
+            new Player ("Mathew Connelly", "Connelly", "27", "SS", "", "R", "R", "", ""),
             // new Player ("Ryan Powell", "Powell", "40", "C/OF", "", "R", "R", "", ""),
             new Player ("Jason Rogers", "Rogers", "29", "1B/OF", "", "R", "R", "", ""),
 
