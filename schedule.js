@@ -17,7 +17,7 @@ var games2023 = [
         new Event ("Sun June 11", "1:30 PM", "Ward Park", "Internacional Punishers", "PPD-Rain", "", ""),
         new Event ("Sun June 18", "10:00 AM", "Lakeside", "Dragons", "T 6-6", "", ""),
         new Event ("Sun June 25", "12:00 PM", "Shamrock", "Cobb Angels", "W 12-1", "", ""),
-        new Event ("Sun July 2", "1:00 PM", "Shamrock", "Giants", "", "", ""),
+        new Event ("Sun July 2", "1:00 PM", "Shamrock", "Giants", "W 4-3", "", ""),
         new Event ("Sun July 9", "2:00 PM", "Osborne", "@Cherokees18", "", "", ""),
         new Event ("Sun July 16", "1:00 PM", "South Cobb", "Cherokees", "", "", ""),
         new Event ("Sun July 23", "12:00 PM", "Shamrock", "Midtown Magic", "", "", ""),
