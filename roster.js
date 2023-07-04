@@ -329,7 +329,7 @@ class Roster
 
             // new for 2022
             new Player ("Kevin Echeveria", "Echeveria", "18", "C", "", "R", "R", "", ""),
-            new Player ("Luis Garcia", "Garcia", "13", "P", "", "R", "R", "", ""),
+            new Player ("Luis Garcia", "Garcia", "0", "P", "", "R", "R", "", ""),
             // new Player ("Brad Jahnke", "Jahnke", "45", "P", "", "R", "R", "", ""),
 
             // new for 2023
