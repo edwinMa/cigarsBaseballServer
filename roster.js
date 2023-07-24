@@ -345,9 +345,8 @@ class Roster
 
             new Player ("Kyle Brady", "Brady", "35", "P", "", "R", "R", "", ""),
             new Player ("Chris Porter", "Porter", "23", "P", "", "R", "R", "", ""),
-            new Player ("Glenn Cordero", "Cordero", "21", "IF", "", "R", "R", "", "")
-
-
+            new Player ("Glenn Cordero", "Cordero", "21", "IF", "", "R", "R", "", ""),
+            new Player ("Kendall Marshall", "Marshall", "42", "P", "", "R", "R", "", "")
 
             ];
         
