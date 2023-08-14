@@ -26,15 +26,16 @@ var games2023 = [
         new Event ("Sun July 30", "3:30 PM", "Dunwoody HS", "Internacional Punishers", "W 8-3", "", ""),
         new Event ("Sun August 6", "11:00 AM", "Lakeside", "@ Roccos", "W 9-0", "forfeit", ""),
         new Event ("Sun August 6", "12:00 PM", "Shamrock", "@ Black Sox", "W 4-1", "Rained out after 5", ""),
-        
-        new Event ("Sun August 13", "12:00 PM", "Shamrock", "@ Squeaks", "", "", ""),
-        new Event ("Sun August 13", "3:00 PM", "Shamrock", "Squeaks", "", "", ""),
+
+        new Event ("Sun August 13", "7:40 PM", "Ward", "Squeaks", "W 6-5", "", ""),
+        new Event ("Sun August 20", "TBD", "TBD", "@ Squeaks", "", "", ""),
 
 
-        new Event ("Sun August 26", "TBD", "TBD", "TBD", "", "Playof Round 1 - Game 1", ""),
-        new Event ("Sun August 26", "TBD", "TBD", "TBD", "", "Playof Round 1 - Game 2", "")
+        new Event ("Sat August 26", "TBD", "TBD", "TBD", "", "Playof Round 1 - Game 1", ""),
+        new Event ("Sat August 26", "TBD", "TBD", "TBD", "", "Playof Round 1 - Game 2", ""),
+        new Event ("Sun August 27", "TBD", "TBD", "TBD", "", "Playof Round 1 - Game 3", ""),
 
-
+        new Event ("Fri October 20", "7:30 PM", "TBD", "@ Atlanta Diamondbacks", "", "", "")
 
 ];
 
@@ -73,7 +74,15 @@ var games2022 = [
 
         new Event ("Sun Apr 2", "12 PM", "2023 Opening Day", "TBD", "", "2023 Opening Day", "")
 
+        // Regular Season
+        // Championship Game Runner UP - Lost to Dragons
+        // 14 - 7 - 1
 
+        // Santa Shuffle Champions
+        // 3 - 0 - 1
+
+        // Overall
+        // 17 - 7 - 2
 ];
 
 
@@ -107,7 +116,9 @@ var games2021 = [
         new Event ("Sat Oct 9", "TBD", "Hunter Park", "Tainos", "L 6-2", "Championship Series - Game 2", ""),
         new Event ("March 2022", "TBD", "TBD", "TBD", "", "TBD", "")
 
-
+        // Regular Season
+        // Championship Game Runner UP - Lost to Tainos
+        // 17 - 7
 
 ];
 
@@ -135,6 +146,9 @@ var games2020 = [
         new Event ("Sun Nov 15", "4 PM", "Pebblebrook", "@Tainos", "W 6-4", "Playoff Finals - Game 2", ""),
         new Event ("Sun Nov 22", "1230 PM", "Lake Point", "Tainos", "", "Playoff Finals - Game 3", "")
 
+        // Regular Season
+        // Championship Game Runner UP - Lost to Tainos
+        // 9 - 4 - 2
 ];
 
 
