@@ -31,9 +31,14 @@ var games2023 = [
         new Event ("Sun August 20", "TBD", "TBD", "@ Squeaks", "W 10-2", "", ""),
 
 
-        new Event ("Sat August 26", "TBD", "TBD", "TBD", "", "Playof Round 1 - Game 1", ""),
-        new Event ("Sat August 26", "TBD", "TBD", "TBD", "", "Playof Round 1 - Game 2", ""),
-        new Event ("Sun August 27", "TBD", "TBD", "TBD", "", "Playof Round 1 - Game 3", ""),
+        new Event ("Sat August 26", "11 AM", "Shamrock", "Black Sox", "W 1-0", "Playoff Round 1 - Game 1", ""),
+        new Event ("Sat August 26", "130 PM", "Shamrock", "@ Black Sox", "L 2-0", "Playoff Round 1 - Game 2", ""),
+        new Event ("Sun August 27", "230 PM", "Berkmar", "Black Sox", "W 8-4", "Playoff Round 1 - Game 3", ""),
+
+        new Event ("Sat September 9", "12 PM", "Shamrock", "Cobb Angels", "", "Playoff Semi-Final - Game 1", ""),
+        new Event ("Sat September 9", "3 PM", "Shamrock", "@ Cobb Angels", "", "Playof Semi-Final - Game 2", ""),
+        new Event ("Sun September 10", "TBD", "TBD", "Cobb Angels", "", "Playof Semi-Final - Game 3 - If Necessary", ""),
+
 
         new Event ("Fri October 20", "7:30 PM", "TBD", "@ Atlanta Diamondbacks", "", "", "")
 
