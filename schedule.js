@@ -40,13 +40,17 @@ var games2023 = [
         new Event ("Sun September 10", "1 PM", "Lakeside", "Cobb Angels", "W 10-2", "Semi-Final - Game 3", ""),
 
 
-        new Event ("Sat September 16", "1 PM", "Shamrock", "Dragons", "PPD-Rain", "Championship - Game 1", ""),
-        new Event ("Sat September 16", "4 PM", "Shamrock", "@ Dragons", "PPD-Rain", "Championship - Game 2", ""),
+        // new Event ("Sat September 16", "1 PM", "Shamrock", "Dragons", "PPD-Rain", "Championship - Game 1", ""),
+        // new Event ("Sat September 16", "4 PM", "Shamrock", "@ Dragons", "PPD-Rain", "Championship - Game 2", ""),
 
-        new Event ("Sat September 17", "2 PM", "Lakeside", "Dragons", "", "Championship - Game 1", ""),
-        new Event ("Sat September 17", "5 PM", "Lakeside", "@ Dragons", "", "Championship - Game 2", ""),
+        // new Event ("Sun September 17", "2 PM", "Lakeside", "Dragons", "PPD-Rain", "Championship - Game 1", ""),
+        // new Event ("Sun September 17", "5 PM", "Lakeside", "@ Dragons", "PPD-Rain", "Championship - Game 2", ""),
 
-        new Event ("Sun September 24", "2 PM", "Ward Park", "Dragons", "", "Championship - Game 3 - If Necessary", ""),
+
+        new Event ("Sat September 23", "1 PM", "Shamrock", "Dragons", "", "Championship - Game 1", ""),
+        new Event ("Sat September 23", "4 PM", "Shamrock", "@ Dragons", "", "Championship - Game 2", ""),
+        new Event ("Sun September 24", "1 PM", "Lakeside", "Dragons", "", "Championship - Game 3 - If Necessary", ""),
+
 
         new Event ("Fri October 20", "7:30 PM", "TBD", "@ Atlanta Diamondbacks", "", "", "")
 
