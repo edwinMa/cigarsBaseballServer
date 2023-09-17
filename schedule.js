@@ -28,7 +28,7 @@ var games2023 = [
         new Event ("Sun August 6", "12:00 PM", "Shamrock", "@ Black Sox", "W 4-1", "Rained out after 5", ""),
 
         new Event ("Sun August 13", "7:40 PM", "Ward", "Squeaks", "W 6-5", "", ""),
-        new Event ("Sun August 20", "TBD", "TBD", "@ Squeaks", "W 10-2", "", ""),
+        new Event ("Sun August 20", "1 PM", "Lakeside", "@ Squeaks", "W 10-2", "", ""),
 
 
         new Event ("Sat August 26", "11 AM", "Shamrock", "Black Sox", "W 1-0", "Playoff Round 1 - Game 1", ""),
