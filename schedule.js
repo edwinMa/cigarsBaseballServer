@@ -1,72 +1,30 @@
 
 var debug = require ('./debug');
 
-/*
 var games2024 = [
 
         // last column is a url link that links back from the date - first column
         
         //2024
-        new Event ("Sun April 2", "1:00 PM", "South Gwinett", "Roccos", "W 12-1", "Opening Day", ""),
-        new Event ("Sun April 16", "1:00 PM", "South Gwinett", "Squeaks", "PPD-Rain", "", ""),
-        new Event ("Sun April 23", "1:00 PM", "South Cobb", "@Cobb Angels", "L 14-8", "", "")
-
-        ];
-        */
-
-var games2024 = [
-
-        // last column is a url link that links back from the date - first column
-        
-        //2023
-        new Event ("Sun April 2", "1:00 PM", "South Gwinett", "Roccos", "W 12-1", "Opening Day", ""),
-        new Event ("Sun April 16", "1:00 PM", "South Gwinett", "Squeaks", "PPD-Rain", "", ""),
-        new Event ("Sun April 23", "1:00 PM", "South Cobb", "@Cobb Angels", "L 14-8", "", ""),
-        new Event ("Sun April 30", "2:00 PM", "Osborne", "@Cherokees", "PPD-Rain", "Made up 7/16", ""),
-        new Event ("Sun May 7", "4:00 PM", "South Gwinett", "@Outlaws", "W 12-7", "", ""),
-        new Event ("Sun May 21", "1:00 PM", "Berkmar", "Black Sox", "W 4-2", "", ""),
-        new Event ("Sun June 4", "12:00 PM", "South Gwinett", "@ Midtown Magic", "W 17-1", "", ""),
-        new Event ("Sun June 11", "1:30 PM", "Ward Park", "Internacional Punishers", "PPD-Rain", "Made up 7/30", ""),
-        new Event ("Sun June 18", "10:00 AM", "Lakeside", "Dragons", "T 6-6", "", ""),
-        new Event ("Sun June 25", "12:00 PM", "Shamrock", "Cobb Angels", "W 12-1", "", ""),
-        new Event ("Sun July 2", "1:00 PM", "Shamrock", "Giants", "W 4-3", "", ""),
-        new Event ("Sun July 9", "2:00 PM", "Ward Park", "@Cherokees18", "L 4-3", "", ""),
-        new Event ("Sun July 16", "10:30 AM", "Shamrock", "@Cherokees", "W 5-4", "", ""),
-        new Event ("Sun July 16", "1:00 PM", "Shamrock", "Cherokees", "W 7-5", "", ""),
-        new Event ("Sun July 23", "12:00 PM", "Shamrock", "Midtown Magic", "W 19-11", "", ""),
-        new Event ("Sun July 30", "1:00 PM", "Dunwoody HS", "@Internacional Punishers", "W 13-9", "", ""),
-        new Event ("Sun July 30", "3:30 PM", "Dunwoody HS", "Internacional Punishers", "W 8-3", "", ""),
-        new Event ("Sun August 6", "11:00 AM", "Lakeside", "@ Roccos", "W 9-0", "forfeit", ""),
-        new Event ("Sun August 6", "12:00 PM", "Shamrock", "@ Black Sox", "W 4-1", "Rained out after 5", ""),
-
-        new Event ("Sun August 13", "7:40 PM", "Ward", "Squeaks", "W 6-5", "", ""),
-        new Event ("Sun August 20", "1 PM", "Lakeside", "@ Squeaks", "W 10-2", "", ""),
-
-
-        new Event ("Sat August 26", "11 AM", "Shamrock", "Black Sox", "W 1-0", "Playoff Round 1 - Game 1", ""),
-        new Event ("Sat August 26", "130 PM", "Shamrock", "@ Black Sox", "L 2-0", "Playoff Round 1 - Game 2", ""),
-        new Event ("Sun August 27", "230 PM", "Berkmar", "Black Sox", "W 8-4", "Playoff Round 1 - Game 3", ""),
-
-        new Event ("Sat September 9", "1 PM", "Shamrock", "Cobb Angels", "W 14-2", "Semi-Final - Game 1", ""),
-        new Event ("Sat September 9", "330 PM", "Shamrock", "@ Cobb Angels", "L 14-5", "Semi-Final - Game 2", ""),
-        new Event ("Sun September 10", "1 PM", "Lakeside", "Cobb Angels", "W 10-2", "Semi-Final - Game 3", ""),
-
-
-        // new Event ("Sat September 16", "1 PM", "Shamrock", "Dragons", "PPD-Rain", "Championship - Game 1", ""),
-        // new Event ("Sat September 16", "4 PM", "Shamrock", "@ Dragons", "PPD-Rain", "Championship - Game 2", ""),
-
-        // new Event ("Sun September 17", "2 PM", "Lakeside", "Dragons", "PPD-Rain", "Championship - Game 1", ""),
-        // new Event ("Sun September 17", "5 PM", "Lakeside", "@ Dragons", "PPD-Rain", "Championship - Game 2", ""),
-
-
-        new Event ("Sat September 23", "1 PM", "Shamrock", "Dragons", "L", "Championship - Game 1", ""),
-        new Event ("Sat September 23", "4 PM", "Shamrock", "@ Dragons", "L 8-7", "Championship - Game 2", ""),
-        // new Event ("Sun September 24", "1 PM", "Lakeside", "Dragons", "", "Championship - Game 3 - If Necessary", ""),
-
-
-        new Event ("Fri October 20", "7:30 PM", "TBD", "@ Atlanta Diamondbacks", "", "Postponed-Rain", ""),
-        new Event ("TBD", "7:30 PM", "TBD", "@ Atlanta Diamondbacks", "", "", "")
-
+        new Event ("Sun April 7", "12:00 PM", "Shamrock", "Cobb Angesls", "W 8-3", "Opening Day", ""),
+        new Event ("Sun April 14", "12:00 PM", "Shamrock", "@ Black Sox", "W 5-1", "", ""),
+        new Event ("Sun April 21", "12:00 PM", "Shamrock", "Squeaks", "PPD", "", ""),
+        new Event ("Sun April 28", "10:00 AM", "Lakeside", "@ Dragons", "L 6-7", "", ""),
+        new Event ("Sun May 5", "12:00 PM", "Shamrock", "Internacional Punishers", "W 11-1", "", ""),
+        new Event ("Sun May 19", "12:30 PM", "Shamrock", "@ Cherokees", "W 8-2", "", ""),
+        new Event ("Sun June 2", "1:00 PM", "Lakeside", "Midtown Magic", "W 18-0", "", ""),
+        new Event ("Sun June 9", "12:00 PM", "Shamrock", "Blue Sox", "W 3-1", "", ""),
+        new Event ("Sun June 16", "12:00 PM", "Shamrock", "Cobb Angels", "W 9-2", "", ""),
+        new Event ("Sun June 23", "12:00 PM", "Shamrock", "@ ABC", "T 3-3", "", ""),
+        new Event ("Sun June 30", "2:00 PM", "Johns Creek", "@ Internacional Punishers", "W 12-10", "", ""),
+        new Event ("Sun July 7", "12:00 PM", "Shamrock", "Black Sox", "PPD", "", ""),
+        new Event ("Sun July 14", "12:00 PM", "Shamrock", "@ Squeaks", "", "", ""),
+        new Event ("Sun July 21", "10:00 AM", "Lakeside", "Dragons", "", "", ""),
+        new Event ("Sun July 28", "2:00 PM", "Johns Creek", "@ Internacional Punishers", "", "", ""),
+        new Event ("Sun August 4", "12:00 PM", "Shamrock", "Cherokees", "", "", ""),
+        new Event ("Sun August 11", "12:00 PM", "Shamrock", "@ Midtown Magic", "", "", ""),
+        new Event ("Sun August 18", "12:00 PM", "South Cobb ", "@Cobb Angels", "", "", ""),
+        new Event ("Sun August 25", "12:00 PM", "Shamrock ", "Squeaks", "", "", "")
 
 ];
 
