@@ -14,6 +14,62 @@ var games2024 = [
         ];
         */
 
+var games2024 = [
+
+        // last column is a url link that links back from the date - first column
+        
+        //2023
+        new Event ("Sun April 2", "1:00 PM", "South Gwinett", "Roccos", "W 12-1", "Opening Day", ""),
+        new Event ("Sun April 16", "1:00 PM", "South Gwinett", "Squeaks", "PPD-Rain", "", ""),
+        new Event ("Sun April 23", "1:00 PM", "South Cobb", "@Cobb Angels", "L 14-8", "", ""),
+        new Event ("Sun April 30", "2:00 PM", "Osborne", "@Cherokees", "PPD-Rain", "Made up 7/16", ""),
+        new Event ("Sun May 7", "4:00 PM", "South Gwinett", "@Outlaws", "W 12-7", "", ""),
+        new Event ("Sun May 21", "1:00 PM", "Berkmar", "Black Sox", "W 4-2", "", ""),
+        new Event ("Sun June 4", "12:00 PM", "South Gwinett", "@ Midtown Magic", "W 17-1", "", ""),
+        new Event ("Sun June 11", "1:30 PM", "Ward Park", "Internacional Punishers", "PPD-Rain", "Made up 7/30", ""),
+        new Event ("Sun June 18", "10:00 AM", "Lakeside", "Dragons", "T 6-6", "", ""),
+        new Event ("Sun June 25", "12:00 PM", "Shamrock", "Cobb Angels", "W 12-1", "", ""),
+        new Event ("Sun July 2", "1:00 PM", "Shamrock", "Giants", "W 4-3", "", ""),
+        new Event ("Sun July 9", "2:00 PM", "Ward Park", "@Cherokees18", "L 4-3", "", ""),
+        new Event ("Sun July 16", "10:30 AM", "Shamrock", "@Cherokees", "W 5-4", "", ""),
+        new Event ("Sun July 16", "1:00 PM", "Shamrock", "Cherokees", "W 7-5", "", ""),
+        new Event ("Sun July 23", "12:00 PM", "Shamrock", "Midtown Magic", "W 19-11", "", ""),
+        new Event ("Sun July 30", "1:00 PM", "Dunwoody HS", "@Internacional Punishers", "W 13-9", "", ""),
+        new Event ("Sun July 30", "3:30 PM", "Dunwoody HS", "Internacional Punishers", "W 8-3", "", ""),
+        new Event ("Sun August 6", "11:00 AM", "Lakeside", "@ Roccos", "W 9-0", "forfeit", ""),
+        new Event ("Sun August 6", "12:00 PM", "Shamrock", "@ Black Sox", "W 4-1", "Rained out after 5", ""),
+
+        new Event ("Sun August 13", "7:40 PM", "Ward", "Squeaks", "W 6-5", "", ""),
+        new Event ("Sun August 20", "1 PM", "Lakeside", "@ Squeaks", "W 10-2", "", ""),
+
+
+        new Event ("Sat August 26", "11 AM", "Shamrock", "Black Sox", "W 1-0", "Playoff Round 1 - Game 1", ""),
+        new Event ("Sat August 26", "130 PM", "Shamrock", "@ Black Sox", "L 2-0", "Playoff Round 1 - Game 2", ""),
+        new Event ("Sun August 27", "230 PM", "Berkmar", "Black Sox", "W 8-4", "Playoff Round 1 - Game 3", ""),
+
+        new Event ("Sat September 9", "1 PM", "Shamrock", "Cobb Angels", "W 14-2", "Semi-Final - Game 1", ""),
+        new Event ("Sat September 9", "330 PM", "Shamrock", "@ Cobb Angels", "L 14-5", "Semi-Final - Game 2", ""),
+        new Event ("Sun September 10", "1 PM", "Lakeside", "Cobb Angels", "W 10-2", "Semi-Final - Game 3", ""),
+
+
+        // new Event ("Sat September 16", "1 PM", "Shamrock", "Dragons", "PPD-Rain", "Championship - Game 1", ""),
+        // new Event ("Sat September 16", "4 PM", "Shamrock", "@ Dragons", "PPD-Rain", "Championship - Game 2", ""),
+
+        // new Event ("Sun September 17", "2 PM", "Lakeside", "Dragons", "PPD-Rain", "Championship - Game 1", ""),
+        // new Event ("Sun September 17", "5 PM", "Lakeside", "@ Dragons", "PPD-Rain", "Championship - Game 2", ""),
+
+
+        new Event ("Sat September 23", "1 PM", "Shamrock", "Dragons", "L", "Championship - Game 1", ""),
+        new Event ("Sat September 23", "4 PM", "Shamrock", "@ Dragons", "L 8-7", "Championship - Game 2", ""),
+        // new Event ("Sun September 24", "1 PM", "Lakeside", "Dragons", "", "Championship - Game 3 - If Necessary", ""),
+
+
+        new Event ("Fri October 20", "7:30 PM", "TBD", "@ Atlanta Diamondbacks", "", "Postponed-Rain", ""),
+        new Event ("TBD", "7:30 PM", "TBD", "@ Atlanta Diamondbacks", "", "", "")
+
+
+];
+
 
 var games2023 = [
 
@@ -373,7 +429,7 @@ function Event(date, time, field, opponent, result, note, eviteURL)
 function Schedule()
 {
     // last column is for evite link
-    this.events = games2023;
+    this.events = games2024;
     this.year = "2024";
 }
 
