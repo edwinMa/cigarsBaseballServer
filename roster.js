@@ -403,9 +403,6 @@ class Roster
         
         
     }
-        
-        
-    }
 
     getRoster()
     {
