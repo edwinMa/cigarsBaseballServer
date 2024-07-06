@@ -72,7 +72,22 @@ class Roster
             new Player ("Cameron Yamanishi", "Yamanishi", "10", "OF/P", "", "R", "R", "", ""), //2015
 
             new Player ("Hans Hansen", "Hansen", "36", "P", "", "R", "R", "", ""), // 2021
-            new Player ("Theo Tramontana", "Tramontana", "17", "IF/OF/P", "", "R", "R", "", "") // 2021
+            new Player ("Theo Tramontana", "Tramontana", "17", "IF/OF/P", "", "R", "R", "", ""), // 2021
+
+
+             // new for 2023
+            /* Jorge injured ankle again after game 1 not playing with us
+            new Player ("Jorge Oropeza", "Oropeza", "31", "IF", "", "R", "R", "", ""),
+            */
+            // new Player ("Juan Camba", "Camba", "21", "C/3B", "", "R", "R", "", ""),
+            // new Player ("Joshhua Sanmarrero", "Sanmarrero", "XX", "IF", "", "R", "R", "", ""),
+            // new Player ("Brian Carruyo", "Carruyo", "XX", "P", "", "R", "R", "", ""),
+
+            new Player ("Rob Wodarczyk", "Wodarczk", "2", "OF", "Kernersville, NC", "R", "S", "", ""), // 2014-2022
+
+
+            new Player ("Kyle Brady", "Brady", "35", "P", "", "R", "R", "", ""), // 2023
+            new Player ("Kendall Marshall", "Marshall", "42", "P", "", "R", "R", "", "") //2023
 
 
             ];
@@ -349,6 +364,45 @@ class Roster
             new Player ("Kendall Marshall", "Marshall", "42", "P", "", "R", "R", "", "")
 
             ];
+
+            this.players2024 = [
+            // 2003
+            new Player ("Edwin Marcial", "Marcial", "19", "2B/3B", "Miami, FL", "R", "S", "Genius of Love - Tom Tom Club", "images/players/19.jpg"),
+            
+            //2015
+            new Player ("Sean Lennox", "Lennox", "16", "P", "Norcross, GA", "R", "R", "Givin the Dog a Bone - AC/DC", "images/players/16.jpg"),
+            new Player ("James Little", "Little", "3", "C/OF", "Farmers Branch, TX", "R", "R", "", "Shades of Gray - Robert Earl Keen"),
+
+            // new as of 2017
+            new Player ("LeCorey Johnson", "Johnson", "4", "SS/3B", "Georgia", "R", "R", "", ""),
+
+            // new as of 2018
+            new Player ("Spencer Middleton", "Middleton", "1", "OF/P", "Georgia", "R", "R", "", ""),
+            new Player ("Mathew Powell", "Powell", "28", "P/1B", "", "L", "L", "", ""),
+
+            // new for 2020
+            new Player ("Eric Jordan", "Jordan", "11", "IF/OF", "", "R", "S", "", ""),
+            new Player ("Jah-Neel Warner", "Warner", "8", "OF", "", "R", "R", "", ""),
+            new Player ("Mathew Connelly", "Connelly", "27", "SS", "", "R", "R", "", ""),
+            new Player ("Jason Rogers", "Rogers", "29", "1B/OF", "", "R", "R", "", ""),
+
+            // new for 2021
+            new Player ("Milton Adorno", "Adorno", "26", "OF/1B", "", "R", "R", "", ""),
+            new Player ("Scott Miller", "Miller", "5", "OF", "", "R", "R", "", ""),
+
+            // new for 2022
+            new Player ("Kevin Echeveria", "Echeveria", "18", "C", "", "R", "R", "", ""),
+            new Player ("Luis Garcia", "Garcia", "0", "P", "", "R", "R", "", ""),
+
+            // new for 2023
+            new Player ("Isaac Phillips", "Phillips", "24", "OF", "", "R", "R", "", ""),
+            new Player ("Trey Rampy", "Rampy", "44", "P", "", "R", "R", "", ""),
+            new Player ("Chris Porter", "Porter", "23", "P", "", "R", "R", "", ""),
+            new Player ("Glenn Cordero", "Cordero", "21", "IF", "", "R", "R", "", "")
+            ];
+        
+        
+    }
         
         
     }
@@ -356,7 +410,7 @@ class Roster
     getRoster()
     {
         debug ("returning roster...");
-        return (this.players2023);
+        return (this.players2024);
     }
     
 }
