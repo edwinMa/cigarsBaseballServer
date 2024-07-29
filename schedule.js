@@ -20,7 +20,7 @@ var games2024 = [
         new Event ("Sun July 7", "12:00 PM", "Shamrock", "Black Sox", "PPD", "", ""),
         new Event ("Sun July 14", "12:00 PM", "Shamrock", "@ Squeaks", "L 5-4*", "Protested", ""),
         new Event ("Sun July 21", "10:00 AM", "Lakeside", "Dragons", "W 4-2", "", ""),
-        new Event ("Sun July 28", "2:00 PM", "Johns Creek", "@ Internacional Punishers", "", "", ""),
+        new Event ("Sun July 28", "2:00 PM", "Johns Creek", "@ Internacional Punishers", "W 10-6", "", ""),
         new Event ("Sun August 4", "3:30 PM", "Shamrock", "Cherokees", "", "", ""),
         new Event ("Sun August 11", "12:00 PM", "Shamrock", "@ Midtown Magic", "", "", ""),
         new Event ("Sun August 18", "12:00 PM", "South Cobb ", "Black Sox", "", "", ""),
