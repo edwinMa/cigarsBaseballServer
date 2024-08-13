@@ -398,7 +398,14 @@ class Roster
             new Player ("Isaac Phillips", "Phillips", "24", "OF", "", "R", "R", "", ""),
             new Player ("Trey Rampy", "Rampy", "44", "P", "", "R", "R", "", ""),
             new Player ("Chris Porter", "Porter", "23", "P", "", "R", "R", "", ""),
-            new Player ("Glenn Cordero", "Cordero", "21", "IF", "", "R", "R", "", "")
+            new Player ("Glenn Cordero", "Cordero", "21", "IF", "", "R", "R", "", ""),
+
+            // new for 2024
+            new Player ("Dallas Williams", "Williams", "13", "OF", "", "R", "R", "", ""),
+            new Player ("Cole Holley", "Holley", "14", "P", "", "R", "R", "", "")
+
+
+
             ];
         
         
