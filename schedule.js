@@ -23,8 +23,9 @@ var games2024 = [
         new Event ("Sun July 28", "3:30 PM", "Berkmar", "@ Internacional Punishers", "W 10-6", "", ""),
         new Event ("Sun August 4", "3:30 PM", "Shamrock", "Cherokees", "W 14-1", "", ""),
         new Event ("Sun August 11", "12:00 PM", "Shamrock", "Midtown Magic", "W 24-2", "", ""),
-        new Event ("Sun August 18", "11:00 AM", "Johns Creek ", "Black Sox", "", "", ""),
-        new Event ("Sun August 25", "12:00 PM", "Shamrock ", "@Cobb Angels", "", "", "")
+        new Event ("Sun August 18", "4:00 PM", "Lakeside", "Black Sox", "", "", ""),
+        new Event ("Sun August 25", "10:00 AM", "Shamrock ", "Squeaks", "", "", ""), 
+        new Event ("Sun August 25", "1:00 PM", "Shamrock ", "@Cobb Angels", "", "", "")
 
         // TBD -- new Event ("Sun August 25", "12:00 PM", "Shamrock ", "Squeaks", "", "", "")
 ];
