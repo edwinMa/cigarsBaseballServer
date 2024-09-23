@@ -26,11 +26,11 @@ var games2024 = [
         new Event ("Sun August 18", "4:00 PM", "Lakeside", "Black Sox", "L 7-2", "", ""),
 
         // final regular season games
-        new Event ("Sun August 25", "10:00 AM", "Shamrock ", "Squeaks", "", "", ""), 
-        new Event ("Sun August 25", "1:00 PM", "Shamrock ", "@Cobb Angels", "", "", ""),
+        new Event ("Sun August 25", "10:00 AM", "Shamrock ", "Squeaks", "L 5-1", "", ""), 
+        new Event ("Sun August 25", "1:00 PM", "Shamrock ", "@Cobb Angels", "W 7-6", "", ""),
 
         // Labor Day Weekend - Everyone off for the holiday
-        new Event ("Sun September 1", "", "Labor Day", "No Game", "", "", ""),
+        // new Event ("Sun September 1", "", "Labor Day", "No Game", "", "", ""),
 
         // We get a first round bye as the top seed so we are off
         // new Event ("Sat/Sun September 7/8", "", "Playoff Round 1", "BYE-No Game", "", "", ""),
@@ -47,6 +47,17 @@ var games2024 = [
 
 
         new Event ("Sat November 30", "10 AM", "LakePoint Sports Complex", "TBD", "", "Santa Shuffle", ""),
+
+        // Regular Season
+        // Regular Season Champs
+        // League Champions - defeated Dragons
+        // 17 - 4 - 1
+
+        // Santa Shuffle Champions
+        // 
+
+        // Overall
+        // 
 
 ];
 
