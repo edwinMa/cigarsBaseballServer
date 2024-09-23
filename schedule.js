@@ -23,11 +23,31 @@ var games2024 = [
         new Event ("Sun July 28", "3:30 PM", "Berkmar", "@ Internacional Punishers", "W 10-6", "", ""),
         new Event ("Sun August 4", "3:30 PM", "Shamrock", "Cherokees", "W 14-1", "", ""),
         new Event ("Sun August 11", "12:00 PM", "Shamrock", "Midtown Magic", "W 24-2", "", ""),
-        new Event ("Sun August 18", "4:00 PM", "Lakeside", "Black Sox", "", "", ""),
-        new Event ("Sun August 25", "10:00 AM", "Shamrock ", "Squeaks", "", "", ""), 
-        new Event ("Sun August 25", "1:00 PM", "Shamrock ", "@Cobb Angels", "", "", "")
+        new Event ("Sun August 18", "4:00 PM", "Lakeside", "Black Sox", "L 7-2", "", ""),
 
-        // TBD -- new Event ("Sun August 25", "12:00 PM", "Shamrock ", "Squeaks", "", "", "")
+        // final regular season games
+        new Event ("Sun August 25", "10:00 AM", "Shamrock ", "Squeaks", "", "", ""), 
+        new Event ("Sun August 25", "1:00 PM", "Shamrock ", "@Cobb Angels", "", "", ""),
+
+        // Labor Day Weekend - Everyone off for the holiday
+        new Event ("Sun September 1", "", "Labor Day", "No Game", "", "", ""),
+
+        // We get a first round bye as the top seed so we are off
+        // new Event ("Sat/Sun September 7/8", "", "Playoff Round 1", "BYE-No Game", "", "", ""),
+
+        // Final 4 Round of Playoffs; Saturday Double Header; Sunday if needed
+        new Event ("Sat September 14", "1230 PM", "Shamrock", "Cobb Angels", "W 6-3", "Playoff Semi-finals- Game 1", ""),
+        new Event ("Sat September 14", "330 PM", "Shamrock", "@Cobb Angels", "W 4-1", "Playoff Semi-finals - Game 2", ""),
+        // new Event ("Sun September 15", "1230 PM", "Shamrock", "TBD", "", "Playoff Round 2 - Game 3", "If Necesarry"),
+
+        // Championships; Saturday Double Header; Sunday if needed
+        new Event ("Sat September 21", "1230 PM", "Shamrock", "Dragons", "W 14-4", "Championships - Game 1", ""),
+        new Event ("Sat September 21", "330 PM", "Shamrock", "@Dragons", "W 8-3", "Championships- Game 2", ""),
+        // new Event ("Sun September 22", "1230 PM", "Shamrock", "TBD", "", "Championship - Game 3", "If Necesarry")
+
+
+        new Event ("Sat November 30", "10 AM", "LakePoint Sports Complex", "TBD", "", "Santa Shuffle", ""),
+
 ];
 
 
