@@ -46,7 +46,7 @@ var games2024 = [
         // new Event ("Sun September 22", "1230 PM", "Shamrock", "TBD", "", "Championship - Game 3", "If Necesarry")
 
 
-        new Event ("Sat November 30", "10 AM", "LakePoint Sports Complex", "TBD", "", "Santa Shuffle", ""),
+        new Event ("Sat December 7", "10 AM", "LakePoint Sports Complex", "TBD", "", "Santa Shuffle", ""),
 
         // Regular Season
         // Regular Season Champs
