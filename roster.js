@@ -391,7 +391,7 @@ class Roster
             new Player ("Scott Miller", "Miller", "5", "OF", "", "R", "R", "", ""),
 
             // new for 2022
-            new Player ("Kevin Echeveria", "Echeveria", "18", "C", "", "R", "R", "", ""),
+            new Player ("Kevin Echeverria", "Echeveria", "18", "C", "", "R", "R", "", ""),
             new Player ("Luis Garcia", "Garcia", "0", "P", "", "R", "R", "", ""),
 
             // new for 2023
