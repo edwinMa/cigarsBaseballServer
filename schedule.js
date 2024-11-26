@@ -47,8 +47,11 @@ var games2024 = [
 
 
         new Event ("Sat December 7", "11 AM", "LakePoint Sports #13", "Atlanta Reds", "", "Santa Shuffle", ""),
+        new Event ("Sat December 7", "2 PM", "LakePoint Sports #14", "@ Atlanta A's", "", "Santa Shuffle", ""),
+        new Event ("Sat December 8", "11 AM", "LakePoint Sports #16", "@ Cobb Angels", "", "Santa Shuffle", ""),
+        new Event ("Sat December 8", "2 PM", "LakePoint Sports", "TBD", "", "Santa Shuffle", "")
 
-        // Regular Season
+
         // Regular Season Champs
         // League Champions - defeated Dragons
         // 17 - 4 - 1
