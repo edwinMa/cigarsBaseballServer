@@ -46,20 +46,23 @@ var games2024 = [
         // new Event ("Sun September 22", "1230 PM", "Shamrock", "TBD", "", "Championship - Game 3", "If Necesarry")
 
 
-        new Event ("Sat December 7", "11 AM", "LakePoint Sports #13", "Atlanta Reds", "", "Santa Shuffle", ""),
-        new Event ("Sat December 7", "2 PM", "LakePoint Sports #14", "@ Atlanta A's", "", "Santa Shuffle", ""),
-        new Event ("Sat December 8", "11 AM", "LakePoint Sports #16", "@ Cobb Angels", "", "Santa Shuffle", ""),
-        new Event ("Sat December 8", "2 PM", "LakePoint Sports", "TBD", "", "Santa Shuffle", "")
+        new Event ("Sat December 7", "11 AM", "LakePoint Sports #13", "Atlanta Reds", "W 8-1", "Santa Shuffle", ""),
+        new Event ("Sat December 7", "2 PM", "LakePoint Sports #14", "@ Atlanta A's", "W 11-0", "Santa Shuffle", ""),
+        new Event ("Sat December 8", "11 AM", "LakePoint Sports #16", "@ Cobb Angels", "W 9-5", "Santa Shuffle", ""),
+        new Event ("Sat December 8", "2 PM", "LakePoint Sports", "Atlanta Reds", "W 5-2", "Santa Shuffle Championship", ""),
+
+        new Event ("Sun March 30", "2 PM", "Shamrock", "TBD", "", "2025 Opening Day", "")
 
 
         // Regular Season Champs
         // League Champions - defeated Dragons
         // 17 - 4 - 1
 
-        // 
+        // Santa Shufle Champs
+        // 4 - 0 
 
         // Overall
-        // 
+        // 21 - 4 - 1
 
 ];
 
