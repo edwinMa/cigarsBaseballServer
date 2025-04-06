@@ -1,6 +1,75 @@
 
 var debug = require ('./debug');
 
+var games2025 = [
+
+        // last column is a url link that links back from the date - first column
+        
+        //2025
+        new Event ("Sat December 8", "2 PM", "LakePoint Sports", "Atlanta Reds", "W 5-2", "Santa Shuffle Championship", ""),
+
+        new Event ("Sun April 6", "12:30 PM", "Shamrock", "Cobb Angesls", "", "Opening Day", ""),
+
+        /*
+        new Event ("Sun April 14", "12:00 PM", "Shamrock", "@ Black Sox", "W 5-1", "", ""),
+        new Event ("Sun April 21", "12:00 PM", "Shamrock", "Squeaks", "PPD", "", ""),
+        new Event ("Sun April 28", "10:00 AM", "Lakeside", "@ Dragons", "L 6-7", "", ""),
+        new Event ("Sun May 5", "12:00 PM", "Shamrock", "Internacional Punishers", "W 11-1", "", ""),
+        new Event ("Sun May 19", "12:30 PM", "Shamrock", "@ Cherokees", "W 8-2", "", ""),
+        new Event ("Sun June 2", "1:00 PM", "Lakeside", "Midtown Magic", "W 18-0", "", ""),
+        new Event ("Sun June 9", "12:00 PM", "Shamrock", "Blue Sox", "W 3-1", "", ""),
+        new Event ("Sun June 16", "12:00 PM", "Shamrock", "Cobb Angels", "W 9-2", "", ""),
+        new Event ("Sun June 23", "12:00 PM", "Shamrock", "@ ABC", "T 3-3", "", ""),
+        new Event ("Sun June 30", "2:00 PM", "Johns Creek", "@ Internacional Punishers", "W 12-10", "", ""),
+        new Event ("Sun July 7", "12:00 PM", "Shamrock", "Black Sox", "PPD", "", ""),
+        new Event ("Sun July 14", "12:00 PM", "Shamrock", "@ Squeaks", "L 5-4*", "Protested", ""),
+        new Event ("Sun July 21", "10:00 AM", "Lakeside", "Dragons", "W 4-2", "", ""),
+        new Event ("Sun July 28", "3:30 PM", "Berkmar", "@ Internacional Punishers", "W 10-6", "", ""),
+        new Event ("Sun August 4", "3:30 PM", "Shamrock", "Cherokees", "W 14-1", "", ""),
+        new Event ("Sun August 11", "12:00 PM", "Shamrock", "Midtown Magic", "W 24-2", "", ""),
+        new Event ("Sun August 18", "4:00 PM", "Lakeside", "Black Sox", "L 7-2", "", ""),
+
+        // final regular season games
+        new Event ("Sun August 25", "10:00 AM", "Shamrock ", "Squeaks", "L 5-1", "", ""), 
+        new Event ("Sun August 25", "1:00 PM", "Shamrock ", "@Cobb Angels", "W 7-6", "", ""),
+
+        // Labor Day Weekend - Everyone off for the holiday
+        // new Event ("Sun September 1", "", "Labor Day", "No Game", "", "", ""),
+
+        // We get a first round bye as the top seed so we are off
+        // new Event ("Sat/Sun September 7/8", "", "Playoff Round 1", "BYE-No Game", "", "", ""),
+
+        // Final 4 Round of Playoffs; Saturday Double Header; Sunday if needed
+        new Event ("Sat September 14", "1230 PM", "Shamrock", "Cobb Angels", "W 6-3", "Playoff Semi-finals- Game 1", ""),
+        new Event ("Sat September 14", "330 PM", "Shamrock", "@Cobb Angels", "W 4-1", "Playoff Semi-finals - Game 2", ""),
+        // new Event ("Sun September 15", "1230 PM", "Shamrock", "TBD", "", "Playoff Round 2 - Game 3", "If Necesarry"),
+
+        // Championships; Saturday Double Header; Sunday if needed
+        new Event ("Sat September 21", "1230 PM", "Shamrock", "Dragons", "W 14-4", "Championships - Game 1", ""),
+        new Event ("Sat September 21", "330 PM", "Shamrock", "@Dragons", "W 8-3", "Championships- Game 2", ""),
+        // new Event ("Sun September 22", "1230 PM", "Shamrock", "TBD", "", "Championship - Game 3", "If Necesarry")
+
+
+        new Event ("Sat December 7", "11 AM", "LakePoint Sports #13", "Atlanta Reds", "W 8-1", "Santa Shuffle", ""),
+        new Event ("Sat December 7", "2 PM", "LakePoint Sports #14", "@ Atlanta A's", "W 11-0", "Santa Shuffle", ""),
+        new Event ("Sat December 8", "11 AM", "LakePoint Sports #16", "@ Cobb Angels", "W 9-5", "Santa Shuffle", ""),
+        new Event ("Sat December 8", "2 PM", "LakePoint Sports", "Atlanta Reds", "W 5-2", "Santa Shuffle Championship", ""),
+
+        new Event ("Sun April 6", "1230 PM", "Shamrock", "@ Cobb Angels", "", "2025 Opening Day", "")
+        */
+
+        // Regular Season Champs
+        // League Champions - defeated Dragons
+        // 17 - 4 - 1
+
+        // Santa Shufle Champs
+        // 4 - 0 
+
+        // Overall
+        // 21 - 4 - 1
+
+];
+
 var games2024 = [
 
         // last column is a url link that links back from the date - first column
@@ -425,8 +494,8 @@ function Event(date, time, field, opponent, result, note, eviteURL)
 function Schedule()
 {
     // last column is for evite link
-    this.events = games2024;
-    this.year = "2024";
+    this.events = games2025;
+    this.year = "2025";
 }
 
 
