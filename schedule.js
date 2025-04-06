@@ -51,7 +51,7 @@ var games2024 = [
         new Event ("Sat December 8", "11 AM", "LakePoint Sports #16", "@ Cobb Angels", "W 9-5", "Santa Shuffle", ""),
         new Event ("Sat December 8", "2 PM", "LakePoint Sports", "Atlanta Reds", "W 5-2", "Santa Shuffle Championship", ""),
 
-        new Event ("Sun March 30", "2 PM", "Shamrock", "TBD", "", "2025 Opening Day", "")
+        new Event ("Sun April 6", "1230 PM", "Shamrock", "@ Cobb Angels", "", "2025 Opening Day", "")
 
 
         // Regular Season Champs
