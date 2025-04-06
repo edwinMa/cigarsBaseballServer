@@ -8,7 +8,7 @@ var games2025 = [
         //2025
         new Event ("Sat December 8", "2 PM", "LakePoint Sports", "Atlanta Reds", "W 5-2", "Santa Shuffle Championship", ""),
 
-        new Event ("Sun April 6", "12:30 PM", "Shamrock", "Cobb Angesls", "", "Opening Day", ""),
+        new Event ("Sun April 6", "12:30 PM", "Shamrock", "Cobb Angels", "", "Opening Day", ""),
 
         /*
         new Event ("Sun April 14", "12:00 PM", "Shamrock", "@ Black Sox", "W 5-1", "", ""),
