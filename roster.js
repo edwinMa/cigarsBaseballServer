@@ -408,13 +408,60 @@ class Roster
 
             ];
         
+
+        this.players2025 = [
+            // 2003
+            new Player ("Edwin Marcial", "Marcial", "19", "2B/3B", "Miami, FL", "R", "S", "Genius of Love - Tom Tom Club", "images/players/19.jpg"),
+            
+            //2015
+            new Player ("Sean Lennox", "Lennox", "16", "P", "Norcross, GA", "R", "R", "Givin the Dog a Bone - AC/DC", "images/players/16.jpg"),
+            new Player ("James Little", "Little", "3", "C/OF", "Farmers Branch, TX", "R", "R", "", "Shades of Gray - Robert Earl Keen"),
+
+            // new as of 2017
+            new Player ("LeCorey Johnson", "Johnson", "4", "SS/3B", "Georgia", "R", "R", "", ""),
+
+            // new as of 2018
+            new Player ("Spencer Middleton", "Middleton", "1", "OF/P", "Georgia", "R", "R", "", ""),
+            new Player ("Mathew Powell", "Powell", "28", "P/1B", "", "L", "L", "", ""),
+
+            // new for 2020
+            new Player ("Eric Jordan", "Jordan", "11", "IF/OF", "", "R", "S", "", ""),
+            new Player ("Jah-Neel Warner", "Warner", "8", "OF", "", "R", "R", "", ""),
+            new Player ("Mathew Connelly", "Connelly", "27", "SS", "", "R", "R", "", ""),
+            new Player ("Jason Rogers", "Rogers", "29", "1B/OF", "", "R", "R", "", ""),
+
+            // new for 2021
+            new Player ("Milton Adorno", "Adorno", "26", "OF/1B", "", "R", "R", "", ""),
+            new Player ("Scott Miller", "Miller", "5", "OF", "", "R", "R", "", ""),
+
+            // new for 2022
+            new Player ("Kevin Echeverria", "Echeveria", "18", "C", "", "R", "R", "", ""),
+            new Player ("Luis Garcia", "Garcia", "0", "P", "", "R", "R", "", ""),
+
+            // new for 2023
+            new Player ("Isaac Phillips", "Phillips", "24", "OF", "", "R", "R", "", ""),
+            new Player ("Trey Rampy", "Rampy", "44", "P", "", "R", "R", "", ""),
+            new Player ("Chris Porter", "Porter", "23", "P", "", "R", "R", "", ""),
+            new Player ("Glenn Cordero", "Cordero", "21", "IF", "", "R", "R", "", ""),
+
+            // new for 2024
+            // new Player ("Dallas Williams", "Williams", "13", "OF", "", "R", "R", "", ""),
+            new Player ("Cole Holley", "Holley", "14", "P", "", "R", "R", "", ""),
+
+            // new for 2025
+            new Player ("Mathew Bezdicek", "Bezdicek", "20", "OF/P/1B", "", "L", "R", "", ""),
+            new Player ("Orlando Maldanado", "Maldanado", "36", "P", "", "R", "R", "", "")
+
+
+
+            ];
         
     }
 
     getRoster()
     {
         debug ("returning roster...");
-        return (this.players2024);
+        return (this.players2025);
     }
     
 }
