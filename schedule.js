@@ -11,37 +11,15 @@ var games2025 = [
         new Event ("Sun April 6", "12:30 PM", "Shamrock", "@ Cobb Angels", "PPD-Rain", "Opening Day", "8-2"),
         new Event ("Sun April 13", "12:30 PM", "Shamrock", "Midtown Magic", "W 14-1", "", ""),
         new Event ("Sun April 27", "3:30 PM", "Lakeside", "@ Dragons", "W 10-3", "", ""),
-        new Event ("Sun May 4", "12:30 PM", "Shamrock", "Black Sox", "", "", ""),
-        new Event ("Sun May 18", "12:30 PM", "Shamrock", "Squeaks", "", "", "")
-
+        new Event ("Sun May 4", "12:30 PM", "Shamrock", "Black Sox", "W 19-7", "", ""),
+        new Event ("Sun May 18", "12:30 PM", "Shamrock", "Squeaks", "", "", ""),
+        new Event ("Sun Jun 1", "1 PM", "Lakeside", "@ Punishers", "", "", ""),
+        new Event ("Sun Jun 8", "12:30 PM", "Shamrock", "ABC", "", "", "")
 
 
         /*
         new Event ("Sun April 14", "12:00 PM", "Shamrock", "@ Black Sox", "W 5-1", "", ""),
-        new Event ("Sun April 21", "12:00 PM", "Shamrock", "Squeaks", "PPD", "", ""),
-        new Event ("Sun April 28", "10:00 AM", "Lakeside", "@ Dragons", "L 6-7", "", ""),
-        new Event ("Sun May 5", "12:00 PM", "Shamrock", "Internacional Punishers", "W 11-1", "", ""),
-        new Event ("Sun May 19", "12:30 PM", "Shamrock", "@ Cherokees", "W 8-2", "", ""),
-        new Event ("Sun June 2", "1:00 PM", "Lakeside", "Midtown Magic", "W 18-0", "", ""),
-        new Event ("Sun June 9", "12:00 PM", "Shamrock", "Blue Sox", "W 3-1", "", ""),
-        new Event ("Sun June 16", "12:00 PM", "Shamrock", "Cobb Angels", "W 9-2", "", ""),
-        new Event ("Sun June 23", "12:00 PM", "Shamrock", "@ ABC", "T 3-3", "", ""),
-        new Event ("Sun June 30", "2:00 PM", "Johns Creek", "@ Internacional Punishers", "W 12-10", "", ""),
-        new Event ("Sun July 7", "12:00 PM", "Shamrock", "Black Sox", "PPD", "", ""),
-        new Event ("Sun July 14", "12:00 PM", "Shamrock", "@ Squeaks", "L 5-4*", "Protested", ""),
-        new Event ("Sun July 21", "10:00 AM", "Lakeside", "Dragons", "W 4-2", "", ""),
-        new Event ("Sun July 28", "3:30 PM", "Berkmar", "@ Internacional Punishers", "W 10-6", "", ""),
-        new Event ("Sun August 4", "3:30 PM", "Shamrock", "Cherokees", "W 14-1", "", ""),
-        new Event ("Sun August 11", "12:00 PM", "Shamrock", "Midtown Magic", "W 24-2", "", ""),
-        new Event ("Sun August 18", "4:00 PM", "Lakeside", "Black Sox", "L 7-2", "", ""),
-
-        // final regular season games
-        new Event ("Sun August 25", "10:00 AM", "Shamrock ", "Squeaks", "L 5-1", "", ""), 
-        new Event ("Sun August 25", "1:00 PM", "Shamrock ", "@Cobb Angels", "W 7-6", "", ""),
-
-        // Labor Day Weekend - Everyone off for the holiday
-        // new Event ("Sun September 1", "", "Labor Day", "No Game", "", "", ""),
-
+       
         // We get a first round bye as the top seed so we are off
         // new Event ("Sat/Sun September 7/8", "", "Playoff Round 1", "BYE-No Game", "", "", ""),
 
