@@ -89,6 +89,9 @@ class Roster
             new Player ("Kyle Brady", "Brady", "35", "P", "", "R", "R", "", ""), // 2023
             new Player ("Kendall Marshall", "Marshall", "42", "P", "", "R", "R", "", "") //2023
 
+            new Player ("Luis Garcia", "Garcia", "0", "P", "", "R", "R", "", ""), //2022
+
+
 
             ];
 
@@ -436,7 +439,6 @@ class Roster
 
             // new for 2022
             new Player ("Kevin Echeverria", "Echeveria", "18", "C", "", "R", "R", "", ""),
-            new Player ("Luis Garcia", "Garcia", "0", "P", "", "R", "R", "", ""),
 
             // new for 2023
             new Player ("Isaac Phillips", "Phillips", "24", "OF", "", "R", "R", "", ""),
@@ -449,9 +451,8 @@ class Roster
             new Player ("Cole Holley", "Holley", "14", "P", "", "R", "R", "", ""),
 
             // new for 2025
-            new Player ("Mathew Bezdicek", "Bezdicek", "20", "OF/P/1B", "", "L", "R", "", ""),
-            new Player ("Orlando Maldanado", "Maldanado", "36", "P", "", "R", "R", "", "")
-
+            new Player ("Mathew Bezdicek", "Bezdicek", "20", "OF/P/1B", "", "L", "R", "", "")
+            // new Player ("Orlando Maldanado", "Maldanado", "36", "P", "", "R", "R", "", "")
 
 
             ];
