@@ -21,6 +21,8 @@ CigarsServer.Fields = require ('./fields');
 CigarsServer.Roster = require ('./roster');
 CigarsServer.Weather = require ('./weather');
 CigarsServer.Yogi = require ('./yogi');
+CigarsServer.Standings = require ('./standings');
+
 
 
 
@@ -120,6 +122,15 @@ app.get('/cigarsbaseball/schedule/', function(request, response)
     var result = JSON.stringify(CigarsServer.Schedule.getSchedule(), null, CigarsServer.JSONSpacing);
     response.send(result);
 });
+
+app.get('/cigarsbaseball/standings/', function(request, response)
+{
+    debug("requesting standings...");
+
+    var result = JSON.stringify(CigarsServer.Standings.getStandings(), null, CigarsServer.JSONSpacing);
+    response.send(result);
+});
+
 
 app.get('/cigarsbaseball/record/', function(request, response)
 {
