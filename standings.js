@@ -51,12 +51,6 @@ Standings.prototype = {
 
 };
 
-getStandings()
-{
-    debug ("returning Standings...");
-    return (this.standings2025);
-}
-
 
 
 module.exports = new Standings();
