@@ -87,7 +87,7 @@ class Roster
 
 
             new Player ("Kyle Brady", "Brady", "35", "P", "", "R", "R", "", ""), // 2023
-            new Player ("Kendall Marshall", "Marshall", "42", "P", "", "R", "R", "", "") //2023
+            new Player ("Kendall Marshall", "Marshall", "42", "P", "", "R", "R", "", ""), //2023
 
             new Player ("Luis Garcia", "Garcia", "0", "P", "", "R", "R", "", ""), //2022
 
