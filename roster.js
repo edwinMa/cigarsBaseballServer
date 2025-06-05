@@ -448,12 +448,12 @@ class Roster
 
             // new for 2024
             // new Player ("Dallas Williams", "Williams", "13", "OF", "", "R", "R", "", ""),
-            new Player ("Cole Holley", "Holley", "14", "P", "", "R", "R", "", ""),
+            new Player ("Cole Holley", "Holley", "14", "P", "", "R", "R", "", ""), 
 
             // new for 2025
-            new Player ("Mathew Bezdicek", "Bezdicek", "20", "OF/P/1B", "", "L", "R", "", "")
             // new Player ("Orlando Maldanado", "Maldanado", "36", "P", "", "R", "R", "", "")
 
+            new Player ("Mathew Bezdicek", "Bezdicek", "20", "OF/P/1B", "", "L", "R", "", "")
 
             ];
         
