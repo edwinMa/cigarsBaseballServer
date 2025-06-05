@@ -6,15 +6,13 @@ var games2025 = [
         // last column is a url link that links back from the date - first column
         
         //2025
-        new Event ("Sat December 8", "2 PM", "LakePoint Sports", "Atlanta Reds", "W 5-2", "Santa Shuffle Championship", ""),
-
-        new Event ("Sun April 6", "12:30 PM", "Shamrock", "@ Cobb Angels", "PPD-Rain", "Opening Day", "8-2"),
-        new Event ("Sun April 13", "12:30 PM", "Shamrock", "Midtown Magic", "W 14-1", "", ""),
-        new Event ("Sun April 27", "3:30 PM", "Lakeside", "@ Dragons", "W 10-3", "", ""),
-        new Event ("Sun May 4", "12:30 PM", "Shamrock", "Black Sox", "W 19-7", "", ""),
-        new Event ("Sun May 18", "12:30 PM", "Shamrock", "Squeaks", "PPD-Rain", "", ""),
-        new Event ("Sun Jun 1", "1 PM", "Lakeside", "@ Punishers", "W 6-4", "", ""),
-        new Event ("Sun Jun 8", "12:30 PM", "Shamrock", "ABC", "", "", "")
+        new Event ("4/6/2025", "12:30 PM", "Shamrock", "@ Cobb Angels", "PPD-Rain", "Opening Day", "8-2"),
+        new Event ("4/13/2025", "12:30 PM", "Shamrock", "Midtown Magic", "W 14-1", "", ""),
+        new Event ("4/27/2025", "3:30 PM", "Lakeside", "@ Dragons", "W 10-3", "", ""),
+        new Event ("5/4/2025", "12:30 PM", "Shamrock", "Black Sox", "W 19-7", "", ""),
+        new Event ("5/18/2025", "12:30 PM", "Shamrock", "Squeaks", "PPD-Rain", "", ""),
+        new Event ("6/1/2025", "1 PM", "Lakeside", "@ Punishers", "W 6-4", "", ""),
+        new Event ("6/8/2025", "12:30 PM", "Shamrock", "ABC", "", "", "")
 
 
         /*
