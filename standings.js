@@ -5,14 +5,14 @@ var standings2025 = [
         // last column is a url link that links back from the date - first column
         
         //2025
-        new Standing ("Cigars", "8", "1", "1"),
-        new Standing ("Black Sox", "2", "7", "0"),
-        new Standing ("Midtown Magic", "0", "9", "1"),
-        new Standing ("Dragons", "7", "3", "0"),
-        new Standing ("Cherokees", "6", "4", "0"),
-        new Standing ("Punishers", "4", "5", "0"),
-        new Standing ("Squeaks", "3", "5", "0"),
-        new Standing ("Cobb Angels", "4", "6", "0")
+        new Standing ("Cigars", "4", "0", "0"),
+        new Standing ("Black Sox", "4", "1", "0"),
+        new Standing ("Midtown Magic", "0", "6", "0"),
+        new Standing ("Dragons", "4", "2", "0"),
+        new Standing ("Cherokees", "3", "2", "0"),
+        new Standing ("Punishers", "1", "4", "0"),
+        new Standing ("Squeaks", "2", "2", "0"),
+        new Standing ("Cobb Angels", "2", "3", "0")
 ];
 
 
