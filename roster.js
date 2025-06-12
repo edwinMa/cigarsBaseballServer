@@ -434,7 +434,7 @@ class Roster
             new Player ("Jason Rogers", "Rogers", "29", "1B/OF", "", "R", "R", "", ""),
 
             // new for 2021
-            new Player ("Milton Adorno", "Adorno", "26", "OF/1B", "", "R", "R", "", ""),
+            new Player ("Milton Adorno", "Adorno", "42", "OF/1B", "", "R", "R", "", ""),
             new Player ("Scott Miller", "Miller", "5", "OF", "", "R", "R", "", ""),
 
             // new for 2022
