@@ -15,7 +15,7 @@ var games2025 = [
         new Event ("6/8/2025", "12:30 PM", "Shamrock", "ABC", "L 9-0", "", ""), 
         new Event ("6/15/2025", "12:30 PM", "Shamrock", "@ Orioles", "PPD-Rain", "", ""), 
         new Event ("6/22/2025", "12:30 PM", "Shamrock", "Cherokees (18)", "L 8-4", "", ""), 
-        new Event ("6/29/2025", "12:30 PM", "Shamrock", "@ Dragons", "", "", ""), 
+        new Event ("6/29/2025", "12:30 PM", "Shamrock", "@ Dragons", "L 5-4", "", ""), 
         new Event ("7/13/2025", "12:30 PM", "Shamrock", "@ Cherokees", "", "", ""), 
         new Event ("7/20/2025", "12:30 PM", "Shamrock", "Cobb Angels", "", "", ""), 
         new Event ("7/27/2025", "12:30 PM", "Shamrock", "@ Squeaks", "", "", ""), 
