@@ -414,18 +414,18 @@ class Roster
 
         this.players2025 = [
             // 2003
-            new Player ("Edwin Marcial", "Marcial", "19", "2B/3B", "Miami, FL", "R", "S", "Genius of Love - Tom Tom Club", "images/players/19.jpg"),
+            new Player ("Edwin Marcial", "Marcial", "19", "2B/3B", "New York, FL", "R", "S", "Genius of Love - Tom Tom Club", "images/players/19.jpg"),
             
             //2015
             new Player ("Sean Lennox", "Lennox", "16", "P", "Norcross, GA", "R", "R", "Givin the Dog a Bone - AC/DC", "images/players/16.jpg"),
-            new Player ("James Little", "Little", "3", "C/OF", "Farmers Branch, TX", "R", "R", "", "Shades of Gray - Robert Earl Keen"),
+            new Player ("James Little", "Little", "3", "C/OF", "Farmers Branch, TX", "R", "R", "Shades of Gray - Robert Earl Keen", ""),
 
             // new as of 2017
-            new Player ("LeCorey Johnson", "Johnson", "4", "SS/3B", "Georgia", "R", "R", "", ""),
+            new Player ("LeCorey Johnson", "Johnson", "4", "SS/3B", "Columbus, GA", "R", "R", "Cooped Up - Post Malone", ""),
 
             // new as of 2018
-            new Player ("Spencer Middleton", "Middleton", "1", "OF/P", "Georgia", "R", "R", "", ""),
-            new Player ("Mathew Powell", "Powell", "28", "P/1B", "", "L", "L", "", ""),
+            new Player ("Spencer Middleton", "Middleton", "1", "OF/P", "Sandy Springs GA", "R", "R", "Magic Stick - 50 cent", ""),
+            new Player ("Mathew Powell", "Powell", "28", "P/1B", "Casselberry, FL", "L", "L", "Rags to Riches- Tony Bennett", ""),
 
             // new for 2020
             new Player ("Eric Jordan", "Jordan", "11", "IF/OF", "", "R", "S", "", ""),
