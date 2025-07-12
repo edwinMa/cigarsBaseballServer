@@ -414,7 +414,7 @@ class Roster
 
         this.players2025 = [
             // 2003
-            new Player ("Edwin Marcial", "Marcial", "19", "2B/3B", "New York, FL", "R", "S", "Genius of Love - Tom Tom Club", "images/players/19.jpg"),
+            new Player ("Edwin Marcial", "Marcial", "19", "2B/3B", "New York, Miami", "R", "S", "Genius of Love - Tom Tom Club", "images/players/19.jpg"),
             
             //2015
             new Player ("Sean Lennox", "Lennox", "16", "P", "Norcross, GA", "R", "R", "Givin the Dog a Bone - AC/DC", "images/players/16.jpg"),
@@ -428,32 +428,32 @@ class Roster
             new Player ("Mathew Powell", "Powell", "28", "P/1B", "Casselberry, FL", "L", "L", "Rags to Riches- Tony Bennett", ""),
 
             // new for 2020
-            new Player ("Eric Jordan", "Jordan", "11", "IF/OF", "", "R", "S", "", ""),
-            new Player ("Jah-Neel Warner", "Warner", "8", "OF", "", "R", "R", "", ""),
-            new Player ("Mathew Connelly", "Connelly", "27", "SS", "", "R", "R", "", ""),
-            new Player ("Jason Rogers", "Rogers", "29", "1B/OF", "", "R", "R", "", ""),
+            new Player ("Eric Jordan", "Jordan", "11", "IF/OF", "Walterboro,SC", "R", "S", "#1 - Nelly", ""),
+            new Player ("Jah-Neel Warner", "Warner", "8", "OF", "St. Thomas, VI", "R", "R", "Nipsey Hussle - Victory Lap", ""),
+            new Player ("Mathew Connelly", "Connelly", "27", "SS", "Mt.Airy, Md", "R", "R", "Break stuff- limp bizkit", ""),
+            // new Player ("Jason Rogers", "Rogers", "29", "1B/OF", "", "R", "R", "", ""),
 
             // new for 2021
-            new Player ("Milton Adorno", "Adorno", "42", "OF/1B", "", "R", "R", "", ""),
-            new Player ("Scott Miller", "Miller", "5", "OF", "", "R", "R", "", ""),
+            new Player ("Milton Adorno", "Adorno", "42", "OF/1B", "Puerto Rico", "R", "R", "El caballo pelotero (gran combo)", ""),
+            new Player ("Scott Miller", "Miller", "5", "OF", "Knoxville,Tn ", "R", "R", "Ooh ahh (my life be like) - grits", ""),
 
             // new for 2022
-            new Player ("Kevin Echeverria", "Echeveria", "18", "C", "", "R", "R", "", ""),
+            new Player ("Kevin Echeverria", "Echeveria", "18", "C", "Barranquilla, Colombia", "R", "R", "", ""),
 
             // new for 2023
-            new Player ("Isaac Phillips", "Phillips", "24", "OF", "", "R", "R", "", ""),
-            new Player ("Trey Rampy", "Rampy", "44", "P", "", "R", "R", "", ""),
-            new Player ("Chris Porter", "Porter", "23", "P", "", "R", "R", "", ""),
-            new Player ("Glenn Cordero", "Cordero", "21", "IF", "", "R", "R", "", ""),
+            new Player ("Isaac Phillips", "Phillips", "24", "OF", "Powder Springs, GA", "R", "R", "Lemonade - gucci mane", ""),
+            new Player ("Trey Rampy", "Rampy", "44", "P", "McDonough, GA", "R", "R", "Dixieland Delight - Alabama", ""),
+            new Player ("Chris Porter", "Porter", "23", "P", "Marietta, GA ", "R", "R", "", ""),
+            new Player ("Glenn Cordero", "Cordero", "21", "IF", "Moca, Puerto Rico", "R", "R", "", ""),
 
             // new for 2024
             // new Player ("Dallas Williams", "Williams", "13", "OF", "", "R", "R", "", ""),
-            new Player ("Cole Holley", "Holley", "14", "P", "", "R", "R", "", ""), 
+            new Player ("Cole Holley", "Holley", "14", "P", "Baton Rouge, LA", "R", "R", "Song of the South", ""), 
 
             // new for 2025
             // new Player ("Orlando Maldanado", "Maldanado", "36", "P", "", "R", "R", "", "")
 
-            new Player ("Mathew Bezdicek", "Bezdicek", "20", "OF/P/1B", "", "L", "R", "", "")
+            new Player ("Mathew Bezdicek", "Bezdicek", "20", "OF/P/1B", "Plymouth, MN", "L", "R", "", "")
 
             ];
         
