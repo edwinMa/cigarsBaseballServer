@@ -9,10 +9,10 @@ var standings2025 = [
         new Standing ("Black Sox", "4", "5", "0"),
         new Standing ("Midtown Magic", "0", "12", "0"),
         new Standing ("Dragons", "10", "3", "0"),
-        new Standing ("Cherokees", "5", "5", "0"),
+        new Standing ("Cherokees", "6", "5", "0"),
         new Standing ("Punishers", "4", "7", "0"),
         new Standing ("Squeaks", "4", "7", "0"),
-        new Standing ("Cobb Angels", "4", "7", "1")
+        new Standing ("Cobb Angels", "4", "8", "1")
 ];
 
 
