@@ -32,7 +32,18 @@ class Yogi {
             "Pair up in threes.",
             "Why buy good luggage, you only use it when you travel.",
             "You’ve got to be very careful if you don’t know where you are going, because you might not get there.",
-            "All pitchers are liars or crybabies."
+            "All pitchers are liars or crybabies.",
+            "Better cut that pizza into six slices, I don't think I can eat eight",
+            "Little League is good—it keeps parents off the streets.",
+            "I didn’t really say everything I said.", 
+            "It was impossible to get a conversation going—everybody was talking too much.",
+            "You can’t think and hit at the same time.",
+            "If the people don’t want to come out to the ballpark, nobody’s going to stop them.",
+            "Even Napoleon had his Watergate.",
+            "It’s not the heat, it’s the humility.",
+            "He hits from both sides of the plate—he’s amphibious.",
+            "We’re lost, but we’re making good time."
+
         ];
     }
 
