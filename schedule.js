@@ -23,7 +23,8 @@ var games2025 = [
         new Event ("8/3/2025", "1 PM", "Lakeside", "Punishers", "PPD-Rain", "", ""), 
         new Event ("8/10/2025", "11 AM", "Shamrock", "@ Black Sox", "", "", ""), 
         new Event ("8/10/2025", "1:45 PM", "Shamrock", "Squeaks", "", "", "reschedule from 5/18"),
-        new Event ("8/17/2025", "12:30 PM", "Shamrock", "@ Midtown Magic", "", "", ""), 
+        new Event ("8/17/2025", "1 PM", "Shamrock", "@ Orioles", "", "", "reschedule from 6/15"), 
+        new Event ("8/17/2025", "4 PM", "Shamrock", "@ Midtown Magic", "", "", ""), 
         new Event ("8/24/2025", "10 AM", "Lakeside", "Dragons", "", "", ""), 
         new Event ("8/31/2025", "12:30 PM", "Shamrock", "Cherokees", "", "", "")
 
