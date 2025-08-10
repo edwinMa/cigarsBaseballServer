@@ -443,8 +443,8 @@ class Roster
             // new for 2023
             new Player ("Isaac Phillips", "Phillips", "24", "OF", "Powder Springs, GA", "R", "R", "Lemonade - gucci mane", ""),
             new Player ("Trey Rampy", "Rampy", "44", "P", "McDonough, GA", "R", "R", "Dixieland Delight - Alabama", ""),
-            new Player ("Chris Porter", "Porter", "23", "P", "Marietta, GA ", "R", "R", "", ""),
-            new Player ("Glenn Cordero", "Cordero", "6", "IF", "Moca, Puerto Rico", "R", "R", "", ""),
+            new Player ("Chris Porter", "Porter", "23", "P", "Marietta, GA ", "R", "R", "Sunday Best - Surfaces", ""),
+            new Player ("Glenn Cordero", "Cordero", "6", "IF", "Moca, Puerto Rico", "R", "R", "NUEVAYoL - Bad Bunny", ""),
 
             // new for 2024
             // new Player ("Dallas Williams", "Williams", "13", "OF", "", "R", "R", "", ""),
@@ -453,7 +453,11 @@ class Roster
             // new for 2025
             // new Player ("Orlando Maldanado", "Maldanado", "36", "P", "", "R", "R", "", "")
             new Player ("Mathew Bezdicek", "Bezdicek", "20", "OF/P/1B", "Plymouth, MN", "L", "R", "", ""),
-            new Player ("Kenny Faulk", "Faulk", "39", "P", "", "L", "L", "", "")
+            new Player ("Kenny Faulk", "Faulk", "39", "P", "", "L", "L", "", ""),
+            new Player ("Wilson Battle", "Battle", "XX", "P", "", "R", "R", "", ""),
+            new Player ("Jake Brown", "Brown", "XX", "P", "", "R", "R", "", ""),
+            new Player ("Drake Hamil", "Hamil", "XX", "P", "", "R", "R", "", ""),
+
 
 
             ];
