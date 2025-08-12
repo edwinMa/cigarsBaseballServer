@@ -452,7 +452,7 @@ class Roster
 
             // new for 2025
             // new Player ("Orlando Maldanado", "Maldanado", "36", "P", "", "R", "R", "", "")
-            new Player ("Mathew Bezdicek", "Bezdicek", "20", "OF/P/1B", "Plymouth, MN", "L", "R", "", ""),
+            new Player ("Matthew Bezdicek", "Bezdicek", "20", "OF/P/1B", "Plymouth, MN", "L", "R", "", ""),
             new Player ("Kenny Faulk", "Faulk", "39", "P", "", "L", "L", "", ""),
             new Player ("Wilson Battle", "Battle", "XX", "P", "", "R", "R", "", ""),
             new Player ("Jake Brown", "Brown", "XX", "P", "", "R", "R", "", ""),
