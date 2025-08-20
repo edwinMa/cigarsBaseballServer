@@ -27,8 +27,23 @@ var games2025 = [
         new Event ("8/17/2025", "4 PM", "Shamrock", "@ Midtown Magic", "W 9-0", "", ""), 
         new Event ("8/24/2025", "10 AM", "Lakeside", "Dragons", "", "", ""), 
         new Event ("8/24/2025", "12:30 PM", "Lakeside", "Punishers", "", "", "reschedule from 8/3"), 
-        new Event ("9/7/2025", "12:30 PM", "Shamrock", "Cherokees", "", "", "")
+        // LABOR DAY WEEKEND
+        new Event ("9/7/2025", "12:30 PM", "Shamrock", "Cherokees", "", "", ""),
 
+        // Round 1 of Playoffs
+        new Event ("Sat September 13", "TBD", "TBD", "TBD", "", "Playoff Round 1 Game 1", ""),
+        new Event ("Sat September 13", "TBD", "TBD", "TBD", "", "Playoff Round 1 Game 2", ""),
+        new Event ("Sun September 14", "TBD", "TBD", "TBD", "", "Playoff Round 1 Game 3", ""),
+
+        // Round 2 - Semi-Finals
+        new Event ("Sat September 20", "TBD", "TBD", "TBD", "", "Playoff Semi-Final Game 1", ""),
+        new Event ("Sat September 20", "TBD", "TBD", "TBD", "", "Playoff Semi-Final Game 2", ""),
+        new Event ("Sun September 21", "TBD", "TBD", "TBD", "", "Playoff Semi-Final Game 3", ""),
+
+        // Round 3- Championship
+        new Event ("Sat September 27", "TBD", "TBD", "TBD", "", "Playoff Finals - Game 1", ""),
+        new Event ("Sat September 27", "TBD", "TBD", "TBD", "", "Playoff Finals - Game 2", ""),
+        new Event ("Sun September 28", "TBD", "TBD", "TBD", "", "Playoff Finals - Game 3", "")
 
         /*
         new Event ("Sun April 14", "12:00 PM", "Shamrock", "@ Black Sox", "W 5-1", "", ""),
