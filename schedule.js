@@ -31,19 +31,19 @@ var games2025 = [
         new Event ("9/7/2025", "12:30 PM", "Shamrock", "Cherokees", "", "", ""),
 
         // Round 1 of Playoffs
-        new Event ("9/13/25", "Playoff Rd1-GM1", "TBD", "", "Playoff Round 1 Game 1", ""),
-        new Event ("9/13/25", "Playoff Rd1-GM2", "TBD", "", "Playoff Round 1 Game 2", ""),
-        new Event ("9/14/25", "Playoff Rd1-GM3", "TBD", "", "Playoff Round 1 Game 3", ""),
+        new Event ("9/13/25", "Playoff Rd1-GM1", "TBD", "", "", "Playoff Round 1 Game 1"),
+        new Event ("9/13/25", "Playoff Rd1-GM2", "TBD", "", "", "Playoff Round 1 Game 2"),
+        new Event ("9/14/25", "Playoff Rd1-GM3", "TBD", "", "", "Playoff Round 1 Game 3"),
 
         // Round 2 - Semi-Finals
-        new Event ("9/20/25", "Semi-Final GM1", "TBD", "", "Playoff Semi-Final Game 1", ""),
-        new Event ("9/20/25", "Semi-Final GM2", "TBD", "", "Playoff Semi-Final Game 2", ""),
-        new Event ("9/21/25", "Semi-Final GM3", "TBD", "", "Playoff Semi-Final Game 3", ""),
+        new Event ("9/20/25", "Semi-Final GM1", "TBD", "", "", "Playoff Semi-Final Game 1"),
+        new Event ("9/20/25", "Semi-Final GM2", "TBD", "", "", "Playoff Semi-Final Game 2"),
+        new Event ("9/21/25", "Semi-Final GM3", "TBD", "", "", "Playoff Semi-Final Game 3"),
 
         // Round 3- Championship
-        new Event ("9/27/25", "Final GM1", "TBD", "", "Playoff Finals - Game 1", ""),
-        new Event ("9/27/25", "Final GM2", "TBD", "", "Playoff Finals - Game 2", ""),
-        new Event ("9/28/25", "Final GM3", "TBD", "", "Playoff Finals - Game 3", "")
+        new Event ("9/27/25", "Final GM1", "TBD", "", "", "Playoff Finals - Game 1"),
+        new Event ("9/27/25", "Final GM2", "TBD", "", "", "Playoff Finals - Game 2"),
+        new Event ("9/28/25", "Final GM3", "TBD", "", "", "Playoff Finals - Game 3")
 
         /*
         new Event ("Sun April 14", "12:00 PM", "Shamrock", "@ Black Sox", "W 5-1", "", ""),
