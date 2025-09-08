@@ -5,7 +5,7 @@ var debug = require ('./debug');
 */
 var standings2025 = [
         
-    new Standing ("Cigars", "14", "3", "0"),
+    new Standing ("Cigars", "15", "3", "0"),
     new Standing ("Black Sox", "7", "9", "0"),
     new Standing ("Midtown Magic", "0", "15", "1"),
     new Standing ("Dragons", "12", "5", "0"),
