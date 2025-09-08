@@ -28,7 +28,7 @@ var games2025 = [
         new Event ("8/24/2025", "10 AM", "Lakeside", "Dragons", "W 8-3", "", ""), 
         new Event ("8/24/2025", "12:30 PM", "Lakeside", "Punishers", "W 7-2", "", "reschedule from 8/3"), 
         // LABOR DAY WEEKEND
-        new Event ("9/7/2025", "12:30 PM", "Shamrock", "Cherokees", "", "", ""),
+        new Event ("9/7/2025", "12:30 PM", "Shamrock", "Cherokees", "W 6-3", "", ""),
 
         // Round 1 of Playoffs
         new Event ("9/13/25", "Playoff Rd1-GM1", "TBD", "", "", "Playoff Round 1 Game 1"),
