@@ -36,8 +36,8 @@ var games2025 = [
         // new Event ("9/14/25", "Playoff Rd1-GM3", "TBD", "", "", "Playoff Round 1 Game 3"),
 
         // Round 2 - Semi-Finals
-        new Event ("9/20/25", "12:30 PM", "Shamrock", "Semi-Final GM1", "", "Playoff Semi-Final Game 1"),
-        new Event ("9/20/25", "3:330 PM", "Shamrock", "Semi-Final GM2", "", "Playoff Semi-Final Game 2"),
+        new Event ("9/20/25", "12:30 PM", "Shamrock", "Black Sox", "", "Playoff Semi-Final Game 1"),
+        new Event ("9/20/25", "3:330 PM", "Shamrock", "@ Black Sox", "", "Playoff Semi-Final Game 2"),
         new Event ("9/21/25", "TBD", "TBD", "Semi-Final GM3", "", "Playoff Semi-Final Game 3"),
 
         // Round 3- Championship
