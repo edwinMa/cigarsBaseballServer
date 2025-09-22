@@ -42,35 +42,15 @@ var games2025 = [
 
         // Round 3- Championship
         new Event ("10/4/25", "12:30", "Shamrock", "Cherokees", "", "Playoff Finals - Game 1"),
-        new Event ("10/4/25", "3:30", "Shamrock", "", "@ Cherokees", "Playoff Finals - Game 2"),
-        new Event ("10/5/25", "12:30", "Shamrock", "", "Cherokees", "Playoff Finals - Game 3")
+        new Event ("10/4/25", "3:30", "Shamrock", "@ Cherokees", "", "Playoff Finals - Game 2"),
+        new Event ("10/5/25", "12:30", "Shamrock", "Cherokees", "", "Playoff Finals - Game 3")
 
         /*
-        new Event ("Sun April 14", "12:00 PM", "Shamrock", "@ Black Sox", "W 5-1", "", ""),
-       
-        // We get a first round bye as the top seed so we are off
-        // new Event ("Sat/Sun September 7/8", "", "Playoff Round 1", "BYE-No Game", "", "", ""),
 
-        // Final 4 Round of Playoffs; Saturday Double Header; Sunday if needed
-        new Event ("Sat September 14", "1230 PM", "Shamrock", "Cobb Angels", "W 6-3", "Playoff Semi-finals- Game 1", ""),
-        new Event ("Sat September 14", "330 PM", "Shamrock", "@Cobb Angels", "W 4-1", "Playoff Semi-finals - Game 2", ""),
-        // new Event ("Sun September 15", "1230 PM", "Shamrock", "TBD", "", "Playoff Round 2 - Game 3", "If Necesarry"),
-
-        // Championships; Saturday Double Header; Sunday if needed
-        new Event ("Sat September 21", "1230 PM", "Shamrock", "Dragons", "W 14-4", "Championships - Game 1", ""),
-        new Event ("Sat September 21", "330 PM", "Shamrock", "@Dragons", "W 8-3", "Championships- Game 2", ""),
-        // new Event ("Sun September 22", "1230 PM", "Shamrock", "TBD", "", "Championship - Game 3", "If Necesarry")
-
-
-        new Event ("Sat December 7", "11 AM", "LakePoint Sports #13", "Atlanta Reds", "W 8-1", "Santa Shuffle", ""),
-        new Event ("Sat December 7", "2 PM", "LakePoint Sports #14", "@ Atlanta A's", "W 11-0", "Santa Shuffle", ""),
-        new Event ("Sat December 8", "11 AM", "LakePoint Sports #16", "@ Cobb Angels", "W 9-5", "Santa Shuffle", ""),
-        new Event ("Sat December 8", "2 PM", "LakePoint Sports", "Atlanta Reds", "W 5-2", "Santa Shuffle Championship", ""),
-
-        new Event ("Sun April 6", "1230 PM", "Shamrock", "@ Cobb Angels", "", "2025 Opening Day", "")
         */
 
         // Regular Season Champs
+        // 15 - 3 (14-1 25+)
         // League Champions - defeated Dragons
         // 17 - 4 - 1
 
