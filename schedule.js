@@ -41,9 +41,9 @@ var games2025 = [
         new Event ("9/21/25", "1 PM", "Lakeside", "Black Sox", "W 10-9", "Playoff Semi-Final Game 3"),
 
         // Round 3- Championship
-        new Event ("10/4/25", "12:30", "Shamrock", "Cherokees", "", "Playoff Finals - Game 1"),
-        new Event ("10/4/25", "3:30", "Shamrock", "@ Cherokees", "", "Playoff Finals - Game 2"),
-        new Event ("10/5/25", "12:30", "Shamrock", "Cherokees", "", "Playoff Finals - Game 3")
+        new Event ("10/4/25", "12:30", "Shamrock", "Cherokees", "W 8-5", "Playoff Finals - Game 1"),
+        new Event ("10/4/25", "3:30", "Shamrock", "@ Cherokees", "W 7-2", "Playoff Finals - Game 2"),
+        new Event ("3/29/26", "12:30", "Shamrock", "TBD", "", "2026 Opening Day")
 
         /*
 
