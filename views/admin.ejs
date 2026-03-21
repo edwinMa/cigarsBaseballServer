@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cigars Baseball - Admin Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a2e;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+        .navbar {
+            background: #16213e;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid #e94560;
+        }
+        .navbar h1 {
+            font-size: 22px;
+            color: #e94560;
+            font-weight: 700;
+        }
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .navbar-right span { color: #888; font-size: 14px; }
+        .btn {
+            padding: 8px 18px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, opacity 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-primary { background: #e94560; color: white; }
+        .btn-primary:hover { background: #c73652; }
+        .btn-secondary { background: #0f3460; color: #e0e0e0; border: 1px solid #1a4a7a; }
+        .btn-secondary:hover { background: #1a4a7a; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-danger:hover { background: #b02a37; }
+        .btn-success { background: #198754; color: white; }
+        .btn-success:hover { background: #146c43; }
+        .btn-sm { padding: 5px 12px; font-size: 12px; }
+        .btn-logout { background: transparent; color: #888; border: 1px solid #444; }
+        .btn-logout:hover { color: #e94560; border-color: #e94560; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .year-selector {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .year-selector label { font-size: 14px; color: #888; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .year-selector select {
+            padding: 8px 14px;
+            background: #0f3460;
+            border: 1px solid #1a4a7a;
+            border-radius: 6px;
+            color: #e0e0e0;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        .year-selector select:focus { outline: none; border-color: #e94560; }
+        .toolbar-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        .record-bar {
+            background: #16213e;
+            border-radius: 10px;
+            padding: 18px 24px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+        .record-bar .season-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #e94560;
+        }
+        .record-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .record-stat .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .record-stat .stat-label {
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .stat-wins { color: #198754; }
+        .stat-losses { color: #dc3545; }
+        .stat-ties { color: #ffc107; }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #16213e;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .schedule-table th {
+            background: #0f3460;
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #888;
+            font-weight: 700;
+        }
+        .schedule-table td {
+            padding: 10px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 14px;
+        }
+        .schedule-table tr:hover { background: rgba(233,69,96,0.05); }
+        .schedule-table tr.no-game { opacity: 0.5; }
+        .result-w { color: #198754; font-weight: 600; }
+        .result-l { color: #dc3545; font-weight: 600; }
+        .result-t { color: #ffc107; font-weight: 600; }
+        .result-other { color: #888; font-style: italic; }
+        .actions-cell { white-space: nowrap; }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: #16213e;
+            border-radius: 12px;
+            padding: 32px;
+            width: 100%;
+            max-width: 560px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        .modal h2 {
+            font-size: 20px;
+            margin-bottom: 24px;
+            color: #e94560;
+        }
+        .modal .form-group { margin-bottom: 16px; }
+        .modal label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #aaa;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .modal input[type="text"], .modal select {
+            width: 100%;
+            padding: 10px 14px;
+            background: #0f3460;
+            border: 1px solid #1a4a7a;
+            border-radius: 6px;
+            color: #e0e0e0;
+            font-size: 14px;
+        }
+        .modal input:focus, .modal select:focus { outline: none; border-color: #e94560; }
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 24px;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .new-season-bar {
+            background: #16213e;
+            border-radius: 10px;
+            padding: 18px 24px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .new-season-bar label { font-size: 14px; color: #888; font-weight: 600; }
+        .new-season-bar input[type="number"] {
+            padding: 8px 14px;
+            background: #0f3460;
+            border: 1px solid #1a4a7a;
+            border-radius: 6px;
+            color: #e0e0e0;
+            font-size: 15px;
+            width: 100px;
+        }
+        .new-season-bar input:focus { outline: none; border-color: #e94560; }
+
+        .alert {
+            padding: 12px 18px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .alert-success { background: rgba(25,135,84,0.15); border: 1px solid rgba(25,135,84,0.3); color: #198754; }
+        .alert-error { background: rgba(233,69,96,0.15); border: 1px solid rgba(233,69,96,0.3); color: #e94560; }
+
+        @media (max-width: 768px) {
+            .form-row { grid-template-columns: 1fr; }
+            .toolbar { flex-direction: column; align-items: stretch; }
+            .schedule-table { font-size: 12px; }
+            .schedule-table th, .schedule-table td { padding: 8px 10px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h1>Cigars Baseball Admin</h1>
+        <div class="navbar-right">
+            <span>Logged in as <strong><%= username %></strong></span>
+            <a href="/admin/logout" class="btn btn-logout">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <% if (typeof message !== 'undefined' && message) { %>
+            <div class="alert alert-success"><%= message %></div>
+        <% } %>
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="alert alert-error"><%= error %></div>
+        <% } %>
+
+        <div class="toolbar">
+            <div class="year-selector">
+                <label for="yearSelect">Season</label>
+                <select id="yearSelect" onchange="changeYear(this.value)">
+                    <% for (var i = 0; i < years.length; i++) { %>
+                        <option value="<%= years[i] %>" <% if (years[i] == selectedYear) { %>selected<% } %>><%= years[i] %></option>
+                    <% } %>
+                </select>
+            </div>
+            <div class="toolbar-actions">
+                <button class="btn btn-primary" onclick="openAddEventModal()">+ Add Event</button>
+                <button class="btn btn-danger btn-sm" onclick="confirmDeleteSeason(<%= selectedYear %>)">Delete Season</button>
+            </div>
+        </div>
+
+        <div class="new-season-bar">
+            <label>Create New Season:</label>
+            <input type="number" id="newSeasonYear" placeholder="Year" min="2000" max="2100" value="<%= new Date().getFullYear() %>">
+            <button class="btn btn-success btn-sm" onclick="createSeason()">Create Season</button>
+        </div>
+
+        <div class="record-bar">
+            <div class="season-title"><%= selectedYear %> Season</div>
+            <div class="record-stat">
+                <span class="stat-value stat-wins"><%= record.wins %></span>
+                <span class="stat-label">Wins</span>
+            </div>
+            <div class="record-stat">
+                <span class="stat-value stat-losses"><%= record.losses %></span>
+                <span class="stat-label">Losses</span>
+            </div>
+            <div class="record-stat">
+                <span class="stat-value stat-ties"><%= record.ties %></span>
+                <span class="stat-label">Ties</span>
+            </div>
+        </div>
+
+        <table class="schedule-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Field</th>
+                    <th>Opponent</th>
+                    <th>Result</th>
+                    <th>Note</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (events && events.length > 0) { %>
+                    <% for (var i = 0; i < events.length; i++) { %>
+                        <tr class="<%= events[i].opponent === 'No Game' ? 'no-game' : '' %>">
+                            <td><%= i + 1 %></td>
+                            <td><%= events[i].date %></td>
+                            <td><%= events[i].time %></td>
+                            <td><%= events[i].field %></td>
+                            <td><%= events[i].opponent %></td>
+                            <td>
+                                <% if (events[i].result.indexOf('W') > -1) { %>
+                                    <span class="result-w"><%= events[i].result %></span>
+                                <% } else if (events[i].result.indexOf('L') > -1) { %>
+                                    <span class="result-l"><%= events[i].result %></span>
+                                <% } else if (events[i].result.indexOf('T') > -1) { %>
+                                    <span class="result-t"><%= events[i].result %></span>
+                                <% } else if (events[i].result) { %>
+                                    <span class="result-other"><%= events[i].result %></span>
+                                <% } %>
+                            </td>
+                            <td><%= events[i].note %></td>
+                            <td class="actions-cell">
+                                <button class="btn btn-secondary btn-sm" onclick='openEditModal(<%= JSON.stringify(events[i]) %>)'>Edit</button>
+                                <button class="btn btn-danger btn-sm" onclick="confirmDelete(<%= events[i].id %>)">Delete</button>
+                            </td>
+                        </tr>
+                    <% } %>
+                <% } else { %>
+                    <tr><td colspan="8" style="text-align:center; padding: 32px; color: #888;">No events for this season. Click "+ Add Event" to get started.</td></tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Add/Edit Event Modal -->
+    <div class="modal-overlay" id="eventModal">
+        <div class="modal">
+            <h2 id="modalTitle">Add Event</h2>
+            <form id="eventForm" method="POST">
+                <input type="hidden" id="eventId" name="eventId">
+                <input type="hidden" name="year" value="<%= selectedYear %>">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eventDate">Date</label>
+                        <input type="text" id="eventDate" name="date" placeholder="e.g. April 3" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventTime">Time</label>
+                        <input type="text" id="eventTime" name="time" placeholder="e.g. 12 PM">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="eventField">Field</label>
+                    <input type="text" id="eventField" name="field" placeholder="e.g. Druid Hills Middle">
+                </div>
+                <div class="form-group">
+                    <label for="eventOpponent">Opponent</label>
+                    <input type="text" id="eventOpponent" name="opponent" placeholder="e.g. Dragons">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eventResult">Result</label>
+                        <input type="text" id="eventResult" name="result" placeholder="e.g. W 8-6">
+                    </div>
+                    <div class="form-group">
+                        <label for="eventNote">Note</label>
+                        <input type="text" id="eventNote" name="note" placeholder="e.g. Opening Day">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="eventEviteURL">Evite URL</label>
+                    <input type="text" id="eventEviteURL" name="eviteURL" placeholder="https://...">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="modalSubmitBtn">Add Event</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function changeYear(year) {
+            window.location.href = '/admin/dashboard?year=' + year;
+        }
+
+        function openAddEventModal() {
+            document.getElementById('modalTitle').textContent = 'Add Event';
+            document.getElementById('modalSubmitBtn').textContent = 'Add Event';
+            document.getElementById('eventForm').action = '/admin/events/add';
+            document.getElementById('eventId').value = '';
+            document.getElementById('eventDate').value = '';
+            document.getElementById('eventTime').value = '';
+            document.getElementById('eventField').value = '';
+            document.getElementById('eventOpponent').value = '';
+            document.getElementById('eventResult').value = '';
+            document.getElementById('eventNote').value = '';
+            document.getElementById('eventEviteURL').value = '';
+            document.getElementById('eventModal').classList.add('active');
+        }
+
+        function openEditModal(event) {
+            document.getElementById('modalTitle').textContent = 'Edit Event';
+            document.getElementById('modalSubmitBtn').textContent = 'Save Changes';
+            document.getElementById('eventForm').action = '/admin/events/edit';
+            document.getElementById('eventId').value = event.id;
+            document.getElementById('eventDate').value = event.date;
+            document.getElementById('eventTime').value = event.time;
+            document.getElementById('eventField').value = event.field;
+            document.getElementById('eventOpponent').value = event.opponent;
+            document.getElementById('eventResult').value = event.result;
+            document.getElementById('eventNote').value = event.note;
+            document.getElementById('eventEviteURL').value = event.eviteURL || '';
+            document.getElementById('eventModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('eventModal').classList.remove('active');
+        }
+
+        function confirmDelete(eventId) {
+            if (confirm('Are you sure you want to delete this event?')) {
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/admin/events/delete';
+                var idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'eventId';
+                idInput.value = eventId;
+                var yearInput = document.createElement('input');
+                yearInput.type = 'hidden';
+                yearInput.name = 'year';
+                yearInput.value = '<%= selectedYear %>';
+                form.appendChild(idInput);
+                form.appendChild(yearInput);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+
+        function confirmDeleteSeason(year) {
+            if (confirm('Are you sure you want to delete the entire ' + year + ' season? This will remove all events for this year.')) {
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/admin/seasons/delete';
+                var yearInput = document.createElement('input');
+                yearInput.type = 'hidden';
+                yearInput.name = 'year';
+                yearInput.value = year;
+                form.appendChild(yearInput);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+
+        function createSeason() {
+            var year = document.getElementById('newSeasonYear').value;
+            if (!year) { alert('Please enter a year'); return; }
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/admin/seasons/create';
+            var yearInput = document.createElement('input');
+            yearInput.type = 'hidden';
+            yearInput.name = 'year';
+            yearInput.value = year;
+            form.appendChild(yearInput);
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        document.getElementById('eventModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+    </script>
+</body>
+</html>
