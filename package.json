@@ -1,28 +1,16 @@
 {
   "name": "cigarsBaseball",
-  "version": "2.0.0",
-  "description": "Cigars Baseball API with PostgreSQL database and admin dashboard",
-  "main": "server.js",
-  "engines": {
-    "node": ">=18.x"
-  },
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "migrate": "node migrate.js",
-    "seed": "node seed.js",
-    "setup": "node migrate.js && node seed.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.20.3",
-    "ejs": "^3.1.10",
     "express": "^4.13.3",
-    "express-session": "^1.18.1",
-    "jsonwebtoken": "^9.0.2",
-    "pg": "^8.13.3",
+    "pg": "4.4.3",
     "teamsnap.js": "^1.13.0"
   }
 }
