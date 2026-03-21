@@ -35,11 +35,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(session({
-    secret: config.sessionSecret || 'cigars-baseball-secret-key-change-in-production',
+    secret: process.env.SESSION_SECRET || config.sessionSecret || 'cigars-baseball-secret-key-change-in-production',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 24 * 60 * 60 * 1000 }
+    cookie: {
+        maxAge: 24 * 60 * 60 * 1000,
+        secure: process.env.NODE_ENV === 'production'
+    },
+    proxy: process.env.NODE_ENV === 'production'
 }));
+
+if (process.env.NODE_ENV === 'production') {
+    app.set('trust proxy', 1);
+}
 
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');

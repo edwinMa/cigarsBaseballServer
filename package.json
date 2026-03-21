@@ -3,6 +3,9 @@
   "version": "2.0.0",
   "description": "Cigars Baseball API with PostgreSQL database and admin dashboard",
   "main": "server.js",
+  "engines": {
+    "node": ">=18.x"
+  },
   "scripts": {
     "start": "node server.js",
     "migrate": "node migrate.js",
