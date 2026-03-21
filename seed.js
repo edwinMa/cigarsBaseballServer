@@ -266,6 +266,13 @@ var allSeasons = {
 async function seed() {
     var client = await pool.connect();
     try {
+        var existing = await client.query('SELECT COUNT(*) as count FROM seasons');
+        if (parseInt(existing.rows[0].count) > 0) {
+            console.log('Database already seeded (' + existing.rows[0].count + ' seasons found). Skipping seed.');
+            client.release();
+            return;
+        }
+
         await client.query('BEGIN');
 
         await client.query('DELETE FROM schedule_events');
