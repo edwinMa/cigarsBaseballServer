@@ -91,6 +91,18 @@ class Roster
 
             new Player ("Luis Garcia", "Garcia", "0", "P", "", "R", "R", "", ""), //2022
 
+            // 2025
+            new Player ("Wilson Battle", "Battle", "XX", "P", "", "R", "R", "", ""),
+            new Player ("Jake Brown", "Brown", "XX", "P", "", "R", "R", "", ""),
+            new Player ("Drake Hamil", "Hamil", "XX", "P", "", "R", "R", "", ""),
+
+
+            new Player ("Cole Holley", "Holley", "14", "P", "Baton Rouge, LA", "R", "R", "Song of the South", ""),  // 2024 - 2025
+
+
+            new Player ("Glenn Cordero", "Cordero", "6", "IF", "Moca, Puerto Rico", "R", "R", "NUEVAYoL - Bad Bunny", ""), // 2023 - 2025
+ 
+            new Player ("Isaac Phillips", "Phillips", "24", "OF", "Powder Springs, GA", "R", "R", "Lemonade - gucci mane", ""),
 
 
             ];
@@ -458,6 +470,52 @@ class Roster
             new Player ("Jake Brown", "Brown", "XX", "P", "", "R", "R", "", ""),
             new Player ("Drake Hamil", "Hamil", "XX", "P", "", "R", "R", "", ""),
 
+
+
+            ];
+            
+        
+         this.players2026 = [
+            // 2003
+            new Player ("Edwin Marcial", "Marcial", "19", "2B/3B", "New York, Miami", "R", "S", "Genius of Love - Tom Tom Club", "images/players/19.jpg"),
+            
+            //2015
+            new Player ("Sean Lennox", "Lennox", "16", "P", "Norcross, GA", "R", "R", "Givin the Dog a Bone - AC/DC", "images/players/16.jpg"),
+            new Player ("James Little", "Little", "3", "C/OF", "Farmers Branch, TX", "R", "R", "Shades of Gray - Robert Earl Keen", ""),
+
+            // new as of 2017
+            new Player ("LeCorey Johnson", "Johnson", "4", "SS/3B", "Columbus, GA", "R", "R", "Cooped Up - Post Malone", ""),
+
+            // new as of 2018
+            new Player ("Spencer Middleton", "Middleton", "1", "OF/P", "Sandy Springs GA", "R", "R", "Magic Stick - 50 cent", ""),
+            new Player ("Mathew Powell", "Powell", "28", "P/1B", "Casselberry, FL", "L", "L", "Rags to Riches- Tony Bennett", ""),
+
+            // new for 2020
+            new Player ("Eric Jordan", "Jordan", "11", "IF/OF", "Walterboro,SC", "R", "S", "#1 - Nelly", ""),
+            new Player ("Jah-Neel Warner", "Warner", "8", "OF", "St. Thomas, VI", "R", "R", "Nipsey Hussle - Victory Lap", ""),
+            new Player ("Mathew Connelly", "Connelly", "27", "SS", "Mt.Airy, Md", "R", "R", "Break stuff- limp bizkit", ""),
+            new Player ("Jason Rogers", "Rogers", "29", "1B/OF", "", "R", "R", "", ""),
+
+            // new for 2021
+            new Player ("Milton Adorno", "Adorno", "42", "OF/1B", "Puerto Rico", "R", "R", "El caballo pelotero (gran combo)", ""),
+            new Player ("Scott Miller", "Miller", "5", "OF", "Knoxville,Tn ", "R", "R", "Ooh ahh (my life be like) - grits", ""),
+
+            // new for 2022
+            new Player ("Kevin Echeverria", "Echeveria", "18", "C", "Barranquilla, Colombia", "R", "R", "", ""),
+
+            // new for 2023
+            new Player ("Trey Rampy", "Rampy", "44", "P", "McDonough, GA", "R", "R", "Dixieland Delight - Alabama", ""),
+            new Player ("Chris Porter", "Porter", "23", "P", "Marietta, GA ", "R", "R", "Sunday Best - Surfaces", ""),
+
+            // new for 2024
+            // new Player ("Dallas Williams", "Williams", "13", "OF", "", "R", "R", "", ""),
+
+            // new for 2025
+            new Player ("Matthew Bezdicek", "Bezdicek", "20", "OF/P/1B", "Plymouth, MN", "L", "R", "", ""),
+            new Player ("Kenny Faulk", "Faulk", "39", "P", "", "L", "L", "", ""),
+
+            // new for 2025
+            new Player ("Ari Fabian", "Fabian", "XX", "OF/1B/P", "", "L", "L", "", ""),
 
 
             ];
