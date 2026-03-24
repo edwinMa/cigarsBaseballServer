@@ -1,6 +1,24 @@
 
 var debug = require ('./debug');
 
+var games2026 = [
+
+        // last column is a url link that links back from the date - first column
+        
+        //2025
+        new Event ("3/29/2026", "12:30 PM", "Shamrock", "Cherokees", "", "Opening Day", ""),
+        
+        new Event ("4/12/2026", "12:30 PM", "Shamrock", "Black Sox", "", "", "")
+
+        /*
+
+        */
+
+        
+
+];
+
+
 var games2025 = [
 
         // last column is a url link that links back from the date - first column
@@ -51,14 +69,14 @@ var games2025 = [
 
         // Regular Season Champs
         // 15 - 3 (14-1 25+)
-        // League Champions - defeated Dragons
-        // 17 - 4 - 1
+        // League Champions - defeated Cherokees
+        // 19 - 5 
 
-        // Santa Shufle Champs
-        // 4 - 0 
+        // Santa Shufle 
+        // 2 - 2 
 
         // Overall
-        // 21 - 4 - 1
+        // 21 - 7
 
 ];
 
@@ -487,7 +505,7 @@ function Schedule()
 {
     // last column is for evite link
     this.events = games2025;
-    this.year = "2025";
+    this.year = "2026";
 }
 
 
