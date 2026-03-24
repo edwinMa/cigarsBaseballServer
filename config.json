@@ -4,6 +4,6 @@
 	"jsonSpacing": 4,
 	"teamSnapClientID": "08954858eba39d55ed4dcf070c31a4f4b0df2e8067ef716e4de94eb499959640",
 	"statsFile": "cigarsStats.csv",
-	"databaseURL": "postgres://cigars:cigars123@localhost:5432/cigarsbaseball",
-	"sessionSecret": "cigars-baseball-change-this-secret-in-production"
+	"threeDayForecastURL": "http://api.wunderground.com/api/9ffd1e12ea1d72de/forecast/q/GA/Atlanta.json",
+	"tenDayForecastURL": "http://api.wunderground.com/api/9ffd1e12ea1d72de/forecast10day/q/GA/Atlanta.json"
 }
