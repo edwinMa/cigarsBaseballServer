@@ -506,6 +506,7 @@ function Schedule()
     // last column is for evite link
     this.events = games2025;
     this.year = "2026";
+
 }
 
 
