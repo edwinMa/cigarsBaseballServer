@@ -3,7 +3,7 @@ var debug = require ('./debug');
 /*
 ** 2026 standings
 */
-var standings2025 = [
+var standings2026 = [
         
     new Standing ("Cigars", "0", "0", "0"),
     new Standing ("Black Sox", "0", "0", "0"),
@@ -46,8 +46,8 @@ function Standing(team, wins, losses, ties)
 function Standings()
 {
     // last column is for evite link
-    this.events = standings2025;
-    this.year = "2025";
+    this.events = standings2026;
+    this.year = "2026";
 }
 
 
