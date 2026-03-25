@@ -5,7 +5,7 @@ var games2026 = [
 
         // last column is a url link that links back from the date - first column
         
-        //2025
+        //2026
         new Event ("3/29/2026", "12:30 PM", "Shamrock", "Cherokees", "", "Opening Day", ""),
         
         new Event ("4/12/2026", "12:30 PM", "Shamrock", "Black Sox", "", "", "")
@@ -504,7 +504,7 @@ function Event(date, time, field, opponent, result, note, eviteURL)
 function Schedule()
 {
     // last column is for evite link
-    this.events = games2025;
+    this.events = games2026;
     this.year = "2026";
 
 }
