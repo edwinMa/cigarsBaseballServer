@@ -473,7 +473,7 @@ class Roster
 
 
             ];
-            
+
         
          this.players2026 = [
             // 2003
@@ -525,7 +525,7 @@ class Roster
     getRoster()
     {
         debug ("returning roster...");
-        return (this.players2025);
+        return (this.players2026);
     }
     
 }
