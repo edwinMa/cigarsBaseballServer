@@ -6,6 +6,8 @@ var games2026 = [
         // last column is a url link that links back from the date - first column
         
         //2026
+        new Event ("10/4/25", "3:30", "Shamrock", "@ Cherokees", "W 7-2", "Playoff Finals - Game 2"),
+
         new Event ("3/29/2026", "12:30 PM", "Shamrock", "Cherokees", "", "Opening Day", ""),
         
         new Event ("4/12/2026", "12:30 PM", "Shamrock", "Black Sox", "", "", "")
