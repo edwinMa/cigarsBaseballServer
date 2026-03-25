@@ -1,6 +1,21 @@
 var debug = require ('./debug');
 
 /*
+** 2026 standings
+*/
+var standings2025 = [
+        
+    new Standing ("Cigars", "0", "0", "0"),
+    new Standing ("Black Sox", "0", "0", "0"),
+    new Standing ("Midtown Magic", "0", "0", "0"),
+    new Standing ("Dragons", "0", "0", "0"),
+    new Standing ("Cherokees", "0", "0", "0"),
+    new Standing ("Atlanta Sox", "0", "0", "0"),
+    new Standing ("Georgia Joros", "0", "0", "0"),
+    new Standing ("Cobb Angels", "0", "0", "0")
+    ];
+
+/*
 ** 2025 standings
 */
 var standings2025 = [
