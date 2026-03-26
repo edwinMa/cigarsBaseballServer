@@ -88,6 +88,12 @@ async function importPlayers() {
     console.log(`Found ${rows.length} data rows`);
     console.log('Headers detected:', Object.keys(rows[0] || {}).join(', '));
 
+    // Print first row to see actual parsed keys and values
+    if (rows.length > 0) {
+      console.log('\nFirst row parsed:');
+      console.log(JSON.stringify(rows[0], null, 2));
+    }
+
     let imported = 0;
     let skipped = 0;
     let updated = 0;
