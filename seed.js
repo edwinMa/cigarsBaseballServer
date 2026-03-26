@@ -1,30 +1,37 @@
 // seed.js - Creates the default admin account
 // Usage: node seed.js
-// Requires DATABASE_URL, ADMIN_EMAIL, ADMIN_PASSWORD env vars (or .env file)
+// Requires DATABASE_URL, ADMIN_EMAIL env vars (or .env file)
 
 require('dotenv').config();
-const bcrypt = require('bcryptjs');
 const pool = require('./db');
 
 async function seed() {
   const adminEmail = process.env.ADMIN_EMAIL || 'admin@cigarsbaseball.org';
-  const adminPassword = process.env.ADMIN_PASSWORD || 'CigarsAdmin2024!';
 
   console.log('Seeding admin account:', adminEmail);
 
   try {
-    const passwordHash = await bcrypt.hash(adminPassword, 12);
-
     const result = await pool.query(
-      `INSERT INTO users (email, password_hash, role)
-       VALUES ($1, $2, 'admin')
-       ON CONFLICT (email) DO UPDATE SET password_hash = EXCLUDED.password_hash, role = 'admin'
+      `INSERT INTO users (email, role)
+       VALUES ($1, 'admin')
+       ON CONFLICT (email) DO UPDATE SET role = 'admin'
        RETURNING id, email, role`,
-      [adminEmail.toLowerCase(), passwordHash]
+      [adminEmail.toLowerCase()]
     );
 
     const user = result.rows[0];
     console.log('Admin user created/updated:', user);
+
+    // Ensure admin is on whitelist (approved) so OTP login works
+    const wlCheck = await pool.query('SELECT id FROM whitelist WHERE LOWER(email) = LOWER($1)', [adminEmail]);
+    if (wlCheck.rows.length === 0) {
+      await pool.query(
+        "INSERT INTO whitelist (email, status, notes) VALUES ($1, 'approved', 'Admin account')",
+        [adminEmail.toLowerCase()]
+      );
+    } else {
+      await pool.query("UPDATE whitelist SET status = 'approved' WHERE LOWER(email) = LOWER($1)", [adminEmail]);
+    }
 
     // Create admin player profile if not exists
     const existing = await pool.query('SELECT id FROM players WHERE user_id = $1', [user.id]);
@@ -47,8 +54,7 @@ async function seed() {
     console.log('Notification settings seeded');
 
     console.log('\nSeed complete!');
-    console.log(`Admin login: ${adminEmail} / ${adminPassword}`);
-    console.log('IMPORTANT: Change the admin password immediately after first login!');
+    console.log(`Admin login: enter ${adminEmail} at the sign-in screen to receive a one-time code.`);
   } catch (err) {
     console.error('Seed error:', err);
   } finally {
