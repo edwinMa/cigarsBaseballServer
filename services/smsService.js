@@ -16,7 +16,8 @@ function getClient() {
 async function send(to, body) {
   const client = getClient();
   if (!client) {
-    console.warn('SMS not configured (missing TWILIO_ACCOUNT_SID / TWILIO_AUTH_TOKEN). Skipping SMS to:', to);
+    console.warn('SMS not configured. Skipping SMS to:', to);
+    console.warn('>>> SMS BODY:', body);
     return;
   }
   const from = process.env.TWILIO_FROM_NUMBER;

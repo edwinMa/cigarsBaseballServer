@@ -20,17 +20,24 @@ function getTransporter() {
 
 async function send({ to, subject, text, html }) {
   if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-    console.warn('Email not configured (missing SMTP_USER / SMTP_PASS). Skipping email to:', to);
+    console.warn('Email not configured. Skipping email to:', to);
+    console.warn('Email body:', text);
     return;
   }
-  const t = getTransporter();
-  await t.sendMail({
-    from: process.env.SMTP_FROM || `"Cigars Baseball" <${process.env.SMTP_USER}>`,
-    to,
-    subject,
-    text,
-    html
-  });
+  try {
+    const t = getTransporter();
+    await t.sendMail({
+      from: process.env.SMTP_FROM || `"Cigars Baseball" <${process.env.SMTP_USER}>`,
+      to,
+      subject,
+      text,
+      html
+    });
+  } catch (err) {
+    console.error('Email send failed:', err.message);
+    console.warn('>>> LOGIN CODE FOR', to, ':', text);
+    // Don't rethrow — allow login to proceed even if email fails
+  }
 }
 
 module.exports = { send };

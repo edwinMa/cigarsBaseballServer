@@ -54,6 +54,7 @@ app.use(function (req, res, next) {
 });
 
 // Mount new DB-backed routes
+app.use('/cigarsbaseball/webhook', require('./routes/webhookRoutes'));
 app.use('/cigarsbaseball/auth', require('./routes/authRoutes'));
 app.use('/cigarsbaseball/players', require('./routes/playerRoutes'));
 app.use('/cigarsbaseball/admin', require('./routes/adminRoutes'));

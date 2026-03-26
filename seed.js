@@ -1,44 +1,59 @@
 // seed.js - Creates the default admin account
 // Usage: node seed.js
-// Requires DATABASE_URL, ADMIN_EMAIL env vars (or .env file)
+// Requires DATABASE_URL env var (or .env file)
 
 require('dotenv').config();
 const pool = require('./db');
 
-async function seed() {
-  const adminEmail = process.env.ADMIN_EMAIL || 'admin@cigarsbaseball.org';
+function normalizePhone(phone) {
+  if (!phone) return null;
+  const digits = phone.replace(/\D/g, '');
+  if (digits.length === 10) return '+1' + digits;
+  if (digits.length === 11 && digits[0] === '1') return '+' + digits;
+  return phone;
+}
 
-  console.log('Seeding admin account:', adminEmail);
+async function seed() {
+  const adminPhone = normalizePhone(process.env.ADMIN_PHONE || '4049663238');
+
+  console.log('Seeding admin account with phone:', adminPhone);
 
   try {
-    const result = await pool.query(
-      `INSERT INTO users (email, role)
-       VALUES ($1, 'admin')
-       ON CONFLICT (email) DO UPDATE SET role = 'admin'
-       RETURNING id, email, role`,
-      [adminEmail.toLowerCase()]
-    );
+    // Upsert admin user by phone
+    let userResult = await pool.query('SELECT id, phone, role FROM users WHERE phone = $1', [adminPhone]);
+    let user;
+    if (userResult.rows.length > 0) {
+      await pool.query('UPDATE users SET role = $1 WHERE phone = $2', ['admin', adminPhone]);
+      user = userResult.rows[0];
+      console.log('Admin user updated:', user);
+    } else {
+      const inserted = await pool.query(
+        "INSERT INTO users (phone, role) VALUES ($1, 'admin') RETURNING id, phone, role",
+        [adminPhone]
+      );
+      user = inserted.rows[0];
+      console.log('Admin user created:', user);
+    }
 
-    const user = result.rows[0];
-    console.log('Admin user created/updated:', user);
-
-    // Ensure admin is on whitelist (approved) so OTP login works
-    const wlCheck = await pool.query('SELECT id FROM whitelist WHERE LOWER(email) = LOWER($1)', [adminEmail]);
+    // Ensure admin phone is on whitelist (approved)
+    const wlCheck = await pool.query('SELECT id FROM whitelist WHERE phone = $1', [adminPhone]);
     if (wlCheck.rows.length === 0) {
       await pool.query(
-        "INSERT INTO whitelist (email, status, notes) VALUES ($1, 'approved', 'Admin account')",
-        [adminEmail.toLowerCase()]
+        "INSERT INTO whitelist (phone, status, notes) VALUES ($1, 'approved', 'Admin account')",
+        [adminPhone]
       );
+      console.log('Admin added to whitelist');
     } else {
-      await pool.query("UPDATE whitelist SET status = 'approved' WHERE LOWER(email) = LOWER($1)", [adminEmail]);
+      await pool.query("UPDATE whitelist SET status = 'approved' WHERE phone = $1", [adminPhone]);
+      console.log('Admin whitelist entry confirmed approved');
     }
 
     // Create admin player profile if not exists
     const existing = await pool.query('SELECT id FROM players WHERE user_id = $1', [user.id]);
     if (existing.rows.length === 0) {
       await pool.query(
-        'INSERT INTO players (user_id, first_name, last_name, email) VALUES ($1, $2, $3, $4)',
-        [user.id, 'Admin', 'User', adminEmail.toLowerCase()]
+        'INSERT INTO players (user_id, first_name, last_name, phone) VALUES ($1, $2, $3, $4)',
+        [user.id, 'Admin', 'User', adminPhone]
       );
       console.log('Admin player profile created');
     } else {
@@ -48,13 +63,13 @@ async function seed() {
     // Seed default notification settings if not exists
     await pool.query(
       `INSERT INTO notification_settings (id, days_before, default_message, send_email, send_sms)
-       VALUES (1, 5, 'Please respond with your availability for the upcoming game on {game_date} at {game_time}.', true, true)
+       VALUES (1, 5, 'Cigars Baseball: Game on {game_date} at {game_time} vs {opponent} at {field}. Respond with the following [1] Yes [2] No [3] Maybe', true, true)
        ON CONFLICT (id) DO NOTHING`
     );
     console.log('Notification settings seeded');
 
     console.log('\nSeed complete!');
-    console.log(`Admin login: enter ${adminEmail} at the sign-in screen to receive a one-time code.`);
+    console.log(`Admin login: enter ${adminPhone} at the sign-in screen to receive a code via SMS.`);
   } catch (err) {
     console.error('Seed error:', err);
   } finally {

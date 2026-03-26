@@ -31,8 +31,9 @@ router.post('/request-code', async (req, res) => {
 
     // Generate 6-digit code
     const code = Math.floor(100000 + Math.random() * 900000).toString();
+    console.log(`>>> LOGIN CODE for ${normalizedId}: ${code}`);
     const codeHash = crypto.createHash('sha256').update(code).digest('hex');
-    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 min
+    const expiresAt = new Date(Date.now() + 30 * 60 * 1000); // 30 min
 
     await pool.query(
       'INSERT INTO auth_codes (identifier, code_hash, expires_at) VALUES ($1, $2, $3)',
@@ -67,18 +68,24 @@ router.post('/verify-code', async (req, res) => {
   const normalizedId = isPhone ? normalizePhone(identifier) : identifier.trim().toLowerCase();
   const codeHash = crypto.createHash('sha256').update(code.trim()).digest('hex');
 
+  console.log('verify-code attempt:', { identifier, normalizedId, codeLength: code.length, codeHash });
+
   try {
     // Find valid unused code
     const codeResult = await pool.query(
-      'SELECT * FROM auth_codes WHERE identifier = $1 AND code_hash = $2 AND used = FALSE AND expires_at > NOW() ORDER BY created_at DESC LIMIT 1',
-      [normalizedId, codeHash]
+      'SELECT id, identifier, code_hash, used, expires_at FROM auth_codes WHERE identifier = $1 ORDER BY created_at DESC LIMIT 3',
+      [normalizedId]
     );
-    if (codeResult.rows.length === 0) {
+    console.log('DB rows for identifier:', codeResult.rows);
+    console.log('Looking for hash:', codeHash);
+
+    const validRow = codeResult.rows.find(r => r.code_hash === codeHash && !r.used && new Date(r.expires_at) > new Date());
+    if (!validRow) {
       return res.status(401).json({ error: 'Invalid or expired code' });
     }
 
     // Mark code used
-    await pool.query('UPDATE auth_codes SET used = TRUE WHERE id = $1', [codeResult.rows[0].id]);
+    await pool.query('UPDATE auth_codes SET used = TRUE WHERE id = $1', [validRow.id]);
 
     const phone = isPhone ? normalizedId : null;
     const emailAddr = isPhone ? null : normalizedId;
