@@ -52,7 +52,7 @@ router.put('/:id', requireAuth, async (req, res) => {
     const {
       firstName, lastName, phone, dateOfBirth, uniformNumber,
       positions, shirtSize, capSize, hometown, walkUpSong,
-      bats, throws, photoUrl, isActive
+      bats, throws, instagram, photoUrl, isActive
     } = req.body;
 
     // Validate positions (max 4, must be from valid list)
@@ -89,6 +89,7 @@ router.put('/:id', requireAuth, async (req, res) => {
     addField('walk_up_song', walkUpSong);
     addField('bats', bats);
     addField('throws', throws);
+    addField('instagram', instagram);
     addField('photo_url', photoUrl);
     // Only admin can change is_active
     if (req.user.role === 'admin' && isActive !== undefined) {
