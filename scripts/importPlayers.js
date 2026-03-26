@@ -1,14 +1,9 @@
 // scripts/importPlayers.js
-// Imports player data from the Cigars Baseball Google Sheet into the DB.
-// The sheet is treated as a whitelist pre-populated source; players are added
-// to the `whitelist` table (approved) and optionally to `players` (without user_id).
+// Imports player data from the Cigars Baseball Google Sheet into the players table.
+// Since there is no email column, players are NOT added to the whitelist automatically.
+// Add players to the whitelist manually via the admin dashboard before they register.
 //
 // Usage: node scripts/importPlayers.js
-// Requires DATABASE_URL in .env
-//
-// Expected CSV columns (adjust COLUMN_MAP below to match your sheet):
-//   first_name, last_name, email, phone, uniform_number, positions,
-//   shirt_size, cap_size, hometown, walk_up_song, bats, throws, date_of_birth
 
 require('dotenv').config({ path: require('path').join(__dirname, '../.env') });
 const https = require('https');
@@ -21,7 +16,6 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?forma
 function fetchCSV(url) {
   return new Promise((resolve, reject) => {
     https.get(url, (res) => {
-      // Handle redirects
       if (res.statusCode === 302 || res.statusCode === 301) {
         return fetchCSV(res.headers.location).then(resolve).catch(reject);
       }
@@ -35,45 +29,54 @@ function fetchCSV(url) {
 function parseCSV(csv) {
   const lines = csv.split('\n').filter(l => l.trim());
   if (lines.length < 2) return [];
-  const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, ''));
+
+  // Parse header row
+  const headers = parseLine(lines[0]).map(h =>
+    h.trim().toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '')
+  );
+
   return lines.slice(1).map(line => {
-    // Simple CSV parse (handles quoted fields)
-    const values = [];
-    let current = '';
-    let inQuotes = false;
-    for (const ch of line) {
-      if (ch === '"') { inQuotes = !inQuotes; }
-      else if (ch === ',' && !inQuotes) { values.push(current.trim()); current = ''; }
-      else { current += ch; }
-    }
-    values.push(current.trim());
+    const values = parseLine(line);
     const row = {};
-    headers.forEach((h, i) => { row[h] = values[i] || ''; });
+    headers.forEach((h, i) => { row[h] = (values[i] || '').trim(); });
     return row;
   });
 }
 
-// Map CSV column names to DB fields — adjust these to match your actual sheet columns
-const COLUMN_MAP = {
-  first_name: ['first_name', 'firstname', 'first'],
-  last_name: ['last_name', 'lastname', 'last'],
-  email: ['email', 'email_address'],
-  phone: ['phone', 'mobile', 'cell', 'phone_number'],
-  uniform_number: ['number', 'uniform_number', 'jersey_number', 'uniform'],
-  positions: ['position', 'positions', 'pos'],
-  shirt_size: ['shirt_size', 'shirt', 'jersey_size'],
-  cap_size: ['cap_size', 'cap', 'hat_size'],
-  hometown: ['hometown', 'city', 'from'],
-  walk_up_song: ['walk_up_song', 'walkup_song', 'song', 'walk_up'],
-  bats: ['bats', 'bat'],
-  throws: ['throws', 'throw'],
-  date_of_birth: ['dob', 'date_of_birth', 'birthdate', 'birthday']
-};
-
-function findValue(row, fieldMappings) {
-  for (const key of fieldMappings) {
-    if (row[key] !== undefined && row[key] !== '') return row[key];
+function parseLine(line) {
+  const values = [];
+  let current = '';
+  let inQuotes = false;
+  for (const ch of line) {
+    if (ch === '"') { inQuotes = !inQuotes; }
+    else if (ch === ',' && !inQuotes) { values.push(current); current = ''; }
+    else { current += ch; }
   }
+  values.push(current);
+  return values;
+}
+
+// Split "John Smith" → { firstName: "John", lastName: "Smith" }
+// Handles "John" → { firstName: "John", lastName: "" }
+function splitName(fullName) {
+  const parts = (fullName || '').trim().split(/\s+/);
+  const firstName = parts[0] || '';
+  const lastName = parts.slice(1).join(' ');
+  return { firstName, lastName };
+}
+
+// Parse positions — may be comma or slash separated e.g. "1B/3B" or "P, OF"
+function parsePositions(raw) {
+  if (!raw) return null;
+  return raw.split(/[,/]/).map(p => p.trim()).filter(Boolean);
+}
+
+// Parse date — handles various formats
+function parseDate(raw) {
+  if (!raw || raw.trim() === '') return null;
+  // Try parsing as-is
+  const d = new Date(raw.trim());
+  if (!isNaN(d.getTime())) return d.toISOString().split('T')[0];
   return null;
 }
 
@@ -82,73 +85,78 @@ async function importPlayers() {
   try {
     const csv = await fetchCSV(CSV_URL);
     const rows = parseCSV(csv);
-    console.log(`Found ${rows.length} rows`);
+    console.log(`Found ${rows.length} data rows`);
+    console.log('Headers detected:', Object.keys(rows[0] || {}).join(', '));
 
     let imported = 0;
     let skipped = 0;
+    let updated = 0;
 
     for (const row of rows) {
-      const firstName = findValue(row, COLUMN_MAP.first_name);
-      const lastName = findValue(row, COLUMN_MAP.last_name);
-      const email = findValue(row, COLUMN_MAP.email);
+      // Sheet columns: No., Name, Position, Since, Svc Years, DateOfBirth, Age, Hometown, Shirt SZ, Cap Size, Instagram, Walk Up Song
+      const uniformNumber = row['no'] || row['no_'] || null;
+      const fullName = row['name'] || '';
+      const positionsRaw = row['position'] || row['positions'] || null;
+      const dobRaw = row['dateofbirth'] || row['date_of_birth'] || null;
+      const hometown = row['hometown'] || null;
+      const shirtSize = row['shirt_sz'] || row['shirt_size'] || null;
+      const capSize = row['cap_size'] || row['cap_size_'] || null;
+      const walkUpSong = row['walk_up_song'] || row['walk_up_song_'] || null;
 
-      if (!firstName && !lastName) {
+      if (!fullName || fullName.trim() === '') {
         skipped++;
         continue;
       }
 
-      const phone = findValue(row, COLUMN_MAP.phone);
-      const uniformNumber = findValue(row, COLUMN_MAP.uniform_number);
-      const positionsRaw = findValue(row, COLUMN_MAP.positions);
-      const positions = positionsRaw ? positionsRaw.split(/[,/]/).map(p => p.trim()).filter(Boolean) : null;
-      const shirtSize = findValue(row, COLUMN_MAP.shirt_size);
-      const capSize = findValue(row, COLUMN_MAP.cap_size);
-      const hometown = findValue(row, COLUMN_MAP.hometown);
-      const walkUpSong = findValue(row, COLUMN_MAP.walk_up_song);
-      const bats = findValue(row, COLUMN_MAP.bats);
-      const throws = findValue(row, COLUMN_MAP.throws);
-      const dob = findValue(row, COLUMN_MAP.date_of_birth);
+      const { firstName, lastName } = splitName(fullName);
+      if (!firstName) { skipped++; continue; }
 
-      // Add to whitelist if email present
-      if (email) {
-        await pool.query(
-          `INSERT INTO whitelist (email, phone, status, notes)
-           VALUES ($1, $2, 'approved', 'Imported from Google Sheet')
-           ON CONFLICT DO NOTHING`,
-          [email.toLowerCase(), phone || null]
-        );
-      }
+      const positions = parsePositions(positionsRaw);
+      const dateOfBirth = parseDate(dobRaw);
 
-      // Insert player record (without user_id — will be linked when they register)
-      if (firstName && lastName) {
+      // Check if player already exists by name
+      const existing = await pool.query(
+        'SELECT id FROM players WHERE LOWER(first_name) = LOWER($1) AND LOWER(last_name) = LOWER($2) AND user_id IS NULL',
+        [firstName, lastName]
+      );
+
+      if (existing.rows.length > 0) {
+        // Update existing unlinked player record
         await pool.query(
-          `INSERT INTO players (first_name, last_name, email, phone, uniform_number, positions,
-            shirt_size, cap_size, hometown, walk_up_song, bats, throws, date_of_birth)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
-           ON CONFLICT DO NOTHING`,
-          [
-            firstName, lastName,
-            email ? email.toLowerCase() : null,
-            phone || null,
-            uniformNumber || null,
-            positions || null,
-            shirtSize || null,
-            capSize || null,
-            hometown || null,
-            walkUpSong || null,
-            bats || null,
-            throws || null,
-            dob || null
-          ]
+          `UPDATE players SET
+            uniform_number = COALESCE($1, uniform_number),
+            positions = COALESCE($2, positions),
+            date_of_birth = COALESCE($3, date_of_birth),
+            hometown = COALESCE($4, hometown),
+            shirt_size = COALESCE($5, shirt_size),
+            cap_size = COALESCE($6, cap_size),
+            walk_up_song = COALESCE($7, walk_up_song),
+            updated_at = NOW()
+          WHERE id = $8`,
+          [uniformNumber, positions, dateOfBirth, hometown, shirtSize, capSize, walkUpSong, existing.rows[0].id]
         );
-        imported++;
+        console.log(`  Updated: ${firstName} ${lastName}`);
+        updated++;
+      } else {
+        // Insert new player (no user_id — linked when they register)
+        await pool.query(
+          `INSERT INTO players (first_name, last_name, uniform_number, positions, date_of_birth, hometown, shirt_size, cap_size, walk_up_song)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+          [firstName, lastName, uniformNumber, positions, dateOfBirth, hometown, shirtSize, capSize, walkUpSong]
+        );
         console.log(`  Imported: ${firstName} ${lastName}`);
+        imported++;
       }
     }
 
-    console.log(`\nImport complete: ${imported} players imported, ${skipped} rows skipped`);
-    console.log('Players have been added to the whitelist and players table.');
-    console.log('When players register with a matching email, their profile will be linked to their account.');
+    console.log(`\nImport complete:`);
+    console.log(`  ${imported} players imported`);
+    console.log(`  ${updated} players updated`);
+    console.log(`  ${skipped} rows skipped`);
+    console.log(`\nNext steps:`);
+    console.log(`  - Go to the Admin Dashboard → Whitelist tab`);
+    console.log(`  - Add each player's email to the whitelist so they can register`);
+    console.log(`  - When a player registers with a matching email, their account will be created`);
   } catch (err) {
     console.error('Import error:', err);
   } finally {
