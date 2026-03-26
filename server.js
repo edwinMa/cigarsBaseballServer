@@ -1,8 +1,14 @@
 // setup express server
+require('dotenv').config();
 var config = require('./config.json');
 var express = require('express');
+var bodyParser = require('body-parser');
 var app = express();
 var fs = require('fs');
+
+// Parse JSON request bodies
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // setup postgress DB
 var pg = require('pg');
@@ -39,24 +45,25 @@ CigarsServer.TeamSnapClientID = config.teamSnapClientID;
 
 // Add headers
 app.use(function (req, res, next) {
-
-    // Website you wish to allow to connect
-    // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Origin', '*');
-
-    // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-    // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,Authorization');
     res.setHeader('Access-Control-Allow-Credentials', true);
-
-    // Pass to next layer of middleware
+    if (req.method === 'OPTIONS') { return res.sendStatus(200); }
     next();
 });
+
+// Mount new DB-backed routes
+app.use('/cigarsbaseball/auth', require('./routes/authRoutes'));
+app.use('/cigarsbaseball/players', require('./routes/playerRoutes'));
+app.use('/cigarsbaseball/admin', require('./routes/adminRoutes'));
+app.use('/cigarsbaseball/seasons', require('./routes/seasonRoutes'));
+app.use('/cigarsbaseball/gamesdb', require('./routes/gameRoutes'));
+// Availability routes are nested under gamesdb/:gameId
+app.use('/cigarsbaseball/gamesdb/:gameId/availability', require('./routes/availabilityRoutes'));
+
+// Start notification scheduler
+require('./services/notificationScheduler').start();
 
 /*
  ** Begin JSON Restful API Calls
