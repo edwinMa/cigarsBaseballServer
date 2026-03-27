@@ -50,20 +50,18 @@ router.put('/:id', requireAuth, async (req, res) => {
     }
 
     const {
-      firstName, lastName, phone, dateOfBirth, uniformNumber,
+      firstName, lastName, email, phone, dateOfBirth, uniformNumber,
       positions, shirtSize, capSize, hometown, walkUpSong,
       bats, throws, instagram, photoUrl, isActive
     } = req.body;
 
-    // Validate positions (max 4, must be from valid list)
+    // Filter positions to only valid values (don't hard-reject — imported data may have legacy values)
+    let cleanPositions = positions;
     if (positions) {
       if (!Array.isArray(positions) || positions.length > 4) {
         return res.status(400).json({ error: 'positions must be an array of up to 4 values' });
       }
-      const invalid = positions.filter(p => !VALID_POSITIONS.includes(p));
-      if (invalid.length > 0) {
-        return res.status(400).json({ error: `Invalid positions: ${invalid.join(', ')}` });
-      }
+      cleanPositions = positions.filter(p => VALID_POSITIONS.includes(p));
     }
 
     const fields = [];
@@ -79,10 +77,11 @@ router.put('/:id', requireAuth, async (req, res) => {
 
     addField('first_name', firstName);
     addField('last_name', lastName);
+    addField('email', email ? email.toLowerCase() : email);
     addField('phone', phone);
     addField('date_of_birth', dateOfBirth || null);
-    addField('uniform_number', uniformNumber);
-    addField('positions', positions);
+    addField('uniform_number', uniformNumber || null);
+    addField('positions', cleanPositions);
     addField('shirt_size', shirtSize);
     addField('cap_size', capSize);
     addField('hometown', hometown);

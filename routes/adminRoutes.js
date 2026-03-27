@@ -23,16 +23,24 @@ router.get('/whitelist', requireAdmin, async (req, res) => {
   }
 });
 
+function normalizePhone(phone) {
+  if (!phone) return null;
+  const digits = phone.replace(/\D/g, '');
+  if (digits.length === 10) return '+1' + digits;
+  if (digits.length === 11 && digits[0] === '1') return '+' + digits;
+  return phone;
+}
+
 // POST /cigarsbaseball/admin/whitelist
 router.post('/whitelist', requireAdmin, async (req, res) => {
-  const { email, phone, notes } = req.body;
+  const { email, phone, name, notes } = req.body;
   if (!email && !phone) {
     return res.status(400).json({ error: 'email or phone required' });
   }
   try {
     const result = await pool.query(
-      "INSERT INTO whitelist (email, phone, added_by, status, notes) VALUES ($1, $2, $3, 'approved', $4) RETURNING *",
-      [email ? email.toLowerCase() : null, phone || null, req.user.id, notes || null]
+      "INSERT INTO whitelist (email, phone, added_by, status, name, notes) VALUES ($1, $2, $3, 'approved', $4, $5) RETURNING *",
+      [email ? email.toLowerCase() : null, phone ? normalizePhone(phone) : null, req.user.id, name || null, notes || null]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
