@@ -118,6 +118,20 @@ router.put('/:id', requireAuth, async (req, res) => {
   }
 });
 
+// DELETE /cigarsbaseball/players/:id - admin delete player
+router.delete('/:id', requireAdmin, async (req, res) => {
+  try {
+    const result = await pool.query('DELETE FROM players WHERE id = $1 RETURNING id', [req.params.id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Player not found' });
+    }
+    res.json({ message: 'Player deleted' });
+  } catch (err) {
+    console.error('Delete player error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // PATCH /cigarsbaseball/players/:id/toggle-active - admin toggle active status
 router.patch('/:id/toggle-active', requireAdmin, async (req, res) => {
   try {
