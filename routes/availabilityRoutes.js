@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
 const pool = require('../db');
-const { requireAuth } = require('../middleware/auth');
+const { requireAuth, requireAdmin } = require('../middleware/auth');
 
 // GET /cigarsbaseball/gamesdb/:gameId/availability
 // Returns all availability entries with player names for a game (auth required)
@@ -100,6 +100,30 @@ router.post('/', requireAuth, async (req, res) => {
       [req.params.gameId, playerId, response, message || null]
     );
     res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// PUT /cigarsbaseball/gamesdb/:gameId/availability/:playerId — admin override
+router.put('/:playerId', requireAdmin, async (req, res) => {
+  const { response, message } = req.body;
+  if (!response || !['yes', 'no', 'maybe'].includes(response)) {
+    return res.status(400).json({ error: 'response must be yes, no, or maybe' });
+  }
+  try {
+    const result = await pool.query(
+      `INSERT INTO game_availability (game_id, player_id, response, message, responded_at)
+       VALUES ($1, $2, $3, $4, NOW())
+       ON CONFLICT (game_id, player_id) DO UPDATE SET
+         response = EXCLUDED.response,
+         message = EXCLUDED.message,
+         responded_at = NOW()
+       RETURNING *`,
+      [req.params.gameId, req.params.playerId, response, message || null]
+    );
+    res.json(result.rows[0]);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });

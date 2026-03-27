@@ -165,7 +165,7 @@ router.get('/me', requireAuth, async (req, res) => {
     const user = userResult.rows[0];
     const playerResult = await pool.query('SELECT * FROM players WHERE user_id = $1', [user.id]);
     const player = playerResult.rows.length > 0 ? playerResult.rows[0] : null;
-    res.json({ user, player });
+    res.json({ user: { ...user, playerId: player?.id ?? null }, player });
   } catch (err) {
     console.error('Me error:', err);
     res.status(500).json({ error: 'Server error' });
