@@ -3,6 +3,11 @@ const router = express.Router();
 const pool = require('../db');
 const { requireAuth, requireAdmin } = require('../middleware/auth');
 
+// Auto-add uniform columns if missing
+pool.query(`ALTER TABLE games ADD COLUMN IF NOT EXISTS uniform_cap VARCHAR(50)`).catch(() => {});
+pool.query(`ALTER TABLE games ADD COLUMN IF NOT EXISTS uniform_pants VARCHAR(50)`).catch(() => {});
+pool.query(`ALTER TABLE games ADD COLUMN IF NOT EXISTS uniform_shirt VARCHAR(50)`).catch(() => {});
+
 // GET /cigarsbaseball/gamesdb?seasonId=&upcoming=true
 router.get('/', requireAuth, async (req, res) => {
   try {
@@ -45,15 +50,15 @@ router.get('/:id', requireAuth, async (req, res) => {
 
 // POST /cigarsbaseball/gamesdb
 router.post('/', requireAdmin, async (req, res) => {
-  const { seasonId, gameDate, gameTime, opponent, field, isHome, result: gameResult, score, note } = req.body;
+  const { seasonId, gameDate, gameTime, opponent, field, isHome, result: gameResult, score, note, uniformCap, uniformPants, uniformShirt } = req.body;
   if (!gameDate || !gameTime || !opponent) {
     return res.status(400).json({ error: 'gameDate, gameTime, and opponent are required' });
   }
   try {
     const result = await pool.query(
-      `INSERT INTO games (season_id, game_date, game_time, opponent, field, is_home, result, score, note)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
-      [seasonId || null, gameDate, gameTime, opponent, field || '', isHome !== false, gameResult || '', score || '', note || '']
+      `INSERT INTO games (season_id, game_date, game_time, opponent, field, is_home, result, score, note, uniform_cap, uniform_pants, uniform_shirt)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`,
+      [seasonId || null, gameDate, gameTime, opponent, field || '', isHome !== false, gameResult || '', score || '', note || '', uniformCap || null, uniformPants || null, uniformShirt || null]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -64,7 +69,7 @@ router.post('/', requireAdmin, async (req, res) => {
 
 // PUT /cigarsbaseball/gamesdb/:id
 router.put('/:id', requireAdmin, async (req, res) => {
-  const { seasonId, gameDate, gameTime, opponent, field, isHome, result: gameResult, score, note } = req.body;
+  const { seasonId, gameDate, gameTime, opponent, field, isHome, result: gameResult, score, note, uniformCap, uniformPants, uniformShirt } = req.body;
   try {
     const result = await pool.query(
       `UPDATE games SET
@@ -76,9 +81,12 @@ router.put('/:id', requireAdmin, async (req, res) => {
         is_home = COALESCE($6, is_home),
         result = COALESCE($7, result),
         score = COALESCE($8, score),
-        note = COALESCE($9, note)
-       WHERE id = $10 RETURNING *`,
-      [seasonId, gameDate, gameTime, opponent, field, isHome, gameResult, score, note, req.params.id]
+        note = COALESCE($9, note),
+        uniform_cap = $10,
+        uniform_pants = $11,
+        uniform_shirt = $12
+       WHERE id = $13 RETURNING *`,
+      [seasonId, gameDate, gameTime, opponent, field, isHome, gameResult, score, note, uniformCap || null, uniformPants || null, uniformShirt || null, req.params.id]
     );
     if (result.rows.length === 0) return res.status(404).json({ error: 'Game not found' });
     res.json(result.rows[0]);

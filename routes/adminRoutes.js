@@ -113,6 +113,58 @@ router.patch('/players/:id/active', requireAdmin, async (req, res) => {
   }
 });
 
+// --- OPPONENTS ---
+
+pool.query(`
+  CREATE TABLE IF NOT EXISTS opponents (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    age_division VARCHAR(10) NOT NULL DEFAULT '25+',
+    manager_name VARCHAR(255),
+    manager_phone VARCHAR(20),
+    created_at TIMESTAMPTZ DEFAULT NOW()
+  )
+`).catch(err => console.error('Failed to create opponents table:', err));
+
+router.get('/opponents', requireAdmin, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM opponents ORDER BY name');
+    res.json(result.rows);
+  } catch (err) { console.error(err); res.status(500).json({ error: 'Server error' }); }
+});
+
+router.post('/opponents', requireAdmin, async (req, res) => {
+  const { name, age_division, manager_name, manager_phone } = req.body;
+  if (!name) return res.status(400).json({ error: 'name required' });
+  try {
+    const result = await pool.query(
+      "INSERT INTO opponents (name, age_division, manager_name, manager_phone) VALUES ($1, $2, $3, $4) RETURNING *",
+      [name, age_division || '25+', manager_name || null, manager_phone || null]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (err) { console.error(err); res.status(500).json({ error: 'Server error' }); }
+});
+
+router.put('/opponents/:id', requireAdmin, async (req, res) => {
+  const { name, age_division, manager_name, manager_phone } = req.body;
+  if (!name) return res.status(400).json({ error: 'name required' });
+  try {
+    const result = await pool.query(
+      'UPDATE opponents SET name=$1, age_division=$2, manager_name=$3, manager_phone=$4 WHERE id=$5 RETURNING *',
+      [name, age_division || '25+', manager_name || null, manager_phone || null, req.params.id]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Not found' });
+    res.json(result.rows[0]);
+  } catch (err) { console.error(err); res.status(500).json({ error: 'Server error' }); }
+});
+
+router.delete('/opponents/:id', requireAdmin, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM opponents WHERE id=$1', [req.params.id]);
+    res.json({ message: 'Deleted' });
+  } catch (err) { console.error(err); res.status(500).json({ error: 'Server error' }); }
+});
+
 // --- NOTIFICATIONS ---
 
 // POST /cigarsbaseball/admin/notify - send message to players
@@ -166,6 +218,9 @@ router.post('/notify', requireAdmin, async (req, res) => {
 
 // --- NOTIFICATION SETTINGS ---
 
+// Auto-add pre_game_message column if missing
+pool.query(`ALTER TABLE notification_settings ADD COLUMN IF NOT EXISTS pre_game_message TEXT`).catch(() => {});
+
 // GET /cigarsbaseball/admin/notification-settings
 router.get('/notification-settings', requireAdmin, async (req, res) => {
   try {
@@ -179,19 +234,20 @@ router.get('/notification-settings', requireAdmin, async (req, res) => {
 
 // PUT /cigarsbaseball/admin/notification-settings
 router.put('/notification-settings', requireAdmin, async (req, res) => {
-  const { daysBefore, defaultMessage, sendEmail, sendSms } = req.body;
+  const { daysBefore, defaultMessage, sendEmail, sendSms, preGameMessage } = req.body;
   try {
     const result = await pool.query(
-      `INSERT INTO notification_settings (id, days_before, default_message, send_email, send_sms, updated_at)
-       VALUES (1, $1, $2, $3, $4, NOW())
+      `INSERT INTO notification_settings (id, days_before, default_message, send_email, send_sms, pre_game_message, updated_at)
+       VALUES (1, $1, $2, $3, $4, $5, NOW())
        ON CONFLICT (id) DO UPDATE SET
          days_before = EXCLUDED.days_before,
          default_message = EXCLUDED.default_message,
          send_email = EXCLUDED.send_email,
          send_sms = EXCLUDED.send_sms,
+         pre_game_message = EXCLUDED.pre_game_message,
          updated_at = NOW()
        RETURNING *`,
-      [daysBefore ?? 5, defaultMessage ?? 'Please respond with your availability for the upcoming game on {game_date} at {game_time}.', sendEmail ?? true, sendSms ?? true]
+      [daysBefore ?? 5, defaultMessage ?? 'Please respond with your availability for the upcoming game on {game_date} at {game_time}.', sendEmail ?? true, sendSms ?? true, preGameMessage ?? 'Game on {game_date} vs {opponent} at {field} at {game_time}. Uniform is {uniform_cap} caps, {uniform_shirt} tops, and {uniform_pants}.']
     );
     res.json(result.rows[0]);
   } catch (err) {
