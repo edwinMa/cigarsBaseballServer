@@ -11,9 +11,12 @@ const smsService = require('../services/smsService');
 router.get('/whitelist', requireAdmin, async (req, res) => {
   try {
     const result = await pool.query(
-      `SELECT w.*, u.email as added_by_email
+      `SELECT w.*, ab.email as added_by_email,
+              lu.last_login_at
        FROM whitelist w
-       LEFT JOIN users u ON w.added_by = u.id
+       LEFT JOIN users ab ON w.added_by = ab.id
+       LEFT JOIN users lu ON (w.phone IS NOT NULL AND lu.phone = w.phone)
+                          OR (w.email IS NOT NULL AND LOWER(lu.email) = LOWER(w.email))
        ORDER BY w.created_at DESC`
     );
     res.json(result.rows);

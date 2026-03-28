@@ -4,6 +4,10 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const pool = require('../db');
 const { requireAuth, JWT_SECRET } = require('../middleware/auth');
+
+// Add last_login_at column if it doesn't exist
+pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS last_login_at TIMESTAMPTZ')
+  .catch(err => console.error('Migration last_login_at:', err));
 const sms = require('../services/smsService');
 const email = require('../services/emailService');
 
@@ -102,6 +106,7 @@ router.post('/verify-code', async (req, res) => {
       if (!user.is_active) {
         return res.status(403).json({ error: 'Account is deactivated. Contact the admin.' });
       }
+      await pool.query('UPDATE users SET last_login_at = NOW() WHERE id = $1', [user.id]);
     } else {
       const newUser = await pool.query(
         "INSERT INTO users (email, phone, role) VALUES ($1, $2, 'player') RETURNING id, email, phone, role",
