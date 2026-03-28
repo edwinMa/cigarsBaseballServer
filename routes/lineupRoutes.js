@@ -135,4 +135,62 @@ router.put('/', requireAdmin, async (req, res) => {
   }
 });
 
+// POST /cigarsbaseball/gamesdb/:gameId/lineup/send
+// body: { message, sendToAllActive, sendToBattingLineup, sendToPitchingLineup, playerIds[], opponentId }
+router.post('/send', requireAdmin, async (req, res) => {
+  const { message, sendToAllActive, sendToBattingLineup, sendToPitchingLineup, playerIds, opponentId, customPhones } = req.body;
+  if (!message) return res.status(400).json({ error: 'message required' });
+
+  const phoneSet = new Set();
+
+  if (Array.isArray(customPhones)) {
+    customPhones.forEach(p => { if (p) phoneSet.add(p) });
+  }
+
+  try {
+    if (sendToAllActive) {
+      const r = await pool.query("SELECT phone FROM players WHERE is_active = true AND phone IS NOT NULL AND phone != ''");
+      r.rows.forEach(row => phoneSet.add(row.phone));
+    }
+    if (sendToBattingLineup) {
+      const r = await pool.query(
+        "SELECT p.phone FROM game_lineups gl JOIN players p ON gl.player_id = p.id WHERE gl.game_id = $1 AND p.phone IS NOT NULL AND p.phone != ''",
+        [req.params.gameId]
+      );
+      r.rows.forEach(row => phoneSet.add(row.phone));
+    }
+    if (sendToPitchingLineup) {
+      const r = await pool.query(
+        "SELECT p.phone FROM game_pitching_lineups gpl JOIN players p ON gpl.player_id = p.id WHERE gpl.game_id = $1 AND p.phone IS NOT NULL AND p.phone != ''",
+        [req.params.gameId]
+      );
+      r.rows.forEach(row => phoneSet.add(row.phone));
+    }
+    if (Array.isArray(playerIds) && playerIds.length > 0) {
+      const r = await pool.query(
+        "SELECT phone FROM players WHERE id = ANY($1::int[]) AND phone IS NOT NULL AND phone != ''",
+        [playerIds]
+      );
+      r.rows.forEach(row => phoneSet.add(row.phone));
+    }
+    if (opponentId) {
+      const r = await pool.query('SELECT manager_phone FROM opponents WHERE id = $1', [opponentId]);
+      if (r.rows[0]?.manager_phone) phoneSet.add(r.rows[0].manager_phone);
+    }
+
+    const phones = [...phoneSet].filter(Boolean);
+    if (phones.length === 0) return res.status(400).json({ error: 'No recipients with phone numbers found' });
+
+    const sms = require('../services/smsService');
+    const results = await Promise.allSettled(phones.map(phone => sms.send(phone, message)));
+    const sent = results.filter(r => r.status === 'fulfilled').length;
+    const failed = results.filter(r => r.status === 'rejected').length;
+
+    res.json({ message: `Sent to ${sent} recipient${sent !== 1 ? 's' : ''}${failed ? `, ${failed} failed` : ''}`, sent, failed });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 module.exports = router;
