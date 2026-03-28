@@ -109,7 +109,7 @@ router.post('/verify-code', async (req, res) => {
       await pool.query('UPDATE users SET last_login_at = NOW() WHERE id = $1', [user.id]);
     } else {
       const newUser = await pool.query(
-        "INSERT INTO users (email, phone, role) VALUES ($1, $2, 'player') RETURNING id, email, phone, role",
+        "INSERT INTO users (email, phone, role, last_login_at) VALUES ($1, $2, 'player', NOW()) RETURNING id, email, phone, role",
         [emailAddr, phone]
       );
       user = newUser.rows[0];
