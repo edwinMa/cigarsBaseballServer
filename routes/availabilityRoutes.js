@@ -16,22 +16,12 @@ router.get('/', requireAuth, async (req, res) => {
       [req.params.gameId]
     );
 
-    // Build summary: who hasn't responded (pending) = active season roster minus those who responded
-    const gameResult = await pool.query('SELECT season_id FROM games WHERE id = $1', [req.params.gameId]);
-    const seasonId = gameResult.rows[0]?.season_id;
-
-    let pending = [];
-    if (seasonId) {
-      const rosterResult = await pool.query(
-        `SELECT p.id, p.first_name, p.last_name, p.uniform_number, p.photo_url
-         FROM season_rosters sr
-         JOIN players p ON sr.player_id = p.id
-         WHERE sr.season_id = $1 AND sr.is_active = true`,
-        [seasonId]
-      );
-      const respondedIds = new Set(result.rows.map(r => r.player_id));
-      pending = rosterResult.rows.filter(p => !respondedIds.has(p.id));
-    }
+    // Build pending: all active players who haven't responded
+    const allActivePlayers = await pool.query(
+      `SELECT id, first_name, last_name, uniform_number, photo_url FROM players WHERE is_active = true ORDER BY last_name, first_name`
+    );
+    const respondedIds = new Set(result.rows.map(r => r.player_id));
+    const pending = allActivePlayers.rows.filter(p => !respondedIds.has(p.id));
 
     res.json({
       gameId: parseInt(req.params.gameId),
@@ -55,20 +45,9 @@ router.get('/summary', requireAuth, async (req, res) => {
     const counts = { yes: 0, no: 0, maybe: 0 };
     result.rows.forEach(r => { counts[r.response] = parseInt(r.count); });
 
-    const gameResult = await pool.query('SELECT season_id FROM games WHERE id = $1', [req.params.gameId]);
-    const seasonId = gameResult.rows[0]?.season_id;
-    let pendingCount = 0;
-    if (seasonId) {
-      const rosterCount = await pool.query(
-        'SELECT COUNT(*) FROM season_rosters WHERE season_id = $1 AND is_active = true',
-        [seasonId]
-      );
-      const respondedCount = await pool.query(
-        'SELECT COUNT(*) FROM game_availability WHERE game_id = $1',
-        [req.params.gameId]
-      );
-      pendingCount = parseInt(rosterCount.rows[0].count) - parseInt(respondedCount.rows[0].count);
-    }
+    const activeCount = await pool.query('SELECT COUNT(*) FROM players WHERE is_active = true');
+    const respondedCount = await pool.query('SELECT COUNT(*) FROM game_availability WHERE game_id = $1', [req.params.gameId]);
+    const pendingCount = parseInt(activeCount.rows[0].count) - parseInt(respondedCount.rows[0].count);
 
     res.json({ ...counts, pending: Math.max(0, pendingCount) });
   } catch (err) {
