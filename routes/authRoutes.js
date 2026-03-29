@@ -21,9 +21,9 @@ router.post('/request-code', async (req, res) => {
   const normalizedId = isPhone ? normalizePhone(identifier) : identifier.trim().toLowerCase();
 
   try {
-    // Check whitelist
+    // Check whitelist — for phones, compare digits only so format mismatches don't block login
     const wlQuery = isPhone
-      ? "SELECT * FROM whitelist WHERE phone = $1 AND status = 'approved'"
+      ? "SELECT * FROM whitelist WHERE REGEXP_REPLACE(phone, '[^0-9]', '', 'g') = REGEXP_REPLACE($1, '[^0-9]', '', 'g') AND status = 'approved'"
       : "SELECT * FROM whitelist WHERE LOWER(email) = LOWER($1) AND status = 'approved'";
     const wl = await pool.query(wlQuery, [normalizedId]);
     if (wl.rows.length === 0) {
@@ -94,10 +94,10 @@ router.post('/verify-code', async (req, res) => {
     const phone = isPhone ? normalizedId : null;
     const emailAddr = isPhone ? null : normalizedId;
 
-    // Find or create user
+    // Find or create user — for phones, compare digits only
     let user;
     const userQuery = phone
-      ? 'SELECT * FROM users WHERE phone = $1'
+      ? "SELECT * FROM users WHERE REGEXP_REPLACE(phone, '[^0-9]', '', 'g') = REGEXP_REPLACE($1, '[^0-9]', '', 'g')"
       : 'SELECT * FROM users WHERE LOWER(email) = LOWER($1)';
     const userResult = await pool.query(userQuery, [normalizedId]);
 
