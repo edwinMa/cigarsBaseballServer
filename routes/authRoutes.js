@@ -17,7 +17,7 @@ router.post('/request-code', async (req, res) => {
   const { identifier } = req.body;
   if (!identifier) return res.status(400).json({ error: 'Phone or email is required' });
 
-  const isPhone = /^[\+\d][\d\s\-\(\)]{6,}$/.test(identifier.trim());
+  const isPhone = /^[\+\d\(][\d\s\-\(\)]{5,}$/.test(identifier.trim());
   const normalizedId = isPhone ? normalizePhone(identifier) : identifier.trim().toLowerCase();
 
   try {
@@ -68,7 +68,7 @@ router.post('/verify-code', async (req, res) => {
   const { identifier, code } = req.body;
   if (!identifier || !code) return res.status(400).json({ error: 'identifier and code are required' });
 
-  const isPhone = /^[\+\d][\d\s\-\(\)]{6,}$/.test(identifier.trim());
+  const isPhone = /^[\+\d\(][\d\s\-\(\)]{5,}$/.test(identifier.trim());
   const normalizedId = isPhone ? normalizePhone(identifier) : identifier.trim().toLowerCase();
   const codeHash = crypto.createHash('sha256').update(code.trim()).digest('hex');
 
