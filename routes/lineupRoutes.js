@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
 const pool = require('../db');
-const { requireAdmin } = require('../middleware/auth');
+const { requireAdmin, requireAuth } = require('../middleware/auth');
 
 const PITCHING_ROLES = ['SP', 'RP1', 'RP2', 'RP3', 'RP4', 'RP5', 'RP6'];
 
@@ -35,7 +35,7 @@ pool.query(`
 
 // GET /cigarsbaseball/gamesdb/:gameId/lineup
 // Returns { batting: [...], pitching: [...] }
-router.get('/', requireAdmin, async (req, res) => {
+router.get('/', requireAuth, async (req, res) => {
   try {
     const [battingResult, pitchingResult] = await Promise.all([
       pool.query(
