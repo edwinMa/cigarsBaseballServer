@@ -13,10 +13,14 @@ pool.query(`
     player_id INTEGER NOT NULL REFERENCES players(id) ON DELETE CASCADE,
     batting_order INTEGER NOT NULL CHECK (batting_order BETWEEN 1 AND 15),
     field_position VARCHAR(10),
+    is_cr BOOLEAN NOT NULL DEFAULT false,
     UNIQUE(game_id, batting_order),
     UNIQUE(game_id, player_id)
   )
 `).catch(err => console.error('Failed to create game_lineups table:', err));
+
+pool.query(`ALTER TABLE game_lineups ADD COLUMN IF NOT EXISTS is_cr BOOLEAN NOT NULL DEFAULT false`)
+  .catch(err => console.error('Failed to add is_cr column:', err));
 
 pool.query(`
   CREATE TABLE IF NOT EXISTS game_pitching_lineups (
@@ -35,7 +39,7 @@ router.get('/', requireAdmin, async (req, res) => {
   try {
     const [battingResult, pitchingResult] = await Promise.all([
       pool.query(
-        `SELECT gl.id, gl.game_id, gl.player_id, gl.batting_order, gl.field_position,
+        `SELECT gl.id, gl.game_id, gl.player_id, gl.batting_order, gl.field_position, gl.is_cr,
                 p.first_name, p.last_name, p.uniform_number, p.positions,
                 ga.response as availability
          FROM game_lineups gl
@@ -81,9 +85,9 @@ router.put('/', requireAdmin, async (req, res) => {
     await client.query('DELETE FROM game_lineups WHERE game_id = $1', [req.params.gameId]);
     for (const entry of batting) {
       await client.query(
-        `INSERT INTO game_lineups (game_id, player_id, batting_order, field_position)
-         VALUES ($1, $2, $3, $4)`,
-        [req.params.gameId, entry.player_id, entry.batting_order, entry.field_position || null]
+        `INSERT INTO game_lineups (game_id, player_id, batting_order, field_position, is_cr)
+         VALUES ($1, $2, $3, $4, $5)`,
+        [req.params.gameId, entry.player_id, entry.batting_order, entry.field_position || null, entry.is_cr || false]
       );
     }
 
@@ -103,7 +107,7 @@ router.put('/', requireAdmin, async (req, res) => {
     // Return updated data
     const [battingResult, pitchingResult] = await Promise.all([
       client.query(
-        `SELECT gl.id, gl.game_id, gl.player_id, gl.batting_order, gl.field_position,
+        `SELECT gl.id, gl.game_id, gl.player_id, gl.batting_order, gl.field_position, gl.is_cr,
                 p.first_name, p.last_name, p.uniform_number, p.positions,
                 ga.response as availability
          FROM game_lineups gl
