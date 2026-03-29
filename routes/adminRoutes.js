@@ -221,6 +221,22 @@ router.post('/notify', requireAdmin, async (req, res) => {
 // Auto-add pre_game_message column if missing
 pool.query(`ALTER TABLE notification_settings ADD COLUMN IF NOT EXISTS pre_game_message TEXT`).catch(() => {});
 
+// Normalize all whitelist phone numbers to +1XXXXXXXXXX format
+pool.query(`
+  UPDATE whitelist SET phone = '+1' || REGEXP_REPLACE(phone, '[^0-9]', '', 'g')
+  WHERE phone IS NOT NULL
+    AND phone NOT LIKE '+%'
+    AND LENGTH(REGEXP_REPLACE(phone, '[^0-9]', '', 'g')) = 10
+`).catch(err => console.error('Whitelist phone normalization (10-digit):', err));
+
+pool.query(`
+  UPDATE whitelist SET phone = '+' || REGEXP_REPLACE(phone, '[^0-9]', '', 'g')
+  WHERE phone IS NOT NULL
+    AND phone NOT LIKE '+%'
+    AND LENGTH(REGEXP_REPLACE(phone, '[^0-9]', '', 'g')) = 11
+    AND LEFT(REGEXP_REPLACE(phone, '[^0-9]', '', 'g'), 1) = '1'
+`).catch(err => console.error('Whitelist phone normalization (11-digit):', err));
+
 // GET /cigarsbaseball/admin/notification-settings
 router.get('/notification-settings', requireAdmin, async (req, res) => {
   try {
