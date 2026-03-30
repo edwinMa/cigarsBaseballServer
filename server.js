@@ -63,6 +63,7 @@ app.use('/cigarsbaseball/gamesdb', require('./routes/gameRoutes'));
 // Availability routes are nested under gamesdb/:gameId
 app.use('/cigarsbaseball/gamesdb/:gameId/availability', require('./routes/availabilityRoutes'));
 app.use('/cigarsbaseball/gamesdb/:gameId/lineup', require('./routes/lineupRoutes'));
+app.use('/cigarsbaseball/chat', require('./routes/chatRoutes'));
 
 // Start notification scheduler
 require('./services/notificationScheduler').start();
