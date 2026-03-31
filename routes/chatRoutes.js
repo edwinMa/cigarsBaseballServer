@@ -166,4 +166,20 @@ router.post('/messages', requireAuth, async (req, res) => {
   }
 });
 
+// DELETE /cigarsbaseball/chat/messages/:id — owner or admin only
+router.delete('/messages/:id', requireAuth, async (req, res) => {
+  try {
+    const msg = await pool.query('SELECT user_id FROM chat_messages WHERE id = $1', [req.params.id]);
+    if (msg.rows.length === 0) return res.status(404).json({ error: 'Not found' });
+    if (req.user.role !== 'admin' && msg.rows[0].user_id !== req.user.id) {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
+    await pool.query('DELETE FROM chat_messages WHERE id = $1', [req.params.id]);
+    res.json({ id: parseInt(req.params.id) });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 module.exports = router;
