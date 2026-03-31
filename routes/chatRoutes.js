@@ -49,10 +49,12 @@ router.get('/players', requireAuth, async (req, res) => {
 router.get('/pinned', requireAuth, async (req, res) => {
   try {
     const result = await pool.query(
-      `SELECT id, user_id, display_name, message, image_url, is_pinned, pinned_at, created_at
-       FROM chat_messages
-       WHERE is_pinned = true
-       ORDER BY pinned_at DESC`
+      `SELECT cm.id, cm.user_id, cm.display_name, cm.message, cm.image_url, cm.is_pinned, cm.pinned_at, cm.created_at,
+              p.uniform_number
+       FROM chat_messages cm
+       LEFT JOIN players p ON p.user_id = cm.user_id
+       WHERE cm.is_pinned = true
+       ORDER BY cm.pinned_at DESC`
     );
     res.json(result.rows);
   } catch (err) {
@@ -84,9 +86,11 @@ router.get('/messages/recent', requireAuth, async (req, res) => {
     await pool.query('UPDATE users SET last_active_at = NOW() WHERE id = $1', [req.user.id]);
     const result = await pool.query(
       `SELECT * FROM (
-         SELECT id, user_id, display_name, message, image_url, is_pinned, created_at
-         FROM chat_messages
-         ORDER BY created_at DESC
+         SELECT cm.id, cm.user_id, cm.display_name, cm.message, cm.image_url, cm.is_pinned, cm.created_at,
+                p.uniform_number
+         FROM chat_messages cm
+         LEFT JOIN players p ON p.user_id = cm.user_id
+         ORDER BY cm.created_at DESC
          LIMIT 100
        ) sub ORDER BY created_at ASC`
     );
@@ -103,10 +107,12 @@ router.get('/messages', requireAuth, async (req, res) => {
     await pool.query('UPDATE users SET last_active_at = NOW() WHERE id = $1', [req.user.id]);
     const since = parseInt(req.query.since) || 0;
     const result = await pool.query(
-      `SELECT id, user_id, display_name, message, image_url, is_pinned, created_at
-       FROM chat_messages
-       WHERE id > $1
-       ORDER BY created_at ASC
+      `SELECT cm.id, cm.user_id, cm.display_name, cm.message, cm.image_url, cm.is_pinned, cm.created_at,
+              p.uniform_number
+       FROM chat_messages cm
+       LEFT JOIN players p ON p.user_id = cm.user_id
+       WHERE cm.id > $1
+       ORDER BY cm.created_at ASC
        LIMIT 200`,
       [since]
     );
