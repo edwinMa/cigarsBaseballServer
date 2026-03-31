@@ -17,6 +17,9 @@ pool.query(`
 pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS last_active_at TIMESTAMPTZ`)
   .catch(err => console.error('Failed to add last_active_at:', err));
 
+pool.query(`ALTER TABLE chat_messages ADD COLUMN IF NOT EXISTS image_url TEXT`)
+  .catch(err => console.error('Failed to add image_url to chat_messages:', err));
+
 // GET /cigarsbaseball/chat/players — active roster players with online status
 // Online = last_active_at within 3 minutes
 router.get('/players', requireAuth, async (req, res) => {
@@ -43,7 +46,7 @@ router.get('/messages/recent', requireAuth, async (req, res) => {
     await pool.query('UPDATE users SET last_active_at = NOW() WHERE id = $1', [req.user.id]);
     const result = await pool.query(
       `SELECT * FROM (
-         SELECT id, user_id, display_name, message, created_at
+         SELECT id, user_id, display_name, message, image_url, created_at
          FROM chat_messages
          ORDER BY created_at DESC
          LIMIT 100
@@ -63,7 +66,7 @@ router.get('/messages', requireAuth, async (req, res) => {
     await pool.query('UPDATE users SET last_active_at = NOW() WHERE id = $1', [req.user.id]);
     const since = parseInt(req.query.since) || 0;
     const result = await pool.query(
-      `SELECT id, user_id, display_name, message, created_at
+      `SELECT id, user_id, display_name, message, image_url, created_at
        FROM chat_messages
        WHERE id > $1
        ORDER BY created_at ASC
@@ -79,9 +82,13 @@ router.get('/messages', requireAuth, async (req, res) => {
 
 // POST /cigarsbaseball/chat/messages
 router.post('/messages', requireAuth, async (req, res) => {
-  const { message } = req.body;
-  if (!message || !message.trim()) return res.status(400).json({ error: 'message required' });
-  if (message.trim().length > 1000) return res.status(400).json({ error: 'message too long (max 1000 chars)' });
+  const { message, image_url } = req.body;
+  const trimmed = message ? message.trim() : '';
+  if (!trimmed && !image_url) return res.status(400).json({ error: 'message or image required' });
+  if (trimmed.length > 1000) return res.status(400).json({ error: 'message too long (max 1000 chars)' });
+  if (image_url && !image_url.startsWith('data:image/') && !/^https?:\/\//i.test(image_url)) {
+    return res.status(400).json({ error: 'invalid image_url' });
+  }
 
   try {
     await pool.query('UPDATE users SET last_active_at = NOW() WHERE id = $1', [req.user.id]);
@@ -95,8 +102,8 @@ router.post('/messages', requireAuth, async (req, res) => {
       : req.user.phone || req.user.email || 'Player';
 
     const result = await pool.query(
-      'INSERT INTO chat_messages (user_id, display_name, message) VALUES ($1, $2, $3) RETURNING *',
-      [req.user.id, displayName, message.trim()]
+      'INSERT INTO chat_messages (user_id, display_name, message, image_url) VALUES ($1, $2, $3, $4) RETURNING *',
+      [req.user.id, displayName, trimmed, image_url || null]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {

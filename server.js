@@ -7,8 +7,8 @@ var app = express();
 var fs = require('fs');
 
 // Parse JSON request bodies
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: '5mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }));
 
 // setup postgress DB
 var pg = require('pg');
