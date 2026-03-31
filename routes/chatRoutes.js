@@ -27,6 +27,9 @@ pool.query(`ALTER TABLE chat_messages ADD COLUMN IF NOT EXISTS is_pinned BOOLEAN
 pool.query(`ALTER TABLE chat_messages ADD COLUMN IF NOT EXISTS pinned_at TIMESTAMPTZ`)
   .catch(err => console.error('Failed to add pinned_at to chat_messages:', err));
 
+pool.query(`ALTER TABLE chat_messages ADD COLUMN IF NOT EXISTS uniform_number VARCHAR(20)`)
+  .catch(err => console.error('Failed to add uniform_number to chat_messages:', err));
+
 // GET /cigarsbaseball/chat/players — active roster players with online status
 router.get('/players', requireAuth, async (req, res) => {
   try {
@@ -49,12 +52,10 @@ router.get('/players', requireAuth, async (req, res) => {
 router.get('/pinned', requireAuth, async (req, res) => {
   try {
     const result = await pool.query(
-      `SELECT cm.id, cm.user_id, cm.display_name, cm.message, cm.image_url, cm.is_pinned, cm.pinned_at, cm.created_at,
-              p.uniform_number
-       FROM chat_messages cm
-       LEFT JOIN players p ON p.user_id = cm.user_id
-       WHERE cm.is_pinned = true
-       ORDER BY cm.pinned_at DESC`
+      `SELECT id, user_id, display_name, message, image_url, uniform_number, is_pinned, pinned_at, created_at
+       FROM chat_messages
+       WHERE is_pinned = true
+       ORDER BY pinned_at DESC`
     );
     res.json(result.rows);
   } catch (err) {
@@ -86,11 +87,9 @@ router.get('/messages/recent', requireAuth, async (req, res) => {
     await pool.query('UPDATE users SET last_active_at = NOW() WHERE id = $1', [req.user.id]);
     const result = await pool.query(
       `SELECT * FROM (
-         SELECT cm.id, cm.user_id, cm.display_name, cm.message, cm.image_url, cm.is_pinned, cm.created_at,
-                p.uniform_number
-         FROM chat_messages cm
-         LEFT JOIN players p ON p.user_id = cm.user_id
-         ORDER BY cm.created_at DESC
+         SELECT id, user_id, display_name, message, image_url, uniform_number, is_pinned, created_at
+         FROM chat_messages
+         ORDER BY created_at DESC
          LIMIT 100
        ) sub ORDER BY created_at ASC`
     );
@@ -107,12 +106,10 @@ router.get('/messages', requireAuth, async (req, res) => {
     await pool.query('UPDATE users SET last_active_at = NOW() WHERE id = $1', [req.user.id]);
     const since = parseInt(req.query.since) || 0;
     const result = await pool.query(
-      `SELECT cm.id, cm.user_id, cm.display_name, cm.message, cm.image_url, cm.is_pinned, cm.created_at,
-              p.uniform_number
-       FROM chat_messages cm
-       LEFT JOIN players p ON p.user_id = cm.user_id
-       WHERE cm.id > $1
-       ORDER BY cm.created_at ASC
+      `SELECT id, user_id, display_name, message, image_url, uniform_number, is_pinned, created_at
+       FROM chat_messages
+       WHERE id > $1
+       ORDER BY created_at ASC
        LIMIT 200`,
       [since]
     );
@@ -139,17 +136,18 @@ router.post('/messages', requireAuth, async (req, res) => {
   try {
     await pool.query('UPDATE users SET last_active_at = NOW() WHERE id = $1', [req.user.id]);
     const playerResult = await pool.query(
-      'SELECT first_name, last_name FROM players WHERE user_id = $1',
+      'SELECT first_name, last_name, uniform_number FROM players WHERE user_id = $1',
       [req.user.id]
     );
     const player = playerResult.rows[0];
     const displayName = player && (player.first_name || player.last_name)
       ? `${player.first_name} ${player.last_name}`.trim()
       : req.user.phone || req.user.email || 'Player';
+    const uniformNumber = player?.uniform_number || null;
 
     const result = await pool.query(
-      'INSERT INTO chat_messages (user_id, display_name, message, image_url) VALUES ($1, $2, $3, $4) RETURNING *',
-      [req.user.id, displayName, trimmed, image_url || null]
+      'INSERT INTO chat_messages (user_id, display_name, message, image_url, uniform_number) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [req.user.id, displayName, trimmed, image_url || null, uniformNumber]
     );
     const saved = result.rows[0];
 
