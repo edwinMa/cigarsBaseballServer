@@ -238,6 +238,18 @@ pool.query(`
 `).catch(err => console.error('Whitelist phone normalization (11-digit):', err));
 
 // GET /cigarsbaseball/admin/notification-settings
+// POST /cigarsbaseball/admin/trigger-game-reminders
+router.post('/trigger-game-reminders', requireAdmin, async (req, res) => {
+  try {
+    const { sendGameNotifications } = require('../services/notificationScheduler');
+    await sendGameNotifications();
+    res.json({ message: 'Game reminders triggered successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to trigger game reminders' });
+  }
+});
+
 router.get('/notification-settings', requireAdmin, async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM notification_settings WHERE id = 1');
