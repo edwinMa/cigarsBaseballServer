@@ -100,11 +100,11 @@ async function logNotification(gameId, playerId, channel, status, errorMessage) 
 }
 
 function start() {
-  // Run every day at 12:30 PM Eastern Time
-  cron.schedule('30 12 * * *', sendGameNotifications, {
+  // Run every day at 11:00 AM Eastern Time
+  cron.schedule('0 11 * * *', sendGameNotifications, {
     timezone: 'America/New_York'
   });
-  console.log('[Scheduler] Game notification scheduler started (12:30 PM ET daily)');
+  console.log('[Scheduler] Game notification scheduler started (11:00 AM ET daily)');
 }
 
 module.exports = { start, sendGameNotifications };
