@@ -11,7 +11,7 @@ pool.query(`ALTER TABLE games ADD COLUMN IF NOT EXISTS uniform_shirt VARCHAR(50)
 // GET /cigarsbaseball/gamesdb?seasonId=&upcoming=true
 router.get('/', requireAuth, async (req, res) => {
   try {
-    let query = 'SELECT * FROM games';
+    let query = `SELECT *, TO_CHAR(game_date, 'YYYY-MM-DD') AS game_date FROM games`;
     const params = [];
     const conditions = [];
 
@@ -39,7 +39,7 @@ router.get('/', requireAuth, async (req, res) => {
 // GET /cigarsbaseball/gamesdb/:id
 router.get('/:id', requireAuth, async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM games WHERE id = $1', [req.params.id]);
+    const result = await pool.query(`SELECT *, TO_CHAR(game_date, 'YYYY-MM-DD') AS game_date FROM games WHERE id = $1`, [req.params.id]);
     if (result.rows.length === 0) return res.status(404).json({ error: 'Game not found' });
     res.json(result.rows[0]);
   } catch (err) {
