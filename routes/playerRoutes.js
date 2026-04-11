@@ -121,6 +121,7 @@ router.put('/:id', requireAuth, async (req, res) => {
 // DELETE /cigarsbaseball/players/:id - admin delete player
 router.delete('/:id', requireAdmin, async (req, res) => {
   try {
+    await pool.query('DELETE FROM notification_log WHERE player_id = $1', [req.params.id]);
     const result = await pool.query('DELETE FROM players WHERE id = $1 RETURNING id', [req.params.id]);
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Player not found' });
