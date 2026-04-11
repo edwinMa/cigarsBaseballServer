@@ -37,12 +37,13 @@ router.post('/sms', async (req, res) => {
 
     const normalizedPhone = normalizePhone(from);
 
-    // Find player by phone
+    // Find player by phone — match directly on players table so unlinked (not yet logged in) players are included
     const playerResult = await pool.query(
-      `SELECT p.id AS player_id
-       FROM players p
-       JOIN users u ON p.user_id = u.id
-       WHERE u.phone = $1`,
+      `SELECT id AS player_id FROM players
+       WHERE is_active = true
+         AND phone IS NOT NULL AND phone != ''
+         AND REGEXP_REPLACE(phone, '[^0-9]', '', 'g') = REGEXP_REPLACE($1, '[^0-9]', '', 'g')
+       LIMIT 1`,
       [normalizedPhone]
     );
 

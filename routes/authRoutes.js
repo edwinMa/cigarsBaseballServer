@@ -123,9 +123,12 @@ router.post('/verify-code', async (req, res) => {
     if (existingLink.rows.length > 0) {
       playerId = existingLink.rows[0].id;
     } else {
-      // Try to link pre-imported player by phone or email
+      // Try to link pre-imported player by phone (digit-normalized) or email
       const preImported = await pool.query(
-        "SELECT id FROM players WHERE user_id IS NULL AND (phone = $1 OR (email IS NOT NULL AND email != '' AND LOWER(email) = LOWER($2)))",
+        `SELECT id FROM players WHERE user_id IS NULL AND (
+          (phone IS NOT NULL AND phone != '' AND REGEXP_REPLACE(phone, '[^0-9]', '', 'g') = REGEXP_REPLACE($1, '[^0-9]', '', 'g'))
+          OR (email IS NOT NULL AND email != '' AND LOWER(email) = LOWER($2))
+        )`,
         [phone || '', emailAddr || '']
       );
       if (preImported.rows.length > 0) {
