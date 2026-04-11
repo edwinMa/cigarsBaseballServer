@@ -10,9 +10,9 @@ var pool = require('./db');
 // ================================================================
 
 function mapGameRow(row) {
-    // Format date as M/D/YYYY to match old format and parse correctly in browsers
-    var parts = row.game_date.split('-');
-    var dateStr = parseInt(parts[1]) + '/' + parseInt(parts[2]) + '/' + parts[0];
+    // Format date as M/D/YYYY — handles both Date objects (from SELECT *) and YYYY-MM-DD strings
+    var d = row.game_date instanceof Date ? row.game_date : new Date(row.game_date + 'T12:00:00');
+    var dateStr = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
     // Combine result (W/L/T) and score into a single string e.g. "W 8-5"
     var resultStr = '';
     if (row.result && row.score) resultStr = row.result + ' ' + row.score;
@@ -30,16 +30,16 @@ function mapGameRow(row) {
 
 module.exports = {
     getSchedule: async function() {
-        var res = await pool.query("SELECT *, TO_CHAR(game_date, 'YYYY-MM-DD') AS game_date FROM games ORDER BY game_date ASC, game_time ASC");
+        var res = await pool.query('SELECT * FROM games ORDER BY game_date ASC, game_time ASC');
         debug('[schedule] getSchedule returned ' + res.rows.length + ' games from DB');
         return res.rows.map(mapGameRow);
     },
     getNextGame: async function() {
-        var res = await pool.query("SELECT *, TO_CHAR(game_date, 'YYYY-MM-DD') AS game_date FROM games WHERE game_date >= CURRENT_DATE AND (result IS NULL OR result = '') ORDER BY game_date ASC, game_time ASC LIMIT 1");
+        var res = await pool.query("SELECT * FROM games WHERE game_date >= CURRENT_DATE AND (result IS NULL OR result = '') ORDER BY game_date ASC, game_time ASC LIMIT 1");
         return res.rows.length > 0 ? mapGameRow(res.rows[0]) : null;
     },
     getPrevGame: async function() {
-        var res = await pool.query("SELECT *, TO_CHAR(game_date, 'YYYY-MM-DD') AS game_date FROM games WHERE game_date < CURRENT_DATE AND result IS NOT NULL AND result != '' ORDER BY game_date DESC, game_time DESC LIMIT 1");
+        var res = await pool.query("SELECT * FROM games WHERE game_date < CURRENT_DATE AND result IS NOT NULL AND result != '' ORDER BY game_date DESC, game_time DESC LIMIT 1");
         return res.rows.length > 0 ? mapGameRow(res.rows[0]) : null;
     },
     getRecord: async function() {
