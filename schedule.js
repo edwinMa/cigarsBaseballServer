@@ -1,64 +1,5 @@
 
 var debug = require ('./debug');
-var pool = require('./db');
-
-// ================================================================
-// NEW: Async DB-backed schedule functions
-// All three functions now query the games table used by the admin.
-// Old hardcoded data and synchronous Schedule class are preserved
-// below inside `if (false)` blocks for historical reference.
-// ================================================================
-
-function mapGameRow(row) {
-    // Format date as M/D/YYYY — handles both Date objects (from SELECT *) and YYYY-MM-DD strings
-    var d = row.game_date instanceof Date ? row.game_date : new Date(row.game_date + 'T12:00:00');
-    var dateStr = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
-    // Combine result (W/L/T) and score into a single string e.g. "W 8-5"
-    var resultStr = '';
-    if (row.result && row.score) resultStr = row.result + ' ' + row.score;
-    else if (row.result) resultStr = row.result;
-    return {
-        date: dateStr,
-        time: row.game_time ? row.game_time.slice(0, 5) : '',
-        opponent: row.is_home ? row.opponent : '@ ' + row.opponent,
-        field: row.field || '',
-        result: resultStr,
-        note: row.note || '',
-        eviteURL: ''
-    };
-}
-
-module.exports = {
-    getSchedule: async function() {
-        var res = await pool.query('SELECT * FROM games ORDER BY game_date ASC, game_time ASC');
-        debug('[schedule] getSchedule returned ' + res.rows.length + ' games from DB');
-        return res.rows.map(mapGameRow);
-    },
-    getNextGame: async function() {
-        var res = await pool.query("SELECT * FROM games WHERE game_date >= CURRENT_DATE AND (result IS NULL OR result = '') ORDER BY game_date ASC, game_time ASC LIMIT 1");
-        return res.rows.length > 0 ? mapGameRow(res.rows[0]) : null;
-    },
-    getPrevGame: async function() {
-        var res = await pool.query("SELECT * FROM games WHERE game_date < CURRENT_DATE AND result IS NOT NULL AND result != '' ORDER BY game_date DESC, game_time DESC LIMIT 1");
-        return res.rows.length > 0 ? mapGameRow(res.rows[0]) : null;
-    },
-    getRecord: async function() {
-        var res = await pool.query("SELECT result FROM games WHERE result IS NOT NULL AND result != ''");
-        var wins = 0, losses = 0, ties = 0;
-        res.rows.forEach(function(row) {
-            if (row.result === 'W') wins++;
-            else if (row.result === 'L') losses++;
-            else if (row.result === 'T') ties++;
-        });
-        return { wins: wins, losses: losses, ties: ties };
-    }
-};
-
-// ================================================================
-// OLD: Hardcoded game data and synchronous Schedule class
-// Kept for historical reference — no longer executed.
-// ================================================================
-if (false) { // eslint-disable-line no-constant-condition
 
 var games2026 = [
 
@@ -674,6 +615,4 @@ Schedule.prototype = {
 };
 
 
-// module.exports = new Schedule(); // replaced by async DB exports above
-
-} // end if (false) — old code block
+module.exports = new Schedule();

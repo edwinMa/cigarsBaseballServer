@@ -125,16 +125,12 @@ app.get('/cigarsbaseball/fields/', function(request, response)
     response.send(result);
 });
 
-app.get('/cigarsbaseball/schedule/', async function(request, response)
+app.get('/cigarsbaseball/schedule/', function(request, response)
 {
     debug("requesting schedule...");
-    try {
-        var result = JSON.stringify(await CigarsServer.Schedule.getSchedule(), null, CigarsServer.JSONSpacing);
-        response.send(result);
-    } catch (err) {
-        console.error('Error in /schedule:', err);
-        response.status(500).json({ error: 'Failed to load schedule' });
-    }
+
+    var result = JSON.stringify(CigarsServer.Schedule.getSchedule(), null, CigarsServer.JSONSpacing);
+    response.send(result);
 });
 
 app.get('/cigarsbaseball/standings/', function(request, response)
@@ -146,44 +142,32 @@ app.get('/cigarsbaseball/standings/', function(request, response)
 });
 
 
-app.get('/cigarsbaseball/record/', async function(request, response)
+app.get('/cigarsbaseball/record/', function(request, response)
 {
     debug("requesting record...");
-    try {
-        var result = JSON.stringify(await CigarsServer.Schedule.getRecord(), null, CigarsServer.JSONSpacing);
-        response.send(result);
-    } catch (err) {
-        console.error('Error in /record:', err);
-        response.status(500).json({ error: 'Failed to load record' });
-    }
+
+    var result = JSON.stringify(CigarsServer.Schedule.getRecord(), null, CigarsServer.JSONSpacing);
+    response.send(result);
 });
 
-app.get('/cigarsbaseball/nextgame/', async function(request, response)
+app.get('/cigarsbaseball/nextgame/', function(request, response)
 {
     debug("requesting next game...");
-    try {
-        var game = await CigarsServer.Schedule.getNextGame();
-        debug (game);
-        var result = JSON.stringify(game, null, CigarsServer.JSONSpacing);
-        response.send(result);
-    } catch (err) {
-        console.error('Error in /nextgame:', err);
-        response.status(500).json({ error: 'Failed to load next game' });
-    }
+
+    var game = CigarsServer.Schedule.getNextGame();
+    debug (game);
+    var result = JSON.stringify(game, null, CigarsServer.JSONSpacing);
+    response.send(result);
 });
 
-app.get('/cigarsbaseball/prevgame/', async function(request, response)
+app.get('/cigarsbaseball/prevgame/', function(request, response)
 {
     debug("requesting previous game...");
-    try {
-        var game = await CigarsServer.Schedule.getPrevGame();
-        debug (game);
-        var result = JSON.stringify(game, null, CigarsServer.JSONSpacing);
-        response.send(result);
-    } catch (err) {
-        console.error('Error in /prevgame:', err);
-        response.status(500).json({ error: 'Failed to load previous game' });
-    }
+
+    var game = CigarsServer.Schedule.getPrevGame();
+    debug (game);
+    var result = JSON.stringify(game, null, CigarsServer.JSONSpacing);
+    response.send(result);
 });
 
 
