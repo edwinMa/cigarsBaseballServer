@@ -42,7 +42,7 @@ router.post('/sms', async (req, res) => {
       `SELECT id AS player_id FROM players
        WHERE is_active = true
          AND phone IS NOT NULL AND phone != ''
-         AND REGEXP_REPLACE(phone, '[^0-9]', '', 'g') = REGEXP_REPLACE($1, '[^0-9]', '', 'g')
+         AND RIGHT(REGEXP_REPLACE(phone, '[^0-9]', '', 'g'), 10) = RIGHT(REGEXP_REPLACE($1, '[^0-9]', '', 'g'), 10)
        LIMIT 1`,
       [normalizedPhone]
     );
