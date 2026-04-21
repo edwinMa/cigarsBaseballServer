@@ -104,8 +104,10 @@ router.put('/:id', requireAuth, async (req, res) => {
     addField('bats', bats);
     addField('throws', throws);
     addField('instagram', instagram);
-    addField('photo_url', photoUrl);
-    // Only admin can change is_active
+    // Only admin can change photo_url and is_active
+    if (req.user.role === 'admin') {
+      addField('photo_url', photoUrl);
+    }
     if (req.user.role === 'admin' && isActive !== undefined) {
       addField('is_active', isActive);
     }
