@@ -5,6 +5,21 @@ const { requireAuth, requireAdmin } = require('../middleware/auth');
 
 const VALID_POSITIONS = ['P', 'C', '1B', '2B', '3B', 'SS', 'OF', 'Util', 'IF/OF'];
 
+// GET /cigarsbaseball/players/public - active players (public, no auth)
+router.get('/public', async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT first_name, last_name, uniform_number, positions, hometown, walk_up_song
+       FROM players WHERE is_active = true
+       ORDER BY last_name, first_name`
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Get public players error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // GET /cigarsbaseball/players - list all players (admin only)
 router.get('/', requireAdmin, async (req, res) => {
   try {
