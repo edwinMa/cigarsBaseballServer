@@ -126,7 +126,7 @@ router.post('/verify-code', async (req, res) => {
       // Try to link pre-imported player by phone (digit-normalized) or email
       const preImported = await pool.query(
         `SELECT id FROM players WHERE user_id IS NULL AND (
-          (phone IS NOT NULL AND phone != '' AND REGEXP_REPLACE(phone, '[^0-9]', '', 'g') = REGEXP_REPLACE($1, '[^0-9]', '', 'g'))
+          (phone IS NOT NULL AND phone != '' AND RIGHT(REGEXP_REPLACE(phone, '[^0-9]', '', 'g'), 10) = RIGHT(REGEXP_REPLACE($1, '[^0-9]', '', 'g'), 10))
           OR (email IS NOT NULL AND email != '' AND LOWER(email) = LOWER($2))
         )`,
         [phone || '', emailAddr || '']
