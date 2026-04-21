@@ -9,7 +9,7 @@ const VALID_POSITIONS = ['P', 'C', '1B', '2B', '3B', 'SS', 'OF', 'Util', 'IF/OF'
 router.get('/public', async (req, res) => {
   try {
     const result = await pool.query(
-      `SELECT first_name, last_name, uniform_number, positions, hometown, walk_up_song
+      `SELECT first_name, last_name, uniform_number, positions, hometown, walk_up_song, photo_url
        FROM players WHERE is_active = true
        ORDER BY last_name, first_name`
     );
