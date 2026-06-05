@@ -230,8 +230,10 @@ router.post('/notify', requireAdmin, async (req, res) => {
 
 // --- NOTIFICATION SETTINGS ---
 
-// Auto-add pre_game_message column if missing
+// Schema migrations
 pool.query(`ALTER TABLE notification_settings ADD COLUMN IF NOT EXISTS pre_game_message TEXT`).catch(() => {});
+pool.query(`ALTER TABLE notification_settings ADD COLUMN IF NOT EXISTS days_before_2 INT DEFAULT 2`).catch(() => {});
+pool.query(`ALTER TABLE notification_log ADD COLUMN IF NOT EXISTS notification_type VARCHAR(20)`).catch(() => {});
 
 // Normalize all whitelist phone numbers to +1XXXXXXXXXX format
 pool.query(`
@@ -274,22 +276,85 @@ router.get('/notification-settings', requireAdmin, async (req, res) => {
 
 // PUT /cigarsbaseball/admin/notification-settings
 router.put('/notification-settings', requireAdmin, async (req, res) => {
-  const { daysBefore, defaultMessage, sendEmail, sendSms, preGameMessage } = req.body;
+  const { daysBefore, daysBefore2, defaultMessage, sendEmail, sendSms, preGameMessage } = req.body;
   try {
     const result = await pool.query(
-      `INSERT INTO notification_settings (id, days_before, default_message, send_email, send_sms, pre_game_message, updated_at)
-       VALUES (1, $1, $2, $3, $4, $5, NOW())
+      `INSERT INTO notification_settings (id, days_before, days_before_2, default_message, send_email, send_sms, pre_game_message, updated_at)
+       VALUES (1, $1, $2, $3, $4, $5, $6, NOW())
        ON CONFLICT (id) DO UPDATE SET
          days_before = EXCLUDED.days_before,
+         days_before_2 = EXCLUDED.days_before_2,
          default_message = EXCLUDED.default_message,
          send_email = EXCLUDED.send_email,
          send_sms = EXCLUDED.send_sms,
          pre_game_message = EXCLUDED.pre_game_message,
          updated_at = NOW()
        RETURNING *`,
-      [daysBefore ?? 5, defaultMessage ?? 'Please respond with your availability for the upcoming game on {game_date} at {game_time}.', sendEmail ?? true, sendSms ?? true, preGameMessage ?? 'Game on {game_date} vs {opponent} at {field} at {game_time}. Uniform is {uniform_cap} caps, {uniform_shirt} tops, and {uniform_pants}.']
+      [daysBefore ?? 4, daysBefore2 ?? 2, defaultMessage ?? 'Please respond with your availability for the upcoming game on {game_date} at {game_time}.', sendEmail ?? true, sendSms ?? true, preGameMessage ?? 'Game on {game_date} vs {opponent} at {field} at {game_time}. Uniform is {uniform_cap} caps, {uniform_shirt} tops, and {uniform_pants}.']
     );
     res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// GET /cigarsbaseball/admin/notifications/pending
+// Returns upcoming games with their notification send status
+router.get('/notifications/pending', requireAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT
+        g.id AS game_id,
+        g.game_date,
+        g.game_time,
+        g.opponent,
+        g.field,
+        ns.days_before,
+        ns.days_before_2,
+        (g.game_date::date - (ns.days_before || ' days')::interval)::date AS notify_date_1,
+        EXISTS(
+          SELECT 1 FROM notification_log nl
+          WHERE nl.game_id = g.id
+            AND (nl.notification_type = 'reminder_1' OR nl.notification_type IS NULL)
+        ) AS sent_1,
+        (g.game_date::date - (ns.days_before_2 || ' days')::interval)::date AS notify_date_2,
+        EXISTS(
+          SELECT 1 FROM notification_log nl
+          WHERE nl.game_id = g.id AND nl.notification_type = 'reminder_2'
+        ) AS sent_2
+      FROM games g, notification_settings ns
+      WHERE ns.id = 1
+        AND g.game_date >= CURRENT_DATE
+      ORDER BY g.game_date ASC
+      LIMIT 10
+    `);
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// GET /cigarsbaseball/admin/notifications/recent
+// Returns last 5 auto-notifications sent (grouped by game + notification type)
+router.get('/notifications/recent', requireAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT
+        g.id AS game_id,
+        g.game_date,
+        g.opponent,
+        COALESCE(nl.notification_type, 'reminder_1') AS notification_type,
+        MIN(nl.sent_at) AS sent_at,
+        COUNT(*) FILTER (WHERE nl.status = 'sent') AS players_sent
+      FROM notification_log nl
+      JOIN games g ON nl.game_id = g.id
+      GROUP BY g.id, g.game_date, g.opponent, COALESCE(nl.notification_type, 'reminder_1')
+      ORDER BY MIN(nl.sent_at) DESC
+      LIMIT 5
+    `);
+    res.json(result.rows);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
