@@ -190,6 +190,19 @@ router.post('/send', requireAdmin, async (req, res) => {
     const sent = results.filter(r => r.status === 'fulfilled').length;
     const failed = results.filter(r => r.status === 'rejected').length;
 
+    // Log to notification_log so SMS replies route back to this game
+    const playerByPhone = await pool.query(
+      `SELECT id FROM players WHERE is_active = true AND phone IS NOT NULL AND phone != ''
+       AND RIGHT(REGEXP_REPLACE(phone, '[^0-9]', '', 'g'), 10) = ANY($1::text[])`,
+      [phones.map(p => p.replace(/\D/g, '').slice(-10))]
+    );
+    for (const player of playerByPhone.rows) {
+      await pool.query(
+        'INSERT INTO notification_log (game_id, player_id, channel, status) VALUES ($1, $2, $3, $4)',
+        [req.params.gameId, player.id, 'sms', 'sent']
+      ).catch(e => console.error('Failed to log notification for player', player.id, e.message));
+    }
+
     res.json({ message: `Sent to ${sent} recipient${sent !== 1 ? 's' : ''}${failed ? `, ${failed} failed` : ''}`, sent, failed });
   } catch (err) {
     console.error(err);

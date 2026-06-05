@@ -168,9 +168,9 @@ router.delete('/opponents/:id', requireAdmin, async (req, res) => {
 // --- NOTIFICATIONS ---
 
 // POST /cigarsbaseball/admin/notify - send message to players
-// body: { subject, message, channels: ['email','sms'], playerIds: [] | 'all' }
+// body: { subject, message, channels: ['email','sms'], playerIds: [] | 'all', gameId? }
 router.post('/notify', requireAdmin, async (req, res) => {
-  const { subject, message, channels, playerIds } = req.body;
+  const { subject, message, channels, playerIds, gameId } = req.body;
   if (!message) return res.status(400).json({ error: 'message is required' });
   if (!channels || channels.length === 0) return res.status(400).json({ error: 'channels (email/sms) required' });
 
@@ -195,6 +195,12 @@ router.post('/notify', requireAdmin, async (req, res) => {
             html: `<p>${message.replace(/\n/g, '<br>')}</p>`
           });
           results.sent.push({ playerId: player.id, channel: 'email' });
+          if (gameId) {
+            await pool.query(
+              'INSERT INTO notification_log (game_id, player_id, channel, status) VALUES ($1, $2, $3, $4)',
+              [gameId, player.id, 'email', 'sent']
+            ).catch(e => console.error('Failed to log notification for player', player.id, e.message));
+          }
         } catch (e) {
           results.failed.push({ playerId: player.id, channel: 'email', error: e.message });
         }
@@ -203,6 +209,12 @@ router.post('/notify', requireAdmin, async (req, res) => {
         try {
           await smsService.send(player.phone, message);
           results.sent.push({ playerId: player.id, channel: 'sms' });
+          if (gameId) {
+            await pool.query(
+              'INSERT INTO notification_log (game_id, player_id, channel, status) VALUES ($1, $2, $3, $4)',
+              [gameId, player.id, 'sms', 'sent']
+            ).catch(e => console.error('Failed to log notification for player', player.id, e.message));
+          }
         } catch (e) {
           results.failed.push({ playerId: player.id, channel: 'sms', error: e.message });
         }
