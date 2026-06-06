@@ -75,8 +75,19 @@ async function notifyPlayersForGame(game, notificationType, settings) {
     playersQuery = await pool.query('SELECT * FROM players WHERE is_active = true');
   }
 
-  const players = playersQuery.rows;
-  console.log(`[Scheduler] Sending ${notificationType} to ${players.length} players for game vs ${game.opponent} on ${game.game_date}`);
+  // Only notify players who haven't already responded to this game
+  const respondedResult = await pool.query(
+    'SELECT player_id FROM game_availability WHERE game_id = $1',
+    [game.id]
+  );
+  const respondedIds = new Set(respondedResult.rows.map(r => r.player_id));
+  const players = playersQuery.rows.filter(p => !respondedIds.has(p.id));
+
+  if (players.length === 0) {
+    console.log(`[Scheduler] All players already responded for game vs ${game.opponent} — skipping ${notificationType}`);
+    return;
+  }
+  console.log(`[Scheduler] Sending ${notificationType} to ${players.length} non-respondents for game vs ${game.opponent} on ${game.game_date}`);
 
   const message = settings.default_message
     .replace('{game_date}', dateTimeStr)
