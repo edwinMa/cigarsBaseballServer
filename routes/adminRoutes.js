@@ -336,6 +336,45 @@ router.get('/notifications/pending', requireAdmin, async (req, res) => {
   }
 });
 
+// GET /cigarsbaseball/admin/notifications/log
+// Returns per-player notification detail for all logged notifications
+router.get('/notifications/log', requireAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT
+        g.id AS game_id,
+        g.game_date,
+        g.opponent,
+        COALESCE(nl.notification_type, 'reminder_1') AS notification_type,
+        MIN(nl.sent_at) AS batch_sent_at,
+        p.id AS player_id,
+        p.first_name,
+        p.last_name,
+        STRING_AGG(nl.channel, ', ' ORDER BY nl.channel) AS channels,
+        BOOL_OR(nl.status = 'sent') AS any_sent,
+        BOOL_AND(nl.status = 'failed') AS all_failed,
+        STRING_AGG(CASE WHEN nl.status = 'failed' THEN nl.error_message END, '; ') AS error_messages,
+        ga.response AS availability_response,
+        ga.responded_at
+      FROM notification_log nl
+      JOIN games g ON nl.game_id = g.id
+      JOIN players p ON nl.player_id = p.id
+      LEFT JOIN game_availability ga
+        ON ga.game_id = nl.game_id AND ga.player_id = nl.player_id
+      GROUP BY
+        g.id, g.game_date, g.opponent,
+        COALESCE(nl.notification_type, 'reminder_1'),
+        p.id, p.first_name, p.last_name,
+        ga.response, ga.responded_at
+      ORDER BY MIN(nl.sent_at) DESC, p.last_name, p.first_name
+    `);
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // GET /cigarsbaseball/admin/notifications/recent
 // Returns last 5 auto-notifications sent (grouped by game + notification type)
 router.get('/notifications/recent', requireAdmin, async (req, res) => {
