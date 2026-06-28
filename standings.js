@@ -5,14 +5,14 @@ var debug = require ('./debug');
 */
 var standings2026 = [
         
-    new Standing ("Cigars", "4", "1", "0"),
-    new Standing ("Black Sox", "3", "2", "0"),
-    new Standing ("Midtown Magic", "0", "3", "0"),
-    new Standing ("Dragons", "3", "2", "0"),
-    new Standing ("Cherokees", "3", "2", "0"),
-    new Standing ("Atlanta Sox", "3", "1", "0"),
-    new Standing ("Georgia Joros", "1", "2", "0"),
-    new Standing ("Cobb Angels", "0", "4", "0")
+    new Standing ("Cigars", "6", "3", "0"),
+    new Standing ("Black Sox", "5", "5", "0"),
+    new Standing ("Midtown Magic", "0", "9", "0"),
+    new Standing ("Dragons", "6", "3", "0"),
+    new Standing ("Cherokees", "8", "2", "0"),
+    new Standing ("Atlanta Sox", "8", "2", "0"),
+    new Standing ("Georgia Joros", "1", "7", "0"),
+    new Standing ("Cobb Angels", "3", "6", "0")
     ];
 
 /*
