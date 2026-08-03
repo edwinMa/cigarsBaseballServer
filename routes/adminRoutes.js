@@ -128,11 +128,11 @@ router.patch('/players/:id/roster-status', requireAdmin, async (req, res) => {
     const result = await pool.query(
       `UPDATE players
          SET roster_status = $1,
-             is_active = ($1 = 'active'),
+             is_active = $2,
              updated_at = NOW()
-       WHERE id = $2
+       WHERE id = $3
        RETURNING id, first_name, last_name, roster_status, is_active`,
-      [status, req.params.id]
+      [status, status === 'active', req.params.id]
     );
     if (result.rows.length === 0) return res.status(404).json({ error: 'Player not found' });
     res.json(result.rows[0]);
