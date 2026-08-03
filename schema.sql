@@ -41,6 +41,10 @@ CREATE TABLE IF NOT EXISTS players (
   throws VARCHAR(5),
   photo_url VARCHAR(500),
   is_active BOOLEAN DEFAULT true,
+  -- Roster category: 'active' (main roster), 'reserve' (backup pool), 'inactive' (off roster).
+  -- is_active stays synced: true only when roster_status = 'active'. Existing "active roster"
+  -- queries key off is_active, so reserve players are excluded from them by default.
+  roster_status VARCHAR(10) NOT NULL DEFAULT 'active' CHECK (roster_status IN ('active', 'inactive', 'reserve')),
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );

@@ -67,7 +67,7 @@ router.put('/:id', requireAuth, async (req, res) => {
     const {
       firstName, lastName, email, phone, dateOfBirth, uniformNumber,
       positions, shirtSize, capSize, hometown, walkUpSong,
-      bats, throws, instagram, photoUrl, isActive
+      bats, throws, instagram, photoUrl, isActive, rosterStatus
     } = req.body;
 
     // Filter positions to only valid values (don't hard-reject — imported data may have legacy values)
@@ -108,8 +108,17 @@ router.put('/:id', requireAuth, async (req, res) => {
     if (req.user.role === 'admin') {
       addField('photo_url', photoUrl);
     }
-    if (req.user.role === 'admin' && isActive !== undefined) {
+    // Admin can set the three-way roster category; is_active stays synced to it.
+    if (req.user.role === 'admin' && rosterStatus !== undefined) {
+      if (!['active', 'inactive', 'reserve'].includes(rosterStatus)) {
+        return res.status(400).json({ error: "rosterStatus must be 'active', 'inactive', or 'reserve'" });
+      }
+      addField('roster_status', rosterStatus);
+      addField('is_active', rosterStatus === 'active');
+    } else if (req.user.role === 'admin' && isActive !== undefined) {
+      // Legacy boolean path: keep roster_status consistent (reserve is set via rosterStatus).
       addField('is_active', isActive);
+      addField('roster_status', isActive ? 'active' : 'inactive');
     }
 
     if (fields.length === 0) {
@@ -154,7 +163,12 @@ router.delete('/:id', requireAdmin, async (req, res) => {
 router.patch('/:id/toggle-active', requireAdmin, async (req, res) => {
   try {
     const result = await pool.query(
-      'UPDATE players SET is_active = NOT is_active, updated_at = NOW() WHERE id = $1 RETURNING id, first_name, last_name, is_active',
+      `UPDATE players
+         SET is_active = NOT is_active,
+             roster_status = CASE WHEN NOT is_active THEN 'active' ELSE 'inactive' END,
+             updated_at = NOW()
+       WHERE id = $1
+       RETURNING id, first_name, last_name, is_active, roster_status`,
       [req.params.id]
     );
     if (result.rows.length === 0) {

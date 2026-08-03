@@ -113,6 +113,35 @@ router.patch('/players/:id/active', requireAdmin, async (req, res) => {
   }
 });
 
+const ROSTER_STATUSES = ['active', 'inactive', 'reserve'];
+
+// PATCH /cigarsbaseball/admin/players/:id/roster-status - move a player between roster categories
+// body: { status: 'active' | 'inactive' | 'reserve' }
+// Only changes roster placement (players.roster_status + synced is_active). Does NOT touch the
+// user's login account (users.is_active), so reserve players can still sign in and respond.
+router.patch('/players/:id/roster-status', requireAdmin, async (req, res) => {
+  const { status } = req.body;
+  if (!ROSTER_STATUSES.includes(status)) {
+    return res.status(400).json({ error: `status must be one of: ${ROSTER_STATUSES.join(', ')}` });
+  }
+  try {
+    const result = await pool.query(
+      `UPDATE players
+         SET roster_status = $1,
+             is_active = ($1 = 'active'),
+             updated_at = NOW()
+       WHERE id = $2
+       RETURNING id, first_name, last_name, roster_status, is_active`,
+      [status, req.params.id]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Player not found' });
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Roster status update error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // --- OPPONENTS ---
 
 pool.query(`
@@ -168,18 +197,32 @@ router.delete('/opponents/:id', requireAdmin, async (req, res) => {
 // --- NOTIFICATIONS ---
 
 // POST /cigarsbaseball/admin/notify - send message to players
-// body: { subject, message, channels: ['email','sms'], playerIds: [] | 'all', gameId? }
+// body: {
+//   subject, message, channels: ['email','sms'], gameId?,
+//   playerIds: 'all' | [id, ...],   // explicit ids target those exact players regardless of status
+//                                    // (so reserve/inactive players can be picked individually)
+//   audience?: 'active' | 'reserve' | 'active_reserve' | 'all'  // used when playerIds is 'all'/omitted
+// }
 router.post('/notify', requireAdmin, async (req, res) => {
-  const { subject, message, channels, playerIds, gameId } = req.body;
+  const { subject, message, channels, playerIds, gameId, audience } = req.body;
   if (!message) return res.status(400).json({ error: 'message is required' });
   if (!channels || channels.length === 0) return res.status(400).json({ error: 'channels (email/sms) required' });
 
   try {
     let query;
-    if (playerIds === 'all' || !playerIds) {
-      query = await pool.query("SELECT * FROM players WHERE is_active = true");
+    if (Array.isArray(playerIds) && playerIds.length > 0) {
+      // Explicit selection: send to exactly these players whatever their roster status.
+      query = await pool.query('SELECT * FROM players WHERE id = ANY($1)', [playerIds]);
     } else {
-      query = await pool.query('SELECT * FROM players WHERE id = ANY($1) AND is_active = true', [playerIds]);
+      // Group send: choose the roster category. Defaults to active-only (prior behavior).
+      const audienceFilters = {
+        active: "roster_status = 'active'",
+        reserve: "roster_status = 'reserve'",
+        active_reserve: "roster_status IN ('active', 'reserve')",
+        all: "roster_status <> 'inactive'",
+      };
+      const where = audienceFilters[audience] || audienceFilters.active;
+      query = await pool.query(`SELECT * FROM players WHERE ${where}`);
     }
 
     const players = query.rows;
@@ -234,6 +277,23 @@ router.post('/notify', requireAdmin, async (req, res) => {
 pool.query(`ALTER TABLE notification_settings ADD COLUMN IF NOT EXISTS pre_game_message TEXT`).catch(() => {});
 pool.query(`ALTER TABLE notification_settings ADD COLUMN IF NOT EXISTS days_before_2 INT DEFAULT 2`).catch(() => {});
 pool.query(`ALTER TABLE notification_log ADD COLUMN IF NOT EXISTS notification_type VARCHAR(20)`).catch(() => {});
+
+// Roster status: three-way category (active / inactive / reserve). Backfill from the legacy
+// is_active boolean, then keep is_active synced so all existing "active roster" queries keep working.
+(async () => {
+  try {
+    await pool.query(`ALTER TABLE players ADD COLUMN IF NOT EXISTS roster_status VARCHAR(10) NOT NULL DEFAULT 'active'`);
+    await pool.query(`
+      ALTER TABLE players DROP CONSTRAINT IF EXISTS players_roster_status_check;
+      ALTER TABLE players ADD CONSTRAINT players_roster_status_check
+        CHECK (roster_status IN ('active', 'inactive', 'reserve'));
+    `);
+    // One-time backfill: only touch rows still at the default where is_active says otherwise.
+    await pool.query(`UPDATE players SET roster_status = 'inactive' WHERE is_active = false AND roster_status = 'active'`);
+  } catch (err) {
+    console.error('Failed roster_status migration:', err.message);
+  }
+})();
 
 // Normalize all whitelist phone numbers to +1XXXXXXXXXX format
 pool.query(`
