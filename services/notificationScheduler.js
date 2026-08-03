@@ -3,6 +3,7 @@ const cron = require('node-cron');
 const pool = require('../db');
 const emailService = require('./emailService');
 const smsService = require('./smsService');
+const { appendUniform } = require('./uniform');
 
 // Format a date for display: "Sunday, April 13 at 12:30 PM"
 function formatGameDateTime(gameDate, gameTime) {
@@ -89,11 +90,13 @@ async function notifyPlayersForGame(game, notificationType, settings) {
   }
   console.log(`[Scheduler] Sending ${notificationType} to ${players.length} non-respondents for game vs ${game.opponent} on ${game.game_date}`);
 
-  const message = settings.default_message
+  const baseMessage = settings.default_message
     .replace('{game_date}', dateTimeStr)
     .replace('{game_time}', dateTimeStr)
     .replace('{opponent}', game.opponent)
     .replace('{field}', game.field || 'TBD');
+  // Include the uniform combination when one has been chosen for this game.
+  const message = appendUniform(baseMessage, game);
   const fullMessage = `${message}\n\nRespond at: ${frontendUrl}/games/${game.id}`;
 
   for (const player of players) {

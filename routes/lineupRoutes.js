@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router({ mergeParams: true });
 const pool = require('../db');
 const { requireAdmin, requireAuth } = require('../middleware/auth');
+const { appendUniform } = require('../services/uniform');
 
 const PITCHING_ROLES = ['SP', 'RP1', 'RP2', 'RP3', 'RP4', 'RP5', 'RP6'];
 
@@ -185,8 +186,15 @@ router.post('/send', requireAdmin, async (req, res) => {
     const phones = [...phoneSet].filter(Boolean);
     if (phones.length === 0) return res.status(400).json({ error: 'No recipients with phone numbers found' });
 
+    // Include the uniform combination for this game (when one is set).
+    const gameRes = await pool.query(
+      'SELECT uniform_cap, uniform_shirt, uniform_pants FROM games WHERE id = $1',
+      [req.params.gameId]
+    );
+    const finalMessage = appendUniform(message, gameRes.rows[0]);
+
     const sms = require('../services/smsService');
-    const results = await Promise.allSettled(phones.map(phone => sms.send(phone, message)));
+    const results = await Promise.allSettled(phones.map(phone => sms.send(phone, finalMessage)));
     const sent = results.filter(r => r.status === 'fulfilled').length;
     const failed = results.filter(r => r.status === 'rejected').length;
 

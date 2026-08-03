@@ -4,6 +4,7 @@ const pool = require('../db');
 const { requireAdmin } = require('../middleware/auth');
 const emailService = require('../services/emailService');
 const smsService = require('../services/smsService');
+const { appendUniform } = require('../services/uniform');
 
 // --- WHITELIST ---
 
@@ -228,14 +229,24 @@ router.post('/notify', requireAdmin, async (req, res) => {
     const players = query.rows;
     const results = { sent: [], failed: [] };
 
+    // For game-tied sends, append the uniform combination (when one is set).
+    let finalMessage = message;
+    if (gameId) {
+      const gameRes = await pool.query(
+        'SELECT uniform_cap, uniform_shirt, uniform_pants FROM games WHERE id = $1',
+        [gameId]
+      );
+      finalMessage = appendUniform(message, gameRes.rows[0]);
+    }
+
     for (const player of players) {
       if (channels.includes('email') && player.email) {
         try {
           await emailService.send({
             to: player.email,
             subject: subject || 'Cigars Baseball Notification',
-            text: message,
-            html: `<p>${message.replace(/\n/g, '<br>')}</p>`
+            text: finalMessage,
+            html: `<p>${finalMessage.replace(/\n/g, '<br>')}</p>`
           });
           results.sent.push({ playerId: player.id, channel: 'email' });
           if (gameId) {
@@ -250,7 +261,7 @@ router.post('/notify', requireAdmin, async (req, res) => {
       }
       if (channels.includes('sms') && player.phone) {
         try {
-          await smsService.send(player.phone, message);
+          await smsService.send(player.phone, finalMessage);
           results.sent.push({ playerId: player.id, channel: 'sms' });
           if (gameId) {
             await pool.query(
@@ -275,6 +286,11 @@ router.post('/notify', requireAdmin, async (req, res) => {
 
 // Schema migrations
 pool.query(`ALTER TABLE notification_settings ADD COLUMN IF NOT EXISTS pre_game_message TEXT`).catch(() => {});
+// Uniform is now appended automatically at send time (services/uniform.js), so
+// strip the legacy inline "Uniform is ..." sentence from the stored template.
+pool.query(`UPDATE notification_settings
+              SET pre_game_message = TRIM(REGEXP_REPLACE(pre_game_message, '\\s*Uniform is[^.]*\\.', '', 'gi'))
+            WHERE pre_game_message ~* 'Uniform is'`).catch(() => {});
 pool.query(`ALTER TABLE notification_settings ADD COLUMN IF NOT EXISTS days_before_2 INT DEFAULT 2`).catch(() => {});
 pool.query(`ALTER TABLE notification_log ADD COLUMN IF NOT EXISTS notification_type VARCHAR(20)`).catch(() => {});
 
@@ -350,7 +366,7 @@ router.put('/notification-settings', requireAdmin, async (req, res) => {
          pre_game_message = EXCLUDED.pre_game_message,
          updated_at = NOW()
        RETURNING *`,
-      [daysBefore ?? 4, daysBefore2 ?? 2, defaultMessage ?? 'Please respond with your availability for the upcoming game on {game_date} at {game_time}.', sendEmail ?? true, sendSms ?? true, preGameMessage ?? 'Game on {game_date} vs {opponent} at {field} at {game_time}. Uniform is {uniform_cap} caps, {uniform_shirt} tops, and {uniform_pants}.']
+      [daysBefore ?? 4, daysBefore2 ?? 2, defaultMessage ?? 'Please respond with your availability for the upcoming game on {game_date} at {game_time}.', sendEmail ?? true, sendSms ?? true, preGameMessage ?? 'Game on {game_date} vs {opponent} at {field} at {game_time}.']
     );
     res.json(result.rows[0]);
   } catch (err) {
