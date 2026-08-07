@@ -261,12 +261,13 @@ router.post('/notify', requireAdmin, async (req, res) => {
       }
       if (channels.includes('sms') && player.phone) {
         try {
-          await smsService.send(player.phone, finalMessage);
+          const msg = await smsService.send(player.phone, finalMessage);
           results.sent.push({ playerId: player.id, channel: 'sms' });
           if (gameId) {
+            // Record the Twilio SID + initial status; the status-callback webhook fills in delivery.
             await pool.query(
-              'INSERT INTO notification_log (game_id, player_id, channel, status) VALUES ($1, $2, $3, $4)',
-              [gameId, player.id, 'sms', 'sent']
+              'INSERT INTO notification_log (game_id, player_id, channel, status, provider_sid) VALUES ($1, $2, $3, $4, $5)',
+              [gameId, player.id, 'sms', msg?.status || 'sent', msg?.sid || null]
             ).catch(e => console.error('Failed to log notification for player', player.id, e.message));
           }
         } catch (e) {
@@ -293,6 +294,9 @@ pool.query(`UPDATE notification_settings
             WHERE pre_game_message ~* 'Uniform is'`).catch(() => {});
 pool.query(`ALTER TABLE notification_settings ADD COLUMN IF NOT EXISTS days_before_2 INT DEFAULT 2`).catch(() => {});
 pool.query(`ALTER TABLE notification_log ADD COLUMN IF NOT EXISTS notification_type VARCHAR(20)`).catch(() => {});
+// Twilio message SID, used to match delivery-status callbacks back to a log row.
+pool.query(`ALTER TABLE notification_log ADD COLUMN IF NOT EXISTS provider_sid VARCHAR(64)`).catch(() => {});
+pool.query(`CREATE INDEX IF NOT EXISTS idx_notification_log_provider_sid ON notification_log (provider_sid)`).catch(() => {});
 
 // Roster status: three-way category (active / inactive / reserve). Backfill from the legacy
 // is_active boolean, then keep is_active synced so all existing "active roster" queries keep working.
@@ -427,9 +431,10 @@ router.get('/notifications/log', requireAdmin, async (req, res) => {
         p.first_name,
         p.last_name,
         STRING_AGG(nl.channel, ', ' ORDER BY nl.channel) AS channels,
-        BOOL_OR(nl.status = 'sent') AS any_sent,
-        BOOL_AND(nl.status = 'failed') AS all_failed,
-        STRING_AGG(CASE WHEN nl.status = 'failed' THEN nl.error_message END, '; ') AS error_messages,
+        BOOL_OR(nl.status IN ('sent', 'delivered', 'queued', 'sending', 'accepted')) AS any_sent,
+        BOOL_AND(nl.status IN ('failed', 'undelivered')) AS all_failed,
+        BOOL_OR(nl.status = 'delivered') AS any_delivered,
+        STRING_AGG(CASE WHEN nl.status IN ('failed', 'undelivered') THEN nl.error_message END, '; ') AS error_messages,
         ga.response AS availability_response,
         ga.responded_at
       FROM notification_log nl

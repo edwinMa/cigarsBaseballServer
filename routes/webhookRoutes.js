@@ -86,4 +86,42 @@ router.post('/sms', async (req, res) => {
   }
 });
 
+// Friendly text for the Twilio error codes we most commonly see.
+const TWILIO_ERRORS = {
+  '30003': 'Unreachable destination handset (phone off, out of service, or number changed)',
+  '30004': 'Message blocked by the carrier',
+  '30005': 'Unknown destination handset (invalid or landline number)',
+  '30006': 'Landline or unreachable carrier',
+  '30007': 'Carrier filtered the message (flagged as spam)',
+  '30008': 'Unknown delivery error',
+  '21610': 'Recipient has opted out (replied STOP)',
+};
+
+// POST /cigarsbaseball/webhook/twilio-status
+// Twilio posts delivery-status updates here (queued -> sent -> delivered/undelivered/failed).
+// We match on the message SID and record the true delivery status on notification_log.
+router.post('/twilio-status', async (req, res) => {
+  try {
+    const sid = req.body.MessageSid || req.body.SmsSid;
+    const status = req.body.MessageStatus || req.body.SmsStatus;
+    const errorCode = req.body.ErrorCode;
+    const VALID = ['queued', 'sending', 'sent', 'delivered', 'undelivered', 'failed', 'accepted'];
+    if (sid && VALID.includes(status)) {
+      const errMsg = errorCode
+        ? `${errorCode}: ${TWILIO_ERRORS[String(errorCode)] || 'Delivery error'}`
+        : null;
+      await pool.query(
+        `UPDATE notification_log
+           SET status = $1, error_message = COALESCE($2, error_message)
+         WHERE provider_sid = $3`,
+        [status, errMsg, sid]
+      );
+    }
+  } catch (err) {
+    console.error('Twilio status webhook error:', err);
+  }
+  // Always ack so Twilio doesn't retry.
+  res.sendStatus(204);
+});
+
 module.exports = router;

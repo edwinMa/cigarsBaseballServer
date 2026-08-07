@@ -108,8 +108,9 @@ async function notifyPlayersForGame(game, notificationType, settings) {
     }
     if (settings.send_sms && player.phone) {
       try {
-        await smsService.send(player.phone, fullMessage);
-        await logNotification(game.id, player.id, 'sms', 'sent', null, notificationType);
+        const msg = await smsService.send(player.phone, fullMessage);
+        // Log Twilio's initial status; the status-callback webhook updates it to the final delivery state.
+        await logNotification(game.id, player.id, 'sms', msg?.status || 'sent', null, notificationType, msg?.sid || null);
       } catch (e) {
         console.error(`[Scheduler] SMS failed for player ${player.id}:`, e.message);
         await logNotification(game.id, player.id, 'sms', 'failed', e.message, notificationType);
@@ -118,11 +119,11 @@ async function notifyPlayersForGame(game, notificationType, settings) {
   }
 }
 
-async function logNotification(gameId, playerId, channel, status, errorMessage, notificationType) {
+async function logNotification(gameId, playerId, channel, status, errorMessage, notificationType, providerSid) {
   try {
     await pool.query(
-      'INSERT INTO notification_log (game_id, player_id, channel, status, error_message, notification_type) VALUES ($1, $2, $3, $4, $5, $6)',
-      [gameId, playerId, channel, status, errorMessage, notificationType || null]
+      'INSERT INTO notification_log (game_id, player_id, channel, status, error_message, notification_type, provider_sid) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+      [gameId, playerId, channel, status, errorMessage, notificationType || null, providerSid || null]
     );
   } catch (e) {
     console.error('[Scheduler] Failed to log notification:', e.message);
