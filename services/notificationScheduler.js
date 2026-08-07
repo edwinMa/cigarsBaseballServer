@@ -64,17 +64,9 @@ async function notifyPlayersForGame(game, notificationType, settings) {
   const dateTimeStr = formatGameDateTime(game.game_date, game.game_time);
   const frontendUrl = process.env.FRONTEND_URL || 'https://cigarsbaseball.org';
 
-  let playersQuery;
-  if (game.season_id) {
-    playersQuery = await pool.query(
-      `SELECT p.* FROM players p
-       JOIN season_rosters sr ON p.id = sr.player_id
-       WHERE sr.season_id = $1 AND sr.is_active = true AND p.is_active = true`,
-      [game.season_id]
-    );
-  } else {
-    playersQuery = await pool.query('SELECT * FROM players WHERE is_active = true');
-  }
+  // The active roster is the source of truth for who gets game reminders — every
+  // active player is notified, regardless of season_rosters membership.
+  const playersQuery = await pool.query("SELECT * FROM players WHERE roster_status = 'active'");
 
   // Only notify players who haven't already responded to this game
   const respondedResult = await pool.query(
