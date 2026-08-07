@@ -11,7 +11,7 @@ var standings2026 = [
     new Standing ("Cherokees", "11", "3", "0"),
     new Standing ("Atlanta Sox", "10", "5", "0"),
     new Standing ("Georgia Joros", "2", "10", "0"),
-    new Standing ("Cobb Angels", "4", "10", "0")
+    new Standing ("Cobb Angels", "4", "11", "0")
     ];
 
 /*
