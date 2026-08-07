@@ -205,7 +205,7 @@ router.delete('/opponents/:id', requireAdmin, async (req, res) => {
 //   audience?: 'active' | 'reserve' | 'active_reserve' | 'all'  // used when playerIds is 'all'/omitted
 // }
 router.post('/notify', requireAdmin, async (req, res) => {
-  const { subject, message, channels, playerIds, gameId, audience } = req.body;
+  const { subject, message, channels, playerIds, gameId, audience, notificationType } = req.body;
   if (!message) return res.status(400).json({ error: 'message is required' });
   if (!channels || channels.length === 0) return res.status(400).json({ error: 'channels (email/sms) required' });
 
@@ -251,8 +251,8 @@ router.post('/notify', requireAdmin, async (req, res) => {
           results.sent.push({ playerId: player.id, channel: 'email' });
           if (gameId) {
             await pool.query(
-              'INSERT INTO notification_log (game_id, player_id, channel, status) VALUES ($1, $2, $3, $4)',
-              [gameId, player.id, 'email', 'sent']
+              'INSERT INTO notification_log (game_id, player_id, channel, status, notification_type) VALUES ($1, $2, $3, $4, $5)',
+              [gameId, player.id, 'email', 'sent', notificationType || null]
             ).catch(e => console.error('Failed to log notification for player', player.id, e.message));
           }
         } catch (e) {
@@ -266,8 +266,8 @@ router.post('/notify', requireAdmin, async (req, res) => {
           if (gameId) {
             // Record the Twilio SID + initial status; the status-callback webhook fills in delivery.
             await pool.query(
-              'INSERT INTO notification_log (game_id, player_id, channel, status, provider_sid) VALUES ($1, $2, $3, $4, $5)',
-              [gameId, player.id, 'sms', msg?.status || 'sent', msg?.sid || null]
+              'INSERT INTO notification_log (game_id, player_id, channel, status, provider_sid, notification_type) VALUES ($1, $2, $3, $4, $5, $6)',
+              [gameId, player.id, 'sms', msg?.status || 'sent', msg?.sid || null, notificationType || null]
             ).catch(e => console.error('Failed to log notification for player', player.id, e.message));
           }
         } catch (e) {

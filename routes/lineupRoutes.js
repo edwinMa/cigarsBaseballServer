@@ -194,20 +194,33 @@ router.post('/send', requireAdmin, async (req, res) => {
     const finalMessage = appendUniform(message, gameRes.rows[0]);
 
     const sms = require('../services/smsService');
-    const results = await Promise.allSettled(phones.map(phone => sms.send(phone, finalMessage)));
-    const sent = results.filter(r => r.status === 'fulfilled').length;
-    const failed = results.filter(r => r.status === 'rejected').length;
+    // Send per phone, keeping each phone's outcome (Twilio SID/status, or the error) so we can
+    // record delivery status per player — the status-callback webhook updates it later.
+    const sendResults = await Promise.all(phones.map(async phone => {
+      try {
+        const msg = await sms.send(phone, finalMessage);
+        return { phone, ok: true, status: msg?.status || 'sent', sid: msg?.sid || null, error: null };
+      } catch (e) {
+        return { phone, ok: false, status: 'failed', sid: null, error: e.message };
+      }
+    }));
+    const sent = sendResults.filter(r => r.ok).length;
+    const failed = sendResults.filter(r => !r.ok).length;
+    const outcomeByLast10 = {};
+    for (const o of sendResults) outcomeByLast10[o.phone.replace(/\D/g, '').slice(-10)] = o;
 
-    // Log to notification_log so SMS replies route back to this game
+    // Log to notification_log so SMS replies route back to this game (and delivery shows in the log)
     const playerByPhone = await pool.query(
-      `SELECT id FROM players WHERE is_active = true AND phone IS NOT NULL AND phone != ''
+      `SELECT id, RIGHT(REGEXP_REPLACE(phone, '[^0-9]', '', 'g'), 10) AS last10
+       FROM players WHERE is_active = true AND phone IS NOT NULL AND phone != ''
        AND RIGHT(REGEXP_REPLACE(phone, '[^0-9]', '', 'g'), 10) = ANY($1::text[])`,
       [phones.map(p => p.replace(/\D/g, '').slice(-10))]
     );
     for (const player of playerByPhone.rows) {
+      const o = outcomeByLast10[player.last10] || {};
       await pool.query(
-        'INSERT INTO notification_log (game_id, player_id, channel, status) VALUES ($1, $2, $3, $4)',
-        [req.params.gameId, player.id, 'sms', 'sent']
+        'INSERT INTO notification_log (game_id, player_id, channel, status, provider_sid, notification_type) VALUES ($1, $2, $3, $4, $5, $6)',
+        [req.params.gameId, player.id, 'sms', o.status || 'sent', o.sid || null, 'pre_game']
       ).catch(e => console.error('Failed to log notification for player', player.id, e.message));
     }
 
